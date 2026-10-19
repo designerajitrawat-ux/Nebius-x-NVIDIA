@@ -1,0 +1,10 @@
+# Runtime. playwright must match the Docker base image tag (api/Dockerfile).
+fastapi==0.148.0
+uvicorn[standard]==0.54.0
+openai==3.35.1
+tavily-python==0.8.5
+python-dotenv==1.2.4
+httpx==0.28.1
+playwright==1.64.0
+pillow==13.0.0
+pydantic==2.14.1

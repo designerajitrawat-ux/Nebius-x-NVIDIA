@@ -1,0 +1,199 @@
+"""Pure helpers for turning model text into data. No I/O, unit-tested in tests/test_parsing.py."""
+
+from __future__ import annotations
+
+import json
+import re
+from dataclasses import dataclass
+from typing import Any
+
+_THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL | re.IGNORECASE)
+_FENCE_RE = re.compile(r"```(?:json|JSON)?\s*(.*?)```", re.DOTALL)
+
+
+@dataclass
+class ToolCall:
+    name: str
+    args: dict[str, Any]
+
+
+def strip_think(text: str | None) -> str:
+    """Remove reasoning blocks some Nemotron endpoints inline into `content`."""
+    if not text:
+        return ""
+    out = _THINK_RE.sub("", text)
+    # An unterminated <think> means the answer never started; keep whatever follows </think> if present.
+    if "<think>" in out.lower():
+        idx = out.lower().rfind("</think>")
+        out = out[idx + len("</think>") :] if idx >= 0 else ""
+    return out.strip()
+
+
+def _balanced_blocks(text: str, opener: str, closer: str) -> list[str]:
+    """Every top-level balanced {...} or [...] substring, respecting JSON strings."""
+    blocks: list[str] = []
+    depth = 0
+    start = -1
+    in_str = False
+    esc = False
+    for i, ch in enumerate(text):
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"' and depth > 0:
+            in_str = True
+        elif ch == opener:
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == closer and depth > 0:
+            depth -= 1
+            if depth == 0 and start >= 0:
+                blocks.append(text[start : i + 1])
+                start = -1
+    return blocks
+
+
+def _loads_lenient(raw: str) -> Any:
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        pass
+    fixed = re.sub(r",\s*([}\]])", r"\1", raw)  # trailing commas
+    fixed = fixed.replace("“", '"').replace("”", '"')  # smart quotes
+    return json.loads(fixed)
+
+
+def extract_json(text: str | None, want: type | None = None) -> Any:
+    """Best-effort: the first JSON object/array in `text` (handles fences, <think>, chatter).
+
+    `want` = dict or list narrows which kind is accepted. Raises ValueError if nothing parses.
+    """
+    body = strip_think(text)
+    if not body:
+        raise ValueError("empty model output")
+    candidates: list[str] = [body]
+    candidates += [m.strip() for m in _FENCE_RE.findall(body)]
+    if want in (None, dict):
+        candidates += _balanced_blocks(body, "{", "}")
+    if want in (None, list):
+        candidates += _balanced_blocks(body, "[", "]")
+    for raw in candidates:
+        try:
+            val = _loads_lenient(raw)
+        except (json.JSONDecodeError, ValueError):
+            continue
+        if want is None or isinstance(val, want):
+            return val
+    raise ValueError("no JSON found in model output")
+
+
+def _coerce_args(raw: Any) -> dict[str, Any]:
+    if isinstance(raw, dict):
+        return raw
+    if isinstance(raw, str):
+        raw = raw.strip()
+        if not raw:
+            return {}
+        try:
+            val = _loads_lenient(raw)
+            return val if isinstance(val, dict) else {}
+        except (json.JSONDecodeError, ValueError):
+            return {}
+    return {}
+
+
+def _scalar(v: str) -> Any:
+    v = v.strip()
+    if re.fullmatch(r"-?\d+", v):
+        return int(v)
+    if v.lower() in {"true", "false"}:
+        return v.lower() == "true"
+    try:
+        return json.loads(v)
+    except (json.JSONDecodeError, ValueError):
+        return v
+
+
+_XML_FN_RE = re.compile(r"<function=([\w.-]+)>(.*?)</function>", re.DOTALL)
+_XML_PARAM_RE = re.compile(r"<parameter=([\w.-]+)>(.*?)</parameter>", re.DOTALL)
+_TAGGED_RE = re.compile(r"<tool_call>(.*?)(?:</tool_call>|$)", re.DOTALL)
+_PY_CALL_RE = re.compile(r"\b([a-z_]+)\s*\(([^()]*)\)")
+
+
+def parse_text_tool_calls(text: str | None, known: set[str]) -> list[ToolCall]:
+    """Recover tool calls that came back as text instead of structured `tool_calls`.
+
+    Handles, in order: Qwen/Nemotron XML (`<function=click><parameter=element_id>3</parameter>`),
+    `<tool_call>{json}</tool_call>`, bare JSON (`{"name":..,"arguments":..}` or `{"action":..}`),
+    and python-ish `click(element_id=3)`. Only names in `known` are returned.
+    """
+    body = strip_think(text)
+    if not body:
+        return []
+
+    calls: list[ToolCall] = []
+    for name, inner in _XML_FN_RE.findall(body):
+        if name in known:
+            args = {k: _scalar(v) for k, v in _XML_PARAM_RE.findall(inner)}
+            calls.append(ToolCall(name, args))
+    if calls:
+        return calls
+
+    chunks = _TAGGED_RE.findall(body) or [body]
+    for chunk in chunks:
+        try:
+            val = extract_json(chunk)
+        except ValueError:
+            continue
+        items = val if isinstance(val, list) else [val]
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            fn = item.get("function") if isinstance(item.get("function"), dict) else None
+            name = item.get("name") or (fn or {}).get("name") or item.get("action") or item.get("tool")
+            if not isinstance(name, str) or name not in known:
+                continue
+            raw_args = item.get("arguments", item.get("args", item.get("parameters", (fn or {}).get("arguments"))))
+            args = _coerce_args(raw_args) if raw_args is not None else {
+                k: v for k, v in item.items() if k not in {"name", "action", "tool", "function"}
+            }
+            calls.append(ToolCall(name, args))
+    if calls:
+        return calls
+
+    for name, argstr in _PY_CALL_RE.findall(body):
+        if name not in known:
+            continue
+        args: dict[str, Any] = {}
+        for part in [p for p in argstr.split(",") if p.strip()]:
+            if "=" in part:
+                k, v = part.split("=", 1)
+                args[k.strip()] = _scalar(v.strip().strip("'\""))
+            elif "element_id" not in args:
+                args["element_id"] = _scalar(part.strip().strip("'\""))
+        calls.append(ToolCall(name, args))
+        break
+    return calls
+
+
+def clamp_int(v: Any, lo: int, hi: int, default: int) -> int:
+    try:
+        n = int(float(v))
+    except (TypeError, ValueError):
+        return default
+    return max(lo, min(hi, n))
+
+
+def short(text: str | None, n: int) -> str:
+    """Collapse whitespace and cut to n chars on a word boundary."""
+    s = " ".join((text or "").split())
+    if len(s) <= n:
+        return s
+    cut = s[: n - 1].rsplit(" ", 1)[0]
+    return (cut or s[: n - 1]).rstrip(",;:.") + "…"
