@@ -1,0 +1,42 @@
+# Pushes api/ to the Hugging Face Space whenever it changes on main.
+# One-time setup (see docs/deploy.md): repo secret HF_TOKEN (write token) and repo variable HF_SPACE
+# (e.g. "your-name/fiveusers-api"). Without HF_SPACE set, this workflow does nothing.
+name: Deploy API to Hugging Face
+
+on:
+  push:
+    branches: [main]
+    paths: ["api/**", ".github/workflows/deploy-api.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-api
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ vars.HF_SPACE != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install huggingface_hub==2.1.1
+      - name: Upload api/ to the Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+          SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import os
+          from huggingface_hub import upload_folder
+          upload_folder(
+              repo_id=os.environ["HF_SPACE"],
+              repo_type="space",
+              folder_path="api",
+              ignore_patterns=[".venv/*", "data/*", "tests/*", "**/__pycache__/*", ".env", "*.pyc"],
+              commit_message=f"deploy {os.environ['SHA'][:7]}",
+          )
+          PY
