@@ -129,3 +129,15 @@ def test_give_up_evidence_points_at_last_attempted_element():
     assert issue.screenshot == "rohan/01.jpg"  # the screen where the button was tried
     assert abs(issue.pin.x - 160 / 1280) < 0.01 and abs(issue.pin.y - 240 / 800) < 0.01
     assert issue.quote and issue.quote.text == "Nothing happens. Bye."
+
+
+def test_finalize_personas_tolerates_messy_numbers():
+    people = finalize([{"name": "Lena Park", "age": "34 years", "patience": "about 7 screens"}], count=5, max_steps=12)
+    assert people[0].age == 34 and people[0].patience == 7
+
+
+def test_ground_issue_tolerates_bad_step_value():
+    walks = {"priya": _walk("priya", ["Hmm."])}
+    raw = {"severity": "minor", "title": "t", "screen": "S1", "evidence": {"persona_id": "priya", "step": "#1"},
+           "personas_hit": [], "quote": None, "why": "", "fix": {}}
+    assert ground_issue(raw, walks=walks, screen_ids={"S1": "s1"}, labels={}) is not None

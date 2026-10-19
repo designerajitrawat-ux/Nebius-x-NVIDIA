@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, StreamingResponse
 
 from .config import TIERS, model_label, settings
-from .events import live_bus, replay_from_disk, sse_format
+from .events import bus_for, live_bus, replay_from_disk, sse_format
 from .guard import GuardError, guard, is_judge
 from .models import RunRequest
 from .pipeline import markdown_for, run_pipeline, run_state
@@ -102,6 +102,7 @@ async def create_run(body: RunRequest, request: Request) -> JSONResponse:
     except Exception:
         guard.release()
         raise
+    bus_for(run_id)  # exists before the client's first SSE request, even if the task hasn't started yet
     t = asyncio.create_task(run_pipeline(run_id, url=url, task=task, audience=audience, mode=settings.mode))
     _tasks.add(t)
     t.add_done_callback(_tasks.discard)

@@ -90,13 +90,14 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
         async def one(p: Persona) -> WalkResult:
             async with sem:
                 t0 = time.time()
-                session = await browser.session(persona_id=p.id, viewport=p.viewport, start_url=url, run_dir=run_dir)
+                session = None
 
                 async def on_step(step, lane: LaneStep) -> None:
                     store.append_jsonl(run_id, f"{p.id}/steps.jsonl", step.model_dump())
                     await bus.emit("persona_step", persona_id=p.id, step=lane.model_dump())
 
                 try:
+                    session = await browser.session(persona_id=p.id, viewport=p.viewport, start_url=url, run_dir=run_dir)
                     await session.open()
                     wr = await walk(p, session, brain, task=task, run_id=run_id, run_dir=run_dir,
                                     max_steps=settings.max_steps, on_step=on_step)
@@ -106,7 +107,8 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
                     wr = WalkResult(p, PersonaResult(persona_id=p.id, outcome="error", reason=reason, steps=0,
                                                      seconds=round(time.time() - t0, 1)))
                 finally:
-                    await session.close()
+                    if session is not None:
+                        await session.close()
                 await bus.emit("persona_done", persona_id=p.id, result=wr.result.model_dump())
                 return wr
 

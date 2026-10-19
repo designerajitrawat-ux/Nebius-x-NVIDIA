@@ -143,7 +143,7 @@ def load_settings() -> Settings:
         rate_per_hour=_int("RATE_LIMIT_PER_HOUR", 2),
         rate_per_day=_int("RATE_LIMIT_PER_DAY", 5),
         max_concurrent_runs=max(1, _int("MAX_CONCURRENT_RUNS", 2)),
-        walker_concurrency=max(1, _int("WALKER_CONCURRENCY", 3)),
+        walker_concurrency=max(1, _int("WALKER_CONCURRENCY", 5)),
         judge_token=judge,
         data_dir=_path("DATA_DIR", "./data"),
         samples_dir=_path("SAMPLES_DIR", "./samples"),

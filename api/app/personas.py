@@ -14,7 +14,7 @@ from . import tavily_client
 from .config import settings
 from .llm import LLM, LLMError
 from .models import Observation, Persona, Reference
-from .parsing import short
+from .parsing import clamp_int, short
 
 log = logging.getLogger("fiveusers.personas")
 
@@ -135,6 +135,14 @@ async def research(brief: SiteBrief, task: str, audience: str | None, run_id: st
     return refs
 
 
+def re_first_int(v: object) -> int | None:
+    """34 -> 34, "34 years" -> 34, None/"" -> None."""
+    if isinstance(v, (int, float)):
+        return int(v)
+    m = re.search(r"\d+", str(v or ""))
+    return int(m.group()) if m else None
+
+
 def _slug(name: str) -> str:
     s = re.sub(r"[^a-z0-9]+", "-", name.split()[0].lower()).strip("-")
     return s or "user"
@@ -163,13 +171,13 @@ def finalize(raw: list[dict], *, count: int, max_steps: int) -> list[Persona]:
                 Persona(
                     id=pid,
                     name=name,
-                    age=max(16, min(90, int(item.get("age") or 35))),
+                    age=clamp_int(re_first_int(item.get("age")), 16, 90, 35),
                     initial=name[0].upper(),
                     archetype=short(str(item.get("archetype", "")), 60),
                     bio=short(str(item.get("bio", "")), 160),
                     goal=short(str(item.get("goal", "")), 160),
                     tech_confidence=item.get("tech_confidence") if item.get("tech_confidence") in {"low", "medium", "high"} else "medium",
-                    patience=max(4, min(max_steps, int(item.get("patience") or 8))),
+                    patience=clamp_int(re_first_int(item.get("patience")), 4, max_steps, 8),
                     reading_style=short(str(item.get("reading_style", "")), 120),
                     frustrations=[short(str(f), 80) for f in frustrations][:4],
                     voice=short(str(item.get("voice", "")), 120),

@@ -21,15 +21,30 @@
 
 ## Model routing (the "effective use of Nemotron" story)
 
-| Step | Model env var | Why this tier |
-|---|---|---|
-| Element labeling, short summaries, JSON repair | `NEMOTRON_FAST` (3.5 Lightning / Nano 30B) | 1000s of tiny calls, $0.06/M |
-| Screenshot → "what this persona sees" | `NEMOTRON_VISION` (3 Nano Omni) | only multimodal Nemotron; cheap |
-| Persona generation; per-step decide (tool calls) | `NEMOTRON_AGENT` (3 Super 120B) | agentic reasoning at $0.30/M |
-| Final synthesis + prioritization + fixes | `NEMOTRON_REASON` (3 Ultra 550B) | one big call per run, heaviest reasoning |
+| Step | Model env var | Expected ID (verify on Day 0) | Why this tier |
+|---|---|---|---|
+| Product category, JSON repair | `NEMOTRON_FAST` (3.5 Lightning / Nano 30B) | `nvidia/Nemotron-3_5-Lightning` | tiny calls, $0.06/M |
+| Screenshot → "what this persona sees"; expert heuristic review | `NEMOTRON_VISION` (3 Nano Omni) | `nvidia/Nemotron-3-Nano-Omni` | only multimodal Nemotron; cheap |
+| Persona generation; per-step decide (tool calls) | `NEMOTRON_AGENT` (3 Super 120B) | `nvidia/nemotron-3-super-120b-a12b` | agentic reasoning at $0.30/M |
+| Final synthesis + prioritization + fixes | `NEMOTRON_REASON` (3 Ultra 550B) | `nvidia/Nemotron-3-Ultra-550b-a55b` | one big call per run, heaviest reasoning |
 
 Model IDs must be confirmed from `GET /v1/models` on Day 0 and written into `.env`. Never hardcode IDs in code;
-`llm.py` reads them from env and exposes `call(tier, ...)`.
+`llm.py` reads them from env and exposes `chat(tier, ...)` / `chat_json(tier, ...)`.
+
+## Decisions made while building (19 Oct)
+
+- **`fill` tool**: personas fill several form fields in one step (a person fills a form as one unit). Without
+  it a 6-field form ate half a persona's patience and doubled model calls.
+- **Thinking off** for fast/vision/agent calls via `chat_template_kwargs.enable_thinking=false`; Ultra keeps
+  thinking. If an endpoint rejects the field, `llm.py` drops it for the process and retries (tested with a mock).
+- **Five walkers at once** (`WALKER_CONCURRENCY=5`): all five lanes go live together, which is the demo moment.
+- **Screen identity** = path (no query) + heading + form-field names, so phone and laptop visits of the same step
+  merge in the friction map.
+- **Off-site guard**: off-site links are refused before clicking; JS navigations get a stand-in page and the
+  browser steps back (abort/204 left Playwright waiting on a dead navigation).
+- **Grounded synthesis**: pins come from recorded element boxes, quotes must be verbatim inner-voice lines,
+  persona ids are validated; Ultra → Super → deterministic fallback, so a run always ends in a report.
+- **`DRY_RUN=true`**: a scripted brain runs the whole pipeline with zero model calls, for UI work and tests.
 
 ## Token Factory API facts (verified from official docs, 19 Oct)
 

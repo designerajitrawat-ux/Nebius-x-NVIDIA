@@ -18,7 +18,7 @@ from . import tavily_client
 from .expert import ScreenInfo
 from .llm import LLM, LLMError
 from .models import ExpertFinding, Fix, Issue, Observation, Persona, Quote, Reference, Step
-from .parsing import short
+from .parsing import clamp_int, short
 from .report import pin_for_bbox, task_phrase
 from .walker import WalkResult
 
@@ -174,7 +174,7 @@ def ground_issue(
 ) -> Issue | None:
     personas = [p for p in (raw.get("personas_hit") or []) if p in walks]
     ev = raw.get("evidence") or {}
-    found = _find_step(walks, str(ev.get("persona_id", "")), int(ev.get("step") or 0)) if isinstance(ev, dict) else None
+    found = _find_step(walks, str(ev.get("persona_id", "")), clamp_int(ev.get("step"), 0, 999, 0)) if isinstance(ev, dict) else None
     screen = screen_ids.get(str(raw.get("screen", "")).strip())
     if found and screen and found[0].screen != screen:
         found = None  # evidence contradicts the screen; trust the screen
