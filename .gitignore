@@ -1,0 +1,36 @@
+# secrets
+.env
+.env.*
+!.env.example
+web/.env.local
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# node
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# data / runs
+data/
+api/data/
+*.db
+*.sqlite
+
+# os / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# media scratch
+*.mp4
+*.mov
+recordings/
