@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout: Payment, Larkspur Supply</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231C1B19'/%3E%3Cpath d='M16 27V6' stroke='%23F4F1EB' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='7' r='2.4' fill='%23F4F1EB'/%3E%3Ccircle cx='12.5' cy='12' r='2.4' fill='%23F4F1EB'/%3E%3Ccircle cx='19.5' cy='15' r='2.4' fill='%23F4F1EB'/%3E%3Ccircle cx='12.5' cy='18' r='2.4' fill='%23F4F1EB'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="payment">
+
+<header class="co-header">
+  <div class="wrap">
+    <a class="logo" href="index.html">
+      <svg viewBox="0 0 26 26" aria-hidden="true"><path d="M13 25V3" stroke="#1C1B19" stroke-width="1.5"/><circle cx="13" cy="4" r="2.2" fill="#1C1B19"/><circle cx="9.5" cy="8.5" r="2.2" fill="#1C1B19"/><circle cx="16.5" cy="11.5" r="2.2" fill="#1C1B19"/><circle cx="9.5" cy="14.5" r="2.2" fill="#1C1B19"/><circle cx="16.5" cy="17.5" r="2.2" fill="#1C1B19"/></svg>
+      <span>Larkspur Supply</span>
+    </a>
+    <span class="secure"><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><rect x="1" y="7" width="12" height="8" rx="1.5" fill="none" stroke="#5E5951" stroke-width="1.4"/><path d="M4 7V5a3 3 0 016 0v2" fill="none" stroke="#5E5951" stroke-width="1.4"/></svg>Secure checkout</span>
+  </div>
+</header>
+
+<details class="mobile-summary">
+  <summary><span>Show order summary</span><strong data-summary-total>$0.00</strong></summary>
+  <div class="inner" data-summary></div>
+</details>
+
+<div class="co">
+  <main class="co-main">
+    <nav class="steps" aria-label="Checkout steps"><span>Bag</span><span>›</span><span>Information</span><span>›</span><b>Payment</b></nav>
+    <h1>Payment</h1>
+
+    <form id="paymentForm" novalidate>
+      <div class="review">
+        <div><span>Contact</span><strong data-ship-contact></strong><a href="checkout.html">Change</a></div>
+        <div><span>Ship to</span><strong data-ship-to style="font-weight:400"></strong><a href="checkout.html">Change</a></div>
+      </div>
+
+      <h2>Shipping method</h2>
+      <div class="radios">
+        <label class="radio"><input type="radio" name="shipMethod" value="standard" checked><span>Standard<small>5–7 business days</small></span><strong>$9.95</strong></label>
+        <label class="radio"><input type="radio" name="shipMethod" value="express"><span>Express<small>2 business days</small></span><strong>$19.95</strong></label>
+      </div>
+
+      <h2>Card details</h2>
+      <p class="demo-note"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 7v4.5M8 4.6v.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Demo store, no real payment is taken.</p>
+      <div class="cardbox">
+        <div class="fgrid">
+          <div class="f full"><label for="cardNumber">Card number</label><input id="cardNumber" name="cardNumber" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234"></div>
+          <div class="f full"><label for="cardName">Name on card</label><input id="cardName" name="cardName" autocomplete="cc-name"></div>
+          <div class="f"><label for="cardExpiry">Expiration date</label><input id="cardExpiry" name="cardExpiry" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YYYY"></div>
+          <div class="f"><label for="cardCvc">Security code</label><input id="cardCvc" name="cardCvc" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC"></div>
+        </div>
+      </div>
+      <label class="cb"><input type="checkbox" checked> Billing address same as shipping</label>
+
+      <div class="co-actions">
+        <a class="back" href="checkout.html">‹ Return to information</a>
+        <button type="submit" class="btn" id="payBtn">Continue</button>
+      </div>
+      <p class="terms-note">By continuing you agree to our Terms of Sale.</p>
+    </form>
+  </main>
+
+  <aside class="co-side" aria-label="Order summary">
+    <div data-summary></div>
+  </aside>
+</div>
+
+<script src="store.js"></script>
+</body>
+</html>

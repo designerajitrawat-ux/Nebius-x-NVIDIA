@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pick a date and time, Marlowe Studio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%232A221D'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='19' fill='%23E5D8C6'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="time">
+
+<header class="flow-head">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="name">Marlowe</span><span class="studio">Studio</span></a>
+    <div class="progress" aria-label="Booking steps">
+      <span class="done"><i>1</i>Service</span>
+      <span class="on"><i>2</i>Date &amp; time</span>
+      <span><i>3</i>Your details</span>
+    </div>
+  </div>
+</header>
+
+<main class="flow">
+  <h1>Pick a date and time</h1>
+
+  <div class="chosen">
+    <div><strong data-chosen-name>Service</strong><span data-chosen-meta></span></div>
+    <a href="services.html">Change service</a>
+  </div>
+
+  <div class="field select-sm">
+    <label for="stylist">Stylist</label>
+    <select id="stylist" name="stylist">
+      <option value="any">Any available stylist</option>
+      <option value="tess">Tess Lindqvist (Associate)</option>
+      <option value="junie">Junie Park (Senior, +$12)</option>
+      <option value="ravi">Ravi Mensah (Director, +$30)</option>
+    </select>
+  </div>
+
+  <div class="cal-head">
+    <h2 data-month>October</h2>
+    <div class="cal-nav">
+      <button type="button" class="arrow" data-prev><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M6.5 1.5L3 5l3.5 3.5" fill="none" stroke="#2A221D" stroke-width="1.4"/></svg></button>
+      <button type="button" class="arrow" data-next><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5L7 5 3.5 8.5" fill="none" stroke="#2A221D" stroke-width="1.4"/></svg></button>
+    </div>
+  </div>
+  <div class="days" data-days></div>
+
+  <p class="slots-title" data-slots-title>Available times</p>
+  <div class="slots" data-slots></div>
+  <p class="picked" data-picked>No time selected yet.</p>
+
+  <p class="inline-error" data-time-error hidden>Please choose a time.</p>
+  <div class="flow-actions">
+    <a class="back" href="services.html">‹ Back to services</a>
+    <button type="button" class="btn btn-pale" data-continue>Continue</button>
+  </div>
+
+  <section class="policy" aria-labelledby="policy-h">
+    <h2 id="policy-h">Before your visit</h2>
+    <p>We hold your appointment for 15 minutes. If you're running late, call us and we'll do our best to fit you in, though we may need to shorten your service.</p>
+    <p>Cancellations or changes with less than 24 hours' notice are charged at 50% of the service price. Missed appointments are charged in full.</p>
+    <p>Colour services need a patch test at least 48 hours before your first appointment. Pop in any time we're open; it takes five minutes.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-row">
+      <a class="logo" href="index.html"><span class="name">Marlowe</span><span class="studio">Studio</span></a>
+      <div class="footer-links"><a href="index.html#visit">14 Harbour Row, Eastmoor</a><a href="index.html#visit">(555) 014-2290</a></div>
+    </div>
+    <p class="footer-legal">© 2026 Marlowe Studio. A fictional salon used for usability-testing demos.</p>
+  </div>
+</footer>
+
+<script src="salon.js"></script>
+</body>
+</html>

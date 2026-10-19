@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You're booked, Marlowe Studio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%232A221D'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='19' fill='%23E5D8C6'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="booked">
+
+<header class="flow-head">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="name">Marlowe</span><span class="studio">Studio</span></a>
+    <span style="font-size:14px;color:var(--ink-2)">(555) 014-2290</span>
+  </div>
+</header>
+
+<main class="booked" data-booked>
+  <svg class="seal" viewBox="0 0 74 74" aria-hidden="true"><circle cx="37" cy="37" r="36" fill="#2A221D"/><circle cx="37" cy="37" r="30" fill="none" stroke="#D8C5AC" stroke-width="1"/><path d="M24 38l9 9 17-19" fill="none" stroke="#F6F0E7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <h1>You're booked</h1>
+  <p class="lead">See you on <strong data-when></strong>. We've sent a confirmation to <span data-email></span>.</p>
+
+  <div class="ticket">
+    <div><span>Service</span><strong data-t-service></strong></div>
+    <div><span>Date</span><strong data-t-date></strong></div>
+    <div><span>Time</span><strong data-t-time></strong></div>
+    <div><span>Stylist</span><strong data-t-stylist></strong></div>
+    <div><span>Price</span><strong data-t-price></strong></div>
+    <div><span>Where</span><strong>14 Harbour Row, Eastmoor (first floor)</strong></div>
+    <div><span>Reference</span><strong data-t-ref></strong></div>
+  </div>
+
+  <div class="booked-actions">
+    <button type="button" class="btn" data-cal>Add to calendar</button>
+    <a class="btn btn-line" href="index.html">Back to Marlowe Studio</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="footer-legal" style="text-align:center">© 2026 Marlowe Studio. A fictional salon used for usability-testing demos.</p>
+  </div>
+</footer>
+
+<script src="salon.js"></script>
+</body>
+</html>

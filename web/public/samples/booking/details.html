@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create an account, Marlowe Studio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%232A221D'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-size='19' fill='%23E5D8C6'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="details">
+
+<header class="flow-head">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="name">Marlowe</span><span class="studio">Studio</span></a>
+    <div class="progress" aria-label="Booking steps">
+      <span class="done"><i>1</i>Service</span>
+      <span class="done"><i>2</i>Date &amp; time</span>
+      <span class="on"><i>3</i>Your details</span>
+    </div>
+  </div>
+</header>
+
+<main class="flow" style="max-width:720px">
+  <div class="chosen">
+    <div><strong data-chosen-name>Service</strong><span data-chosen-meta></span></div>
+    <a href="time.html">Change time</a>
+  </div>
+
+  <h1>Create an account to confirm</h1>
+  <p class="intro">A Marlowe account lets you manage, move or cancel your appointments online. It only takes a minute.</p>
+  <p class="account-note">Already have an account? <a href="#" data-login-toggle>Log in</a></p>
+
+  <div class="login-box" data-login-box hidden>
+    <form id="loginForm" novalidate>
+      <div class="two">
+        <div class="field"><label for="loginEmail">Email</label><input id="loginEmail" type="email" autocomplete="email"></div>
+        <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password"></div>
+      </div>
+      <p class="err" data-login-error hidden></p>
+      <button type="submit" class="btn btn-line btn-sm">Log in</button>
+    </form>
+  </div>
+
+  <form id="accountForm" novalidate>
+    <div class="two">
+      <div class="field"><label for="firstName">First name <span class="req">*</span></label><input id="firstName" name="firstName" autocomplete="given-name"></div>
+      <div class="field"><label for="lastName">Last name <span class="req">*</span></label><input id="lastName" name="lastName" autocomplete="family-name"></div>
+    </div>
+    <div class="field"><label for="email">Email <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email"></div>
+    <div class="two">
+      <div class="field"><label for="mobile">Mobile number <span class="req">*</span></label><input id="mobile" name="mobile" type="tel" autocomplete="tel"><span class="hint">For appointment reminders by text.</span></div>
+      <div class="field"><label for="dob">Date of birth <span class="req">*</span></label><input id="dob" name="dob" inputmode="numeric" placeholder="DD/MM/YYYY" autocomplete="bday"></div>
+    </div>
+    <div class="two">
+      <div class="field"><label for="password">Create password <span class="req">*</span></label><input id="password" name="password" type="password" autocomplete="new-password"><span class="hint">At least 8 characters.</span></div>
+      <div class="field"><label for="password2">Confirm password <span class="req">*</span></label><input id="password2" name="password2" type="password" autocomplete="new-password"></div>
+    </div>
+
+    <label class="check"><input type="checkbox" name="marketing" checked> <span>Send me offers, events and seasonal news from Marlowe Studio.</span></label>
+    <label class="check"><input type="checkbox" name="policy"> <span>I accept the booking and cancellation policy (24 hours' notice; late changes charged at 50%). <span class="req" style="color:var(--bronze)">*</span></span></label>
+
+    <div class="flow-actions" style="margin-top:22px">
+      <a class="back" href="time.html">‹ Back</a>
+      <button type="submit" class="btn" data-proceed>Proceed</button>
+    </div>
+  </form>
+
+  <section class="policy" aria-labelledby="privacy-h">
+    <h2 id="privacy-h">How we use your details</h2>
+    <p>We use your mobile number for appointment reminders and your date of birth for colour patch-test records. We never sell your data. You can delete your account at any time from your profile.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-row">
+      <a class="logo" href="index.html"><span class="name">Marlowe</span><span class="studio">Studio</span></a>
+      <div class="footer-links"><a href="index.html#visit">14 Harbour Row, Eastmoor</a><a href="index.html#visit">(555) 014-2290</a></div>
+    </div>
+    <p class="footer-legal">© 2026 Marlowe Studio. A fictional salon used for usability-testing demos.</p>
+  </div>
+</footer>
+
+<script src="salon.js"></script>
+</body>
+</html>
