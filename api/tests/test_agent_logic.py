@@ -153,3 +153,32 @@ def test_json_mode_decision_supports_fill_and_wait():
     assert action.kind == "fill" and action.fields[0].element_id == 1
     wait, _, _ = action_from_call(ToolCall("wait", {}))
     assert wait.kind == "wait" and label_action(wait, obs()) == "Waited a moment"
+
+
+def test_synthesis_survives_odd_model_shapes():
+    import asyncio
+
+    from app.expert import group_screens
+    from app.synthesis import synthesize
+
+    class OddLLM:
+        async def chat_json(self, tier, messages, **kw):
+            return {
+                "headline": "2 of 2 users could not sign up.",
+                "subline": ["not", "a", "string"],
+                "wrong_path": "priya",
+                "issues": [
+                    {"severity": ["major"], "title": "Fix as text", "screen": "S1", "evidence": {"persona_id": "a", "step": 1},
+                     "personas_hit": [{"id": "a"}, "a"], "quote": {"persona_id": ["a"], "text": "x"}, "why": "w",
+                     "fix": "Rename the button"},
+                    "not even a dict",
+                ],
+            }, None
+
+    walks = [_walk("a", ["Where is it?"]), _walk("b", ["Lost."])]
+    screens = group_screens({w.persona.id: w.observations for w in walks})
+    syn = asyncio.run(synthesize(OddLLM(), task="Sign up", url="http://x", category="c", walks=walks,
+                                 screens=screens, expert=[], run_id="r"))
+    assert syn.issues and syn.issues[0].fix.summary == "Rename the button"
+    assert syn.issues[0].severity == "major" and syn.issues[0].personas_hit == ["a"]
+    assert not syn.degraded

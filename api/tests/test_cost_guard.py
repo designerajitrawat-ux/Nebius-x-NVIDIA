@@ -51,3 +51,18 @@ def test_judge_token():
     assert not is_judge("abd", "abc")
     assert not is_judge(None, "abc")
     assert not is_judge("abc", None)
+
+
+def test_client_ip_ignores_forged_left_entries():
+    from app.guard import client_ip
+
+    # client forged "1.2.3.4"; the platform proxy appended the real address on the right
+    assert client_ip("1.2.3.4, 93.184.216.34", "10.0.0.5") == "93.184.216.34"
+    # internal hops on the far right are skipped
+    assert client_ip("93.184.216.34, 10.1.2.3", "10.0.0.5") == "93.184.216.34"
+    assert client_ip(None, "93.184.216.35") == "93.184.216.35"
+    assert client_ip("2606:4700:4700::1111", None) == "2606:4700:4700::/64"
+
+
+def test_judge_header_with_unicode_does_not_crash():
+    assert not is_judge("jüdge", "abc")

@@ -12,8 +12,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, StreamingResponse
 
 from .config import TIERS, model_label, settings
-from .events import bus_for, live_bus, replay_from_disk, sse_format
-from .guard import GuardError, guard, is_judge
+from .events import TERMINAL, bus_for, live_bus, replay_from_disk, sse_format
+from .guard import GuardError, client_ip, guard, is_judge
 from .models import RunRequest
 from .pipeline import markdown_for, run_pipeline, run_state
 from .store import store, valid_id
@@ -43,13 +43,6 @@ async def _validation(_: Request, exc: RequestValidationError) -> JSONResponse:
     first = exc.errors()[0] if exc.errors() else {}
     field = ".".join(str(p) for p in first.get("loc", [])[1:]) or "request"
     return api_error(400, "invalid", f"Check the {field} field: {first.get('msg', 'invalid value')}.")
-
-
-def client_ip(request: Request) -> str:
-    fwd = request.headers.get("x-forwarded-for")
-    if fwd:
-        return fwd.split(",")[0].strip()
-    return request.client.host if request.client else "unknown"
 
 
 @app.get("/")
@@ -91,7 +84,7 @@ async def create_run(body: RunRequest, request: Request) -> JSONResponse:
     task = " ".join(body.task.split())
     audience = " ".join(body.audience.split()) if body.audience else None
 
-    ip = client_ip(request)
+    ip = client_ip(request.headers.get("x-forwarded-for"), request.client.host if request.client else None)
     judge = is_judge(request.headers.get("x-fiveusers-key"), settings.judge_token)
     try:
         guard.admit(ip, judge)
@@ -131,8 +124,17 @@ async def run_events(run_id: str, request: Request) -> Any:
         yield "retry: 3000\n\n"
         bus = live_bus(run_id)
         if bus is None:
-            for ev in replay_from_disk(run_id, after):
-                yield sse_format(ev)
+            history = replay_from_disk(run_id)
+            for ev in history:
+                if ev.get("seq", 0) > after:
+                    yield sse_format(ev)
+            run = store.get_run(run_id) or {}
+            if run.get("status") != "running" and not any(ev.get("type") in TERMINAL for ev in history):
+                # Cut off by a server restart: tell the browser it's over, or it reconnects forever.
+                yield sse_format({
+                    "type": "error", "seq": len(history) + 1, "stage": run.get("stage") or "failed",
+                    "message": run.get("error") or "This test was interrupted. Please start it again.",
+                })
             return
         async for ev in bus.listen(after):
             if await request.is_disconnected():

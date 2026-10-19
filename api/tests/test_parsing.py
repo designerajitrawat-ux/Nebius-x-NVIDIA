@@ -60,9 +60,19 @@ def test_tool_call_action_style_json():
     assert calls[0].name == "give_up" and calls[0].args["reason"] == "too slow"
 
 
-def test_tool_call_python_style():
-    calls = parse_text_tool_calls("I'll do click(element_id=7)", KNOWN)
+def test_tool_call_python_style_only_when_the_whole_reply_is_a_call():
+    calls = parse_text_tool_calls("click(element_id=7)", KNOWN)
     assert calls[0].name == "click" and calls[0].args == {"element_id": 7}
+    # prose must never become an action (a false "done" would mark the persona as completed)
+    assert parse_text_tool_calls("I'll do click(element_id=7)", KNOWN) == []
+    assert parse_text_tool_calls("I'm done (finally). I'll click the Sign up button.", KNOWN) == []
+
+
+def test_reasoning_with_only_a_closing_think_tag():
+    text = 'draft {"persona_id": "priya", "step": 3} </think> {"headline": "3 of 5", "issues": []}'
+    assert extract_json(text, want=dict) == {"headline": "3 of 5", "issues": []}
+    both = '{"persona_id": "priya"} then {"headline": "h", "issues": []}'
+    assert extract_json(both, want=dict, required=("headline", "issues"))["headline"] == "h"
 
 
 def test_tool_call_ignores_unknown_names():

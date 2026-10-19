@@ -172,7 +172,8 @@ def _best_step_on_screen(walks: dict[str, WalkResult], screen: str, personas: li
 def ground_issue(
     raw: dict[str, Any], *, walks: dict[str, WalkResult], screen_ids: dict[str, str], labels: dict[str, str]
 ) -> Issue | None:
-    personas = [p for p in (raw.get("personas_hit") or []) if p in walks]
+    hit = raw.get("personas_hit")
+    personas = [p for p in (hit if isinstance(hit, list) else []) if isinstance(p, str) and p in walks]
     ev = raw.get("evidence") or {}
     found = _find_step(walks, str(ev.get("persona_id", "")), clamp_int(ev.get("step"), 0, 999, 0)) if isinstance(ev, dict) else None
     screen = screen_ids.get(str(raw.get("screen", "")).strip())
@@ -204,11 +205,13 @@ def ground_issue(
     pin = pin_for_bbox(bbox, obs.viewport)
 
     quote = _ground_quote(raw.get("quote"), walks, personas, screen)
-    fix_raw = raw.get("fix") or {}
-    fix_type = fix_raw.get("type") if fix_raw.get("type") in {"copy", "css", "flow"} else "flow"
+    fix_raw = raw.get("fix")
+    if not isinstance(fix_raw, dict):  # e.g. "fix": "Rename the button"
+        fix_raw = {"summary": str(fix_raw or "")}
+    fix_type = fix_raw.get("type") if fix_raw.get("type") in ("copy", "css", "flow") else "flow"
     return Issue(
         id=0,
-        severity=raw.get("severity") if raw.get("severity") in SEVERITY_ORDER else "major",
+        severity=raw.get("severity") if raw.get("severity") in ("critical", "major", "minor") else "major",
         title=short(str(raw.get("title") or "Usability problem"), 90),
         screen=screen,
         screen_label=labels.get(screen, step.path),
@@ -229,7 +232,7 @@ def ground_issue(
 
 
 def _ground_quote(raw: Any, walks: dict[str, WalkResult], personas: list[str], screen: str) -> Quote | None:
-    if isinstance(raw, dict) and raw.get("persona_id") in walks and raw.get("text"):
+    if isinstance(raw, dict) and isinstance(raw.get("persona_id"), str) and raw["persona_id"] in walks and raw.get("text"):
         want = _norm(str(raw["text"]))
         for st in walks[raw["persona_id"]].steps:
             if want and (want in _norm(st.inner_voice) or _norm(st.inner_voice) in want) and len(_norm(st.inner_voice)) > 3:
@@ -416,13 +419,25 @@ async def synthesize(
             except LLMError as e:
                 log.warning("synthesis on %s failed (attempt %d): %s", tier, attempt + 1, e)
                 continue
-            grounded = [g for g in (ground_issue(r, walks=by_id, screen_ids=screen_ids, labels=labels)
-                                    for r in data.get("issues") or [] if isinstance(r, dict)) if g]
+            raw_issues = data.get("issues") if isinstance(data.get("issues"), list) else []
+            grounded = []
+            for r in raw_issues:
+                if not isinstance(r, dict):
+                    continue
+                try:  # one odd issue must not cost the whole report
+                    g = ground_issue(r, walks=by_id, screen_ids=screen_ids, labels=labels)
+                except Exception:  # noqa: BLE001
+                    log.warning("skipping an issue the model returned in an unexpected shape", exc_info=True)
+                    continue
+                if g:
+                    grounded.append(g)
             issues = finalize_issues(grounded)
             if not issues and any(w.result.outcome != "completed" for w in walks):
                 log.warning("synthesis on %s produced no usable issues", tier)
                 continue
-            wrong = {p for p in (data.get("wrong_path") or []) if p in by_id and by_id[p].result.outcome == "completed"}
+            wp = data.get("wrong_path")
+            wrong = {p for p in (wp if isinstance(wp, list) else [])
+                     if isinstance(p, str) and p in by_id and by_id[p].result.outcome == "completed"}
             return Synthesis(
                 headline=short(str(data.get("headline") or ""), 160) or f"{n - completed} of {n} users could not {task_phrase(task)}.",
                 subline=short(str(data.get("subline") or ""), 200),

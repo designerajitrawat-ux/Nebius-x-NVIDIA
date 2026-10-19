@@ -103,8 +103,10 @@ class Settings:
     thinking_off: bool
     budget_soft_usd: float
     budget_hard_usd: float
+    spent_offset_usd: float
     rate_per_hour: int
     rate_per_day: int
+    rate_global_per_hour: int
     max_concurrent_runs: int
     walker_concurrency: int
     judge_token: str | None
@@ -142,8 +144,12 @@ def load_settings() -> Settings:
         thinking_off=_bool("NEMOTRON_THINKING_OFF", True),
         budget_soft_usd=_float("BUDGET_USD_SOFT", 30.0),
         budget_hard_usd=_float("BUDGET_USD_HARD", 40.0),
+        # Spend from before the last restart (free Spaces lose the SQLite ledger on restart).
+        spent_offset_usd=_float("SPENT_OFFSET_USD", 0.0),
         rate_per_hour=_int("RATE_LIMIT_PER_HOUR", 2),
         rate_per_day=_int("RATE_LIMIT_PER_DAY", 5),
+        # Backstop across all visitors, in case per-IP limits are dodged (VPNs, many addresses).
+        rate_global_per_hour=_int("RATE_LIMIT_GLOBAL_PER_HOUR", 20),
         max_concurrent_runs=max(1, _int("MAX_CONCURRENT_RUNS", 2)),
         walker_concurrency=max(1, _int("WALKER_CONCURRENCY", 5)),
         judge_token=judge,

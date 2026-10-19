@@ -212,7 +212,8 @@ async def vision_findings(llm: LLM, info: ScreenInfo, *, task: str, run_dir: Pat
         log.warning("expert vision failed on %s: %s", info.screen, e)
         return []
     out = []
-    for f in (data.get("findings") or [])[:MAX_VISION_FINDINGS]:
+    raw = data.get("findings")
+    for f in (raw if isinstance(raw, list) else [])[:MAX_VISION_FINDINGS]:
         if not isinstance(f, dict) or not f.get("finding"):
             continue
         heuristic = f.get("heuristic") if f.get("heuristic") in HEURISTICS else "Consistency and standards"
@@ -222,7 +223,7 @@ async def vision_findings(llm: LLM, info: ScreenInfo, *, task: str, run_dir: Pat
                 screen_label=info.label,
                 source="vision",
                 heuristic=heuristic,
-                severity=f.get("severity") if f.get("severity") in {"critical", "major", "minor"} else "minor",
+                severity=f.get("severity") if f.get("severity") in ("critical", "major", "minor") else "minor",
                 finding=short(str(f["finding"]), 240),
                 suggestion=short(str(f.get("suggestion", "")), 240),
                 element_id=f.get("element_id") if isinstance(f.get("element_id"), int) else None,

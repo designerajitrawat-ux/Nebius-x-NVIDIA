@@ -19,6 +19,7 @@ from playwright.async_api import Error as PWError
 from playwright.async_api import TimeoutError as PWTimeout
 
 from .config import settings
+from .egress import shared_proxy
 from .models import VIEWPORTS, A11yIssue, Action, Element, Observation
 from .url_safety import same_site
 
@@ -43,7 +44,7 @@ QUIET_MAX_MS = 5_000  # upper bound, even if the page keeps animating or says "P
 # ("Processing…", "Submitting...", aria-busy), or after `max` ms.
 QUIET_JS = r"""
 ({ quiet, max }) => new Promise(resolve => {
-  const BUSY = /(processing|submitting|loading|confirming|saving|sending|please wait)|(…|\.\.\.)\s*$/i;
+  const BUSY = /(processing|submitting|loading|confirming|saving|sending|please wait)\b|(…|\.\.\.)\s*$/i;
   const busy = () => {
     if (document.querySelector('[aria-busy="true"]')) return true;
     for (const el of document.querySelectorAll('button, [role=button], [role=status], input[type=submit]')) {
@@ -67,6 +68,15 @@ OFFSITE_HTML = "<!doctype html><title>Outside the test</title><h1>This page is o
 
 class SiteUnreachable(RuntimeError):
     pass
+
+
+class PageUnresponsive(SiteUnreachable):
+    """The page's own scripts keep the browser busy (e.g. an endless loop); evaluate() never returns."""
+
+
+OBSERVE_TIMEOUT_S = 25  # Playwright's evaluate() ignores default timeouts; this is the hard stop
+ACT_TIMEOUT_S = 25
+CLOSE_TIMEOUT_S = 10
 
 
 # Runs in the page. Tags interactive elements, returns what a person could see and use.
@@ -375,18 +385,28 @@ class RunBrowser:
         self._browser: Browser | None = None
 
     async def start(self) -> None:
+        proxy = None
+        if not settings.allow_private_urls:
+            # Every request (redirects, iframes, subresources, websockets) goes through the egress filter.
+            # "<-loopback>" removes Chromium's implicit proxy bypass for localhost.
+            proxy = {"server": (await shared_proxy()).url, "bypass": "<-loopback>"}
         self._pw = await async_playwright().start()
         self._browser = await self._pw.chromium.launch(
-            headless=True, args=settings.chromium_args, channel=settings.browser_channel
+            headless=True, args=settings.chromium_args, channel=settings.browser_channel, proxy=proxy
         )
 
     async def close(self) -> None:
         try:
             if self._browser:
-                await self._browser.close()
+                await asyncio.wait_for(self._browser.close(), CLOSE_TIMEOUT_S * 2)
+        except (PWError, asyncio.TimeoutError):
+            log.warning("browser close timed out")
         finally:
             if self._pw:
-                await self._pw.stop()
+                try:
+                    await asyncio.wait_for(self._pw.stop(), CLOSE_TIMEOUT_S)
+                except (PWError, asyncio.TimeoutError):
+                    log.warning("playwright stop timed out")
 
     async def session(self, *, persona_id: str, viewport: str, start_url: str, run_dir: Path) -> "Session":
         assert self._browser, "call start() first"
@@ -400,6 +420,7 @@ class RunBrowser:
             user_agent=UA_MOBILE if mobile else UA_DESKTOP,
             accept_downloads=False,
             locale="en-US",
+            service_workers="block",  # SW-handled requests would skip the route guard
         )
         page = await ctx.new_page()
         s = Session(ctx, page, start_url=start_url, run_dir=run_dir, persona_id=persona_id, mobile=mobile)
@@ -440,6 +461,10 @@ class Session:
                 pass
 
         async def on_popup(popup: Page) -> None:
+            try:  # window.open() reports about:blank until the popup's first navigation commits
+                await popup.wait_for_load_state("commit", timeout=5_000)
+            except PWError:
+                pass
             url = popup.url
             await popup.close()
             if url and url != "about:blank" and same_site(url, self.start_url):
@@ -486,6 +511,18 @@ class Session:
                 continue  # context destroyed by a navigation: settle the new page
 
     async def observe(self, shot_name: str) -> Observation:
+        try:
+            return await asyncio.wait_for(self._observe(shot_name), OBSERVE_TIMEOUT_S)
+        except asyncio.TimeoutError as e:
+            raise PageUnresponsive(
+                "That page stopped responding (its scripts kept the browser busy), so the test couldn't continue."
+            ) from e
+        except PWError as e:
+            if "crash" in str(e).lower() or "closed" in str(e).lower():
+                raise PageUnresponsive("That page crashed the test browser, so the test couldn't continue.") from e
+            raise
+
+    async def _observe(self, shot_name: str) -> Observation:
         """Screenshot to {run_dir}/{persona}/{shot_name}.jpg and read the screen."""
         rel = f"{self.persona_id}/{shot_name}.jpg"
         out = self.run_dir / rel
@@ -535,6 +572,12 @@ class Session:
         return (self.run_dir / rel).read_bytes()
 
     async def act(self, action: Action) -> tuple[bool, str | None]:
+        try:
+            return await asyncio.wait_for(self._act(action), ACT_TIMEOUT_S)
+        except asyncio.TimeoutError:
+            return False, "The page stopped responding."
+
+    async def _act(self, action: Action) -> tuple[bool, str | None]:
         """Execute; returns (ok, error message a person would understand)."""
         page = self.page
         try:
@@ -630,9 +673,9 @@ class Session:
 
     async def close(self) -> None:
         try:
-            await self.ctx.close()
-        except PWError:
-            pass
+            await asyncio.wait_for(self.ctx.close(), CLOSE_TIMEOUT_S)
+        except (PWError, asyncio.TimeoutError):
+            log.warning("context close failed for %s", self.persona_id)
 
 
 def _short_pw(e: Exception) -> str:

@@ -41,6 +41,12 @@ from .walker import NemotronBrain, WalkResult, walk
 log = logging.getLogger("fiveusers.pipeline")
 
 GENERIC_FAILURE = "Something went wrong on our side while running the test. Please try again, or explore a sample report."
+OUT_OF_CREDITS = "The demo has used its model credits, so this test stopped. The sample reports still work."
+RUN_TIMEOUT_S = 15 * 60  # hard stop for a whole run; a stuck run would otherwise hold a concurrency slot forever
+
+
+class RunStopped(Exception):
+    """Stop the run with a message for the user."""
 
 
 async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None, mode: str) -> None:
@@ -51,6 +57,13 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
     stage = "preparing"
     browser = RunBrowser()
 
+    def credits_gone() -> str | None:
+        return OUT_OF_CREDITS if (not dry and guard.credits_exhausted) else None
+
+    def stopped() -> None:
+        if credits_gone():
+            raise RunStopped(OUT_OF_CREDITS)
+
     async def set_stage(s: str) -> None:
         nonlocal stage
         stage = s
@@ -58,93 +71,101 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
         await bus.emit("stage", stage=s, at=time.time(), cost_usd=round(store.run_cost(run_id), 4))
 
     try:
-        # 1. Preparing, can we load the site at all?
-        await set_stage("preparing")
-        await browser.start()
-        probe = await browser.session(persona_id="prep", viewport="desktop", start_url=url, run_dir=run_dir)
-        try:
-            await probe.open()
-            first = await probe.observe("home")
-        finally:
-            await probe.close()
-        brief = site_brief(url, first)
+        async with asyncio.timeout(RUN_TIMEOUT_S):
+            # 1. Preparing, can we load the site at all?
+            await set_stage("preparing")
+            await browser.start()
+            probe = await browser.session(persona_id="prep", viewport="desktop", start_url=url, run_dir=run_dir)
+            try:
+                await probe.open()
+                first = await probe.observe("home")
+                # Redirects (example.com -> www.example.com, apex -> app.) define the site under test.
+                start_url = probe.page.url if probe.page.url.startswith(("http://", "https://")) else url
+            finally:
+                await probe.close()
+            brief = site_brief(url, first)
 
-        # 2. Recruiting, research + personas
-        await set_stage("recruiting")
-        if dry:
-            brief.category = "website"
-            personas = default_personas(task, settings.max_personas, settings.max_steps)
-        else:
-            brief.category = await infer_category(llm, brief, task, run_id)
-            brief.research = await research(brief, task, audience, run_id)
-            personas, _ = await recruit(llm, brief, task=task, audience=audience, run_id=run_id)
-        store.write_json(run_id, "personas.json", [p.model_dump() for p in personas])
-        store.write_json(run_id, "brief.json", {"category": brief.category, "research": [r.model_dump() for r in brief.research]})
-        await bus.emit("personas", lanes=[Lane(persona=p).model_dump() for p in personas])
+            # 2. Recruiting, research + personas
+            await set_stage("recruiting")
+            if dry:
+                brief.category = "website"
+                personas = default_personas(task, settings.max_personas, settings.max_steps)
+            else:
+                brief.category = await infer_category(llm, brief, task, run_id)
+                brief.research = await research(brief, task, audience, run_id)
+                personas, _ = await recruit(llm, brief, task=task, audience=audience, run_id=run_id)
+            stopped()
+            store.write_json(run_id, "personas.json", [p.model_dump() for p in personas])
+            store.write_json(run_id, "brief.json", {"category": brief.category, "research": [r.model_dump() for r in brief.research]})
+            await bus.emit("personas", lanes=[Lane(persona=p).model_dump() for p in personas])
 
-        # 3. Testing, five walkers in parallel
-        await set_stage("testing")
-        brain = DryBrain() if dry else NemotronBrain(llm)
-        sem = asyncio.Semaphore(settings.walker_concurrency)
+            # 3. Testing, five walkers in parallel
+            await set_stage("testing")
+            brain = DryBrain() if dry else NemotronBrain(llm)
+            sem = asyncio.Semaphore(settings.walker_concurrency)
 
-        async def one(p: Persona) -> WalkResult:
-            async with sem:
-                t0 = time.time()
-                session = None
+            async def one(p: Persona) -> WalkResult:
+                async with sem:
+                    t0 = time.time()
+                    session = None
 
-                async def on_step(step, lane: LaneStep) -> None:
-                    store.append_jsonl(run_id, f"{p.id}/steps.jsonl", step.model_dump())
-                    await bus.emit("persona_step", persona_id=p.id, step=lane.model_dump(),
-                                   cost_usd=round(store.run_cost(run_id), 4))
+                    async def on_step(step, lane: LaneStep) -> None:
+                        store.append_jsonl(run_id, f"{p.id}/steps.jsonl", step.model_dump())
+                        await bus.emit("persona_step", persona_id=p.id, step=lane.model_dump(),
+                                       cost_usd=round(store.run_cost(run_id), 4))
 
-                try:
-                    session = await browser.session(persona_id=p.id, viewport=p.viewport, start_url=url, run_dir=run_dir)
-                    await session.open()
-                    wr = await walk(p, session, brain, task=task, run_id=run_id, run_dir=run_dir,
-                                    max_steps=settings.max_steps, on_step=on_step)
-                except Exception as e:  # noqa: BLE001, one persona failing must not sink the run
-                    log.exception("walker %s failed", p.id)
-                    reason = str(e) if isinstance(e, SiteUnreachable) else "This persona's browser session failed"
-                    wr = WalkResult(p, PersonaResult(persona_id=p.id, outcome="error", reason=reason, steps=0,
-                                                     seconds=round(time.time() - t0, 1)))
-                finally:
-                    if session is not None:
-                        await session.close()
-                await bus.emit("persona_done", persona_id=p.id, result=wr.result.model_dump())
-                return wr
+                    try:
+                        session = await browser.session(persona_id=p.id, viewport=p.viewport, start_url=start_url, run_dir=run_dir)
+                        await session.open()
+                        wr = await walk(p, session, brain, task=task, run_id=run_id, run_dir=run_dir,
+                                        max_steps=settings.max_steps, on_step=on_step, should_stop=credits_gone)
+                    except Exception as e:  # noqa: BLE001, one persona failing must not sink the run
+                        log.exception("walker %s failed", p.id)
+                        reason = str(e) if isinstance(e, SiteUnreachable) else "This persona's browser session failed"
+                        wr = WalkResult(p, PersonaResult(persona_id=p.id, outcome="error", reason=reason, steps=0,
+                                                         seconds=round(time.time() - t0, 1)))
+                    finally:
+                        if session is not None:
+                            await session.close()
+                    await bus.emit("persona_done", persona_id=p.id, result=wr.result.model_dump())
+                    return wr
 
-        walks = list(await asyncio.gather(*(one(p) for p in personas)))
-        if not any(w.steps for w in walks):
-            raise SiteUnreachable("None of the personas could use the site. Check the URL, or try a sample.")
+            walks = list(await asyncio.gather(*(one(p) for p in personas)))
+            stopped()
+            if not any(w.steps for w in walks):
+                raise SiteUnreachable("None of the personas could use the site. Check the URL, or try a sample.")
 
-        # 4. Reviewing, expert pass on every visited screen
-        await set_stage("reviewing")
-        screens, expert = await review(
-            model, {w.persona.id: w.observations for w in walks if w.observations}, task=task, run_dir=run_dir, run_id=run_id
-        )
+            # 4. Reviewing, expert pass on every visited screen
+            await set_stage("reviewing")
+            screens, expert = await review(
+                model, {w.persona.id: w.observations for w in walks if w.observations}, task=task, run_dir=run_dir, run_id=run_id
+            )
 
-        # 5. Writing, synthesis, references, annotated screenshots
-        await set_stage("writing")
-        syn = await synthesize(model, task=task, url=url, category=brief.category, walks=walks,
-                               screens=screens, expert=expert, run_id=run_id)
-        for w in walks:
-            if w.persona.id in syn.wrong_path:
-                w.result.outcome = "wrong_path"
-        refs_status = "skipped" if dry else await attach_references(syn.issues, category=brief.category, run_id=run_id)
+            # 5. Writing, synthesis, references, annotated screenshots
+            await set_stage("writing")
+            syn = await synthesize(model, task=task, url=url, category=brief.category, walks=walks,
+                                   screens=screens, expert=expert, run_id=run_id)
+            for w in walks:
+                if w.persona.id in syn.wrong_path:
+                    w.result.outcome = "wrong_path"
+            refs_status = "skipped" if dry else await attach_references(syn.issues, category=brief.category, run_id=run_id)
 
-        rep = assemble(
-            run_id, url=url, task=task, audience=audience, mode="dry_run" if dry else "live", category=brief.category,
-            walks=walks, screens=screens, expert=expert, issues=syn.issues, headline=syn.headline, subline=syn.subline,
-            degraded=syn.degraded, refs_status=refs_status, research=brief.research,
-        )
-        annotate(run_dir, rep.issues)
-        store.write_json(run_id, "report.json", rep.model_dump())
-        store.finish_run(run_id, status="done")
-        await bus.emit("stage", stage="done", at=time.time(), cost_usd=rep.usage.total_cost_usd)
-        await bus.emit("report_ready", report_id=run_id)
-        log.info("run %s done: %d issues, $%.4f", run_id, len(rep.issues), rep.usage.total_cost_usd)
-    except SiteUnreachable as e:
+            rep = assemble(
+                run_id, url=url, task=task, audience=audience, mode="dry_run" if dry else "live", category=brief.category,
+                walks=walks, screens=screens, expert=expert, issues=syn.issues, headline=syn.headline, subline=syn.subline,
+                degraded=syn.degraded, refs_status=refs_status, research=brief.research,
+            )
+            annotate(run_dir, rep.issues)
+            store.write_json(run_id, "report.json", rep.model_dump())
+            store.finish_run(run_id, status="done")
+            await bus.emit("stage", stage="done", at=time.time(), cost_usd=rep.usage.total_cost_usd)
+            await bus.emit("report_ready", report_id=run_id)
+            log.info("run %s done: %d issues, $%.4f", run_id, len(rep.issues), rep.usage.total_cost_usd)
+    except (SiteUnreachable, RunStopped) as e:
         await _fail(run_id, stage, str(e))
+    except TimeoutError:
+        log.warning("run %s hit the %ds limit in %s", run_id, RUN_TIMEOUT_S, stage)
+        await _fail(run_id, stage, "The test took longer than 15 minutes and was stopped. Try a shorter task, or explore a sample.")
     except Exception:  # noqa: BLE001
         log.exception("run %s failed in %s", run_id, stage)
         await _fail(run_id, stage, GENERIC_FAILURE)

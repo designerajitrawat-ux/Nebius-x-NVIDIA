@@ -116,6 +116,11 @@ class Store:
         stage = "done" if status == "done" else "failed"
         self._exec("UPDATE runs SET status = ?, stage = ?, error = ? WHERE id = ?", (status, stage, error, run_id))
 
+    def count_public_runs(self, since: float) -> int:
+        """Non-judge runs from anyone since `since` (server-wide rate backstop)."""
+        row = self._one("SELECT COUNT(*) AS n FROM runs WHERE judge = 0 AND created_at >= ?", (since,))
+        return int(row["n"]) if row else 0
+
     def run_starts(self, ip: str, since: float) -> list[float]:
         """Creation times of non-judge runs from this IP since `since` (for rate limiting)."""
         rows = self._all("SELECT created_at FROM runs WHERE ip = ? AND judge = 0 AND created_at >= ?", (ip, since))

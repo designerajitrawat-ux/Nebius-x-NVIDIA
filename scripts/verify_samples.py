@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import asyncio
 import functools
+import os
 import http.server
 import re
 import sys
@@ -25,6 +26,7 @@ from typing import Callable
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "api"))
+os.environ.setdefault("ALLOW_PRIVATE_URLS", "true")  # the sample sites are served from localhost
 
 from app.browser import RunBrowser, Session  # noqa: E402
 from app.models import Action, Element, FieldEntry, Observation  # noqa: E402

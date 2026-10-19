@@ -15,7 +15,7 @@ import logging
 import random
 import time
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Callable
 
 from openai import (
     APIConnectionError,
@@ -39,6 +39,21 @@ MAX_RETRY_WAIT_S = 20.0
 
 class LLMError(RuntimeError):
     pass
+
+
+class OutOfCredits(LLMError):
+    """Token Factory says the account balance is used up."""
+
+
+_CREDIT_PHRASES = (
+    "insufficient balance", "insufficient funds", "insufficient credit", "not enough credit", "out of credit",
+    "balance is too low", "top up your balance", "payment required", "exceeded your current quota",
+)
+
+
+def is_out_of_credits(status: int | None, text: str) -> bool:
+    low = text.lower()
+    return status == 402 or any(p in low for p in _CREDIT_PHRASES)
 
 
 @dataclass
@@ -74,15 +89,32 @@ def retry_wait(attempt: int, retry_after: str | None) -> float:
     return min(MAX_RETRY_WAIT_S, 1.5 * (2 ** (attempt - 1)) + random.uniform(0, 0.5))
 
 
+def estimate_prompt_tokens(messages: list[dict[str, Any]]) -> int:
+    """Rough input size when the API never told us: ~4 chars per token, ~1.5k tokens per screenshot."""
+    chars, images = 0, 0
+    for m in messages:
+        content = m.get("content")
+        if isinstance(content, str):
+            chars += len(content)
+        elif isinstance(content, list):
+            for part in content:
+                if part.get("type") == "image_url":
+                    images += 1
+                else:
+                    chars += len(str(part.get("text", "")))
+    return chars // 4 + images * 1500
+
+
 def image_part(jpeg: bytes) -> dict[str, Any]:
     b64 = base64.b64encode(jpeg).decode("ascii")
     return {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}}
 
 
 class LLM:
-    def __init__(self, cfg: Settings, ledger: Store) -> None:
+    def __init__(self, cfg: Settings, ledger: Store, on_out_of_credits: Callable[[], None] | None = None) -> None:
         self.cfg = cfg
         self.ledger = ledger
+        self.on_out_of_credits = on_out_of_credits
         self._client: AsyncOpenAI | None = None
         self._sem = asyncio.Semaphore(8)  # server-wide cap on in-flight model calls
         self._thinking_kwargs_ok = cfg.thinking_off
@@ -143,38 +175,56 @@ class LLM:
                 async with self._sem:
                     t0 = time.perf_counter()
                     resp = await self.client.chat.completions.create(**kwargs, timeout=TIMEOUT_S[tier])
-            except BadRequestError as e:
-                msg = str(e).lower()
-                if "extra_body" in kwargs and ("chat_template" in msg or "enable_thinking" in msg or "extra" in msg):
-                    log.warning("endpoint rejected chat_template_kwargs; disabling for this process")
-                    self._thinking_kwargs_ok = False
-                    kwargs.pop("extra_body")
-                    attempt -= 1
-                    continue
-                if "response_format" in kwargs and ("response_format" in msg or "schema" in msg or "json" in msg):
-                    log.warning("tier %s rejected response_format; using prompt-only JSON", tier)
-                    self._json_schema_ok[tier] = False
-                    kwargs.pop("response_format")
-                    attempt -= 1
-                    continue
-                raise LLMError(f"{tier}: bad request ({_safe(e)})") from e
-            except RateLimitError as e:
-                if attempt >= MAX_ATTEMPTS:
-                    raise LLMError(f"{tier}: rate limited") from e
-                wait = retry_wait(attempt, e.response.headers.get("retry-after") if e.response else None)
-                log.info("429 on %s, retrying in %.1fs", tier, wait)
-                await asyncio.sleep(wait)
-            except (APITimeoutError, APIConnectionError) as e:
-                if attempt >= MAX_ATTEMPTS:
-                    raise LLMError(f"{tier}: {type(e).__name__}") from e
-                await asyncio.sleep(retry_wait(attempt, None))
             except APIStatusError as e:
+                if is_out_of_credits(e.status_code, str(e)):
+                    log.error("Token Factory reports the balance is used up")
+                    if self.on_out_of_credits:
+                        self.on_out_of_credits()
+                    raise OutOfCredits(f"{tier}: out of model credits") from e
+                if isinstance(e, RateLimitError):
+                    if attempt >= MAX_ATTEMPTS:
+                        raise LLMError(f"{tier}: rate limited") from e
+                    wait = retry_wait(attempt, e.response.headers.get("retry-after") if e.response else None)
+                    log.info("429 on %s, retrying in %.1fs", tier, wait)
+                    await asyncio.sleep(wait)
+                    continue
+                if isinstance(e, BadRequestError):
+                    msg = str(e).lower()
+                    if "extra_body" in kwargs and ("chat_template" in msg or "enable_thinking" in msg or "extra" in msg):
+                        log.warning("endpoint rejected chat_template_kwargs; disabling for this process")
+                        self._thinking_kwargs_ok = False
+                        kwargs.pop("extra_body")
+                        attempt -= 1
+                        continue
+                    if "response_format" in kwargs and ("response_format" in msg or "schema" in msg or "json" in msg):
+                        log.warning("tier %s rejected response_format; using prompt-only JSON", tier)
+                        self._json_schema_ok[tier] = False
+                        kwargs.pop("response_format")
+                        attempt -= 1
+                        continue
+                    raise LLMError(f"{tier}: bad request ({_safe(e)})") from e
                 if e.status_code >= 500 and attempt < MAX_ATTEMPTS:
                     await asyncio.sleep(retry_wait(attempt, None))
                     continue
                 raise LLMError(f"{tier}: HTTP {e.status_code} ({_safe(e)})") from e
+            except (APITimeoutError, APIConnectionError) as e:
+                if isinstance(e, APITimeoutError):
+                    # The endpoint may still bill a call we gave up on; count a conservative estimate.
+                    self._record_estimate(tier, model, messages, max_tokens, run_id, step)
+                # A 550B call that timed out once will likely time out again: fall back instead of waiting.
+                if attempt >= MAX_ATTEMPTS or (tier == "reason" and isinstance(e, APITimeoutError)):
+                    raise LLMError(f"{tier}: {type(e).__name__}") from e
+                await asyncio.sleep(retry_wait(attempt, None))
 
         ms = int((time.perf_counter() - t0) * 1000)
+        pt = getattr(resp.usage, "prompt_tokens", 0) or 0
+        ct = getattr(resp.usage, "completion_tokens", 0) or 0
+        cost = compute_cost(pt, ct, self.cfg.prices[tier])
+        # Record before any validation: a refusal or an empty answer is still billed.
+        self.ledger.record_usage(
+            run_id=run_id, tier=tier, model=model, prompt_tokens=pt, completion_tokens=ct, cost_usd=cost, ms=ms, step=step
+        )
+        log.info("llm tier=%s model=%s in=%d out=%d ms=%d run=%s step=%s", tier, model, pt, ct, ms, run_id, step)
         if not resp.choices:
             raise LLMError(f"{tier}: empty response")
         choice = resp.choices[0]
@@ -190,14 +240,6 @@ class LLM:
         if tools and not calls:
             known = {t["function"]["name"] for t in tools}
             calls = parse_text_tool_calls(raw, known)
-
-        pt = getattr(resp.usage, "prompt_tokens", 0) or 0
-        ct = getattr(resp.usage, "completion_tokens", 0) or 0
-        cost = compute_cost(pt, ct, self.cfg.prices[tier])
-        self.ledger.record_usage(
-            run_id=run_id, tier=tier, model=model, prompt_tokens=pt, completion_tokens=ct, cost_usd=cost, ms=ms, step=step
-        )
-        log.info("llm tier=%s model=%s in=%d out=%d ms=%d run=%s step=%s", tier, model, pt, ct, ms, run_id, step)
         return LLMResult(
             text=strip_think(raw),
             tool_calls=calls,
@@ -209,6 +251,13 @@ class LLM:
             ms=ms,
             finish_reason=choice.finish_reason,
         )
+
+    def _record_estimate(self, tier: Tier, model: str, messages: list[dict[str, Any]], max_tokens: int,
+                         run_id: str | None, step: str | None) -> None:
+        pt = estimate_prompt_tokens(messages)
+        cost = compute_cost(pt, max_tokens, self.cfg.prices[tier])
+        self.ledger.record_usage(run_id=run_id, tier=tier, model=model, prompt_tokens=pt, completion_tokens=max_tokens,
+                                 cost_usd=cost, ms=0, step=f"{step}:timeout-estimate" if step else "timeout-estimate")
 
     async def chat_json(
         self,
@@ -233,8 +282,9 @@ class LLM:
             run_id=run_id,
             step=step,
         )
+        required = tuple(schema.get("required", ()))
         try:
-            return extract_json(res.text, want=want), res
+            return extract_json(res.text, want=want, required=required), res
         except ValueError:
             pass
         if not res.text:
@@ -274,4 +324,10 @@ def _safe(e: Exception) -> str:
     return text[:240].replace(settings.nebius_api_key or "\0", "***")
 
 
-llm = LLM(settings, store)
+def _mark_out_of_credits() -> None:
+    from .guard import guard  # late import: guard doesn't depend on llm
+
+    guard.mark_out_of_credits()
+
+
+llm = LLM(settings, store, on_out_of_credits=_mark_out_of_credits)

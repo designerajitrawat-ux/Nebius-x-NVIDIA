@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import hmac
+import ipaddress
 import time
 from dataclasses import dataclass
 from typing import Literal
 
 from .config import Settings, settings
 from .store import Store, store
+from .url_safety import is_public_ip
 
 HOUR = 3600.0
 DAY = 86400.0
@@ -50,7 +52,27 @@ def rate_decision(starts: list[float], now: float, per_hour: int, per_day: int) 
 
 
 def is_judge(header_value: str | None, token: str | None) -> bool:
-    return bool(token and header_value and hmac.compare_digest(header_value.strip(), token))
+    if not (token and header_value):
+        return False
+    # Compare bytes: compare_digest raises on non-ASCII str, which would turn a bad header into a 500.
+    return hmac.compare_digest(header_value.strip().encode("utf-8"), token.encode("utf-8"))
+
+
+def client_ip(forwarded_for: str | None, peer: str | None) -> str:
+    """Who to rate-limit: the right-most public address in X-Forwarded-For.
+
+    Proxies append the address they saw; a client can only add entries on the left, so the left-most
+    entry is forgeable. IPv6 clients are bucketed by /64 (one household or VPS usually owns a whole /64).
+    """
+    hops = [h.strip() for h in (forwarded_for or "").split(",") if h.strip()]
+    chosen = next((h for h in reversed(hops) if is_public_ip(h)), None) or (peer or "unknown")
+    try:
+        addr = ipaddress.ip_address(chosen)
+    except ValueError:
+        return chosen
+    if isinstance(addr, ipaddress.IPv6Address) and not addr.ipv4_mapped:
+        return str(ipaddress.ip_network(f"{addr}/64", strict=False))
+    return str(addr.ipv4_mapped or addr) if isinstance(addr, ipaddress.IPv6Address) else str(addr)
 
 
 def _human_wait(seconds: int) -> str:
@@ -66,9 +88,16 @@ class Guard:
         self.cfg = cfg
         self.db = db
         self.active = 0
+        self.credits_exhausted = False  # set when Token Factory says the balance is used up
 
     def budget(self) -> BudgetState:
-        return budget_state(self.db.spent_usd(), self.cfg.budget_soft_usd, self.cfg.budget_hard_usd)
+        b = budget_state(self.db.spent_usd() + self.cfg.spent_offset_usd, self.cfg.budget_soft_usd, self.cfg.budget_hard_usd)
+        if self.credits_exhausted:
+            b.state, b.remaining_usd = "hard", 0.0
+        return b
+
+    def mark_out_of_credits(self) -> None:
+        self.credits_exhausted = True
 
     def admit(self, ip: str, judge: bool) -> None:
         """Raise GuardError if this run can't start now. Call release() when the run ends."""
@@ -88,6 +117,14 @@ class Guard:
                     f"Try again in about {_human_wait(wait)}, or explore the sample reports.",
                     retry_after=wait,
                 )
+        if not judge and self.db.count_public_runs(time.time() - HOUR) >= self.cfg.rate_global_per_hour:
+            raise GuardError(
+                429,
+                "busy",
+                "The demo is very popular right now, so new tests are paused for a little while. "
+                "The sample reports show what a full run looks like.",
+                retry_after=600,
+            )
         if self.active >= self.cfg.max_concurrent_runs:
             raise GuardError(
                 503,

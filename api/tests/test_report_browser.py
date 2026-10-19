@@ -90,3 +90,19 @@ def test_pick_option_matches_like_a_person():
         pick_option(opts, "morning")  # ambiguous partial match
     el = Element(id=9, tag="select", role="combobox", name="State", options=["Select", "AL", "CA"], bbox=(0, 0, 10, 10))
     assert describe_element(el).endswith("options: Select | AL | CA")
+
+
+def test_public_ip_and_site_rules():
+    from app.url_safety import site_key
+
+    assert not is_public_ip("100.64.0.1")  # CGNAT
+    assert not is_public_ip("::ffff:127.0.0.1")  # IPv4-mapped loopback
+    assert not is_public_ip("fe80::1%eth0")
+    assert not is_public_ip("not-an-ip")
+    assert is_public_ip("2606:4700:4700::1111")
+    assert site_key("app.example.com") == "example.com"
+    assert site_key("shop.example.co.uk") == "example.co.uk"
+    assert site_key("fiveusers.vercel.app") == "fiveusers.vercel.app"
+    assert same_site("https://example.com/", "https://app.example.com/signup")
+    assert not same_site("https://a.vercel.app/", "https://b.vercel.app/")
+    assert not same_site("https://example.com/", "https://example.org/")

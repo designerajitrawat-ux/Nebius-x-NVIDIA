@@ -22,10 +22,14 @@ def strip_think(text: str | None) -> str:
     if not text:
         return ""
     out = _THINK_RE.sub("", text)
-    # An unterminated <think> means the answer never started; keep whatever follows </think> if present.
-    if "<think>" in out.lower():
-        idx = out.lower().rfind("</think>")
+    low = out.lower()
+    if "<think>" in low:
+        # Unterminated <think>: the answer never started, unless a </think> follows.
+        idx = low.rfind("</think>")
         out = out[idx + len("</think>") :] if idx >= 0 else ""
+    elif "</think>" in low:
+        # The chat template opened <think> in the prompt, so only the closing tag is in the reply.
+        out = out[low.rfind("</think>") + len("</think>") :]
     return out.strip()
 
 
@@ -69,10 +73,11 @@ def _loads_lenient(raw: str) -> Any:
     return json.loads(fixed)
 
 
-def extract_json(text: str | None, want: type | None = None) -> Any:
+def extract_json(text: str | None, want: type | None = None, required: tuple[str, ...] = ()) -> Any:
     """Best-effort: the first JSON object/array in `text` (handles fences, <think>, chatter).
 
-    `want` = dict or list narrows which kind is accepted. Raises ValueError if nothing parses.
+    `want` = dict or list narrows which kind is accepted; `required` prefers an object that has those
+    keys (so a draft dict quoted in reasoning loses to the real answer). Raises ValueError if nothing parses.
     """
     body = strip_think(text)
     if not body:
@@ -83,13 +88,21 @@ def extract_json(text: str | None, want: type | None = None) -> Any:
         candidates += _balanced_blocks(body, "{", "}")
     if want in (None, list):
         candidates += _balanced_blocks(body, "[", "]")
+    fallback: Any = None
+    found = False
     for raw in candidates:
         try:
             val = _loads_lenient(raw)
         except (json.JSONDecodeError, ValueError):
             continue
-        if want is None or isinstance(val, want):
+        if want is not None and not isinstance(val, want):
+            continue
+        if not required or (isinstance(val, dict) and all(k in val for k in required)):
             return val
+        if not found:
+            fallback, found = val, True
+    if found:
+        return fallback
     raise ValueError("no JSON found in model output")
 
 
@@ -123,7 +136,7 @@ def _scalar(v: str) -> Any:
 _XML_FN_RE = re.compile(r"<function=([\w.-]+)>(.*?)</function>", re.DOTALL)
 _XML_PARAM_RE = re.compile(r"<parameter=([\w.-]+)>(.*?)</parameter>", re.DOTALL)
 _TAGGED_RE = re.compile(r"<tool_call>(.*?)(?:</tool_call>|$)", re.DOTALL)
-_PY_CALL_RE = re.compile(r"\b([a-z_]+)\s*\(([^()]*)\)")
+_PY_CALL_RE = re.compile(r"\s*([a-z_]+)\s*\(([^()]*)\)\s*\.?\s*")
 
 
 def parse_text_tool_calls(text: str | None, known: set[str]) -> list[ToolCall]:
@@ -167,7 +180,9 @@ def parse_text_tool_calls(text: str | None, known: set[str]) -> list[ToolCall]:
     if calls:
         return calls
 
-    for name, argstr in _PY_CALL_RE.findall(body):
+    # Only a reply that is *entirely* a call like click(element_id=3), never prose ("I'm done (finally).").
+    whole = _PY_CALL_RE.fullmatch(body)
+    for name, argstr in [whole.groups()] if whole else []:
         if name not in known:
             continue
         args: dict[str, Any] = {}
