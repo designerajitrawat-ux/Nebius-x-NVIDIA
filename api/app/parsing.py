@@ -182,6 +182,17 @@ def parse_text_tool_calls(text: str | None, known: set[str]) -> list[ToolCall]:
     return calls
 
 
+_WRAPPING_QUOTES = {('"', '"'), ("“", "”"), ("'", "'"), ("‘", "’")}
+
+
+def unquote(text: str) -> str:
+    """Drop quotes wrapped around a whole line ('"Hi there."' -> 'Hi there.'); keep inner quotes."""
+    s = text.strip()
+    while len(s) >= 2 and (s[0], s[-1]) in _WRAPPING_QUOTES and s[0] not in s[1:-1] and s[-1] not in s[1:-1]:
+        s = s[1:-1].strip()
+    return s
+
+
 def clamp_int(v: Any, lo: int, hi: int, default: int) -> int:
     try:
         n = int(float(v))

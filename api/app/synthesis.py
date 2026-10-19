@@ -368,7 +368,8 @@ def deterministic(
         headline = f"All {n} users finished the task."
     else:
         headline = f"{n - completed} of {n} users could not {task_phrase(task)}."
-    subline = f"The biggest problem: {final[0].title[:1].lower() + final[0].title[1:]}." if final else "No major problems were found."
+    top = final[0].title.rstrip(".") if final else ""
+    subline = f"The biggest problem: {top[:1].lower() + top[1:]}." if final else "No major problems were found."
     return headline, subline, final
 
 

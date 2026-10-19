@@ -94,7 +94,8 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
 
                 async def on_step(step, lane: LaneStep) -> None:
                     store.append_jsonl(run_id, f"{p.id}/steps.jsonl", step.model_dump())
-                    await bus.emit("persona_step", persona_id=p.id, step=lane.model_dump())
+                    await bus.emit("persona_step", persona_id=p.id, step=lane.model_dump(),
+                                   cost_usd=round(store.run_cost(run_id), 4))
 
                 try:
                     session = await browser.session(persona_id=p.id, viewport=p.viewport, start_url=url, run_dir=run_dir)

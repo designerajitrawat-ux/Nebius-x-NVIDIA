@@ -60,7 +60,7 @@ def referenced_files(report: dict) -> set[str]:
     return files
 
 
-def seed(api: str, web: str, key: str | None, only: list[str], timeout_s: int) -> int:
+def seed(api: str, web: str, key: str | None, only: list[str], timeout_s: int, samples_dir: Path) -> int:
     headers = {"X-FiveUsers-Key": key} if key else {}
     with httpx.Client(timeout=30, headers=headers) as client:
         health = client.get(f"{api}/health").json()
@@ -78,7 +78,7 @@ def seed(api: str, web: str, key: str | None, only: list[str], timeout_s: int) -
             report = wait_for_report(client, api, run_id, timeout_s)
 
             sample_id = f"sample-{flow}"
-            out = SAMPLES_DIR / sample_id
+            out = samples_dir / sample_id
             if out.exists():
                 shutil.rmtree(out)
             out.mkdir(parents=True)
@@ -96,7 +96,7 @@ def seed(api: str, web: str, key: str | None, only: list[str], timeout_s: int) -
                 "completed": report["completed"], "total": report["total"], "order": order,
             }
             (out / "sample.json").write_text(json.dumps(info, ensure_ascii=False, indent=1), encoding="utf-8")
-            print(f"  saved {out.relative_to(ROOT)} , {report['headline']}  (${report['usage']['total_cost_usd']:.4f}, mode {report['mode']})")
+            print(f"  saved {out} , {report['headline']}  (${report['usage']['total_cost_usd']:.4f}, mode {report['mode']})")
     return 0
 
 
@@ -107,5 +107,6 @@ if __name__ == "__main__":
     ap.add_argument("--key", help="Judge token (X-FiveUsers-Key) to skip the rate limit")
     ap.add_argument("--only", nargs="*", default=[], help="signup checkout booking")
     ap.add_argument("--timeout", type=int, default=900)
+    ap.add_argument("--out", type=Path, default=SAMPLES_DIR, help="Samples folder (default api/samples)")
     a = ap.parse_args()
-    sys.exit(seed(a.api.rstrip("/"), a.web, a.key, a.only, a.timeout))
+    sys.exit(seed(a.api.rstrip("/"), a.web, a.key, a.only, a.timeout, a.out))

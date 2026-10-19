@@ -76,3 +76,13 @@ def test_clamp_and_short():
     assert clamp_int("x", 0, 3, 1) == 1
     assert short("one two three four", 9) == "one two…"
     assert short("  a   b ", 10) == "a b"
+
+
+def test_unquote_only_strips_whole_line_quotes():
+    from app.parsing import unquote
+
+    assert unquote('"Where do I start?"') == "Where do I start?"
+    assert unquote("“Pricing first.”") == "Pricing first."
+    assert unquote('"Get started" should be it.') == '"Get started" should be it.'
+    assert unquote('"Get started" or "Log in"?') == '"Get started" or "Log in"?'
+    assert unquote("plain") == "plain"

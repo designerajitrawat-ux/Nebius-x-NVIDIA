@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Literal
@@ -114,6 +115,7 @@ class Settings:
     allowed_origins: list[str]
     allow_private_urls: bool
     chromium_args: list[str] = field(default_factory=list)
+    browser_channel: str | None = None
 
     @property
     def models_configured(self) -> bool:
@@ -152,6 +154,9 @@ def load_settings() -> Settings:
         allowed_origins=[o.strip() for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",") if o.strip()],
         allow_private_urls=_bool("ALLOW_PRIVATE_URLS"),
         chromium_args=[a for a in os.getenv("CHROMIUM_ARGS", "").split() if a],
+        # On Windows the headless-shell build can take ~6 s per new page (measured); full Chromium
+        # in new-headless mode takes ~1 s. Linux/Docker keeps the lighter headless shell.
+        browser_channel=os.getenv("BROWSER_CHANNEL") or ("chromium" if sys.platform == "win32" else None),
     )
 
 

@@ -103,7 +103,8 @@ class ScreenInfo:
 
 def screen_label(obs: Observation) -> str:
     """Human name of a screen: its heading, else the page title, else the path."""
-    return short(obs.heading or obs.title or obs.path.split("?")[0] or "Home", 60)
+    name = (obs.heading or obs.title or obs.path.split("?")[0] or "Home").strip().rstrip(".:;!")
+    return short(name, 60)
 
 
 def group_screens(observations: dict[str, list[Observation]]) -> list[ScreenInfo]:

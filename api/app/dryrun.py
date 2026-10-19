@@ -113,7 +113,7 @@ class DryBrain:
             pick = max(radios, key=lambda e: _overlap(e.name, words) + rng.random() * 0.1)
             if f"{obs.screen}:{pick.id}" not in clicked:
                 clicked.add(f"{obs.screen}:{pick.id}")
-                voice = f"I'll choose “{pick.name}”." if pick.name else "These options have no names. I'll guess."
+                voice = f"I'll go with {pick.name}." if pick.name else "These options have no names. I'll guess."
                 return Decision(Action(kind="click", element_id=pick.id), voice, 0 if pick.name else 2, LABEL)
         for el in view:
             if el.role == "checkbox" and el.checked is False and re.search(r"agree|terms|accept", el.name, re.I):
@@ -139,7 +139,7 @@ class DryBrain:
             el = scored[0][1]
             clicked.add(f"{obs.screen}:{el.id}")
             confusion = 0 if scored[0][0] > 3 else 1
-            voice = f"“{el.name}”, that should be it." if confusion == 0 else f"Maybe “{el.name}”? Not sure."
+            voice = f"That {el.name} button should be it." if confusion == 0 else f"Maybe {el.name}? Not sure."
             return Decision(Action(kind="click", element_id=el.id), voice, confusion, LABEL)
 
         # 4) nothing obvious: scroll if there's more page, else go back / give up

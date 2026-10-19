@@ -17,7 +17,7 @@ from .browser import Session, describe_element
 from .config import model_label
 from .llm import LLM, LLMError, image_part
 from .models import Action, FieldEntry, LaneStep, Observation, Persona, PersonaResult, Step
-from .parsing import ToolCall, clamp_int, extract_json, short
+from .parsing import ToolCall, clamp_int, extract_json, short, unquote
 
 log = logging.getLogger("fiveusers.walker")
 
@@ -230,7 +230,7 @@ def action_from_call(call: ToolCall) -> tuple[Action, str, int]:
         direction="up" if a.get("direction") == "up" else ("down" if kind == "scroll" else None),
         reason=short(str(a.get("reason") or ""), 200) or None,
     )
-    return action, short(str(a.get("inner_voice") or ""), 160), clamp_int(a.get("confusion"), 0, 3, 1)
+    return action, unquote(short(str(a.get("inner_voice") or ""), 160)), clamp_int(a.get("confusion"), 0, 3, 1)
 
 
 def invalid_reason(action: Action, obs: Observation) -> str | None:

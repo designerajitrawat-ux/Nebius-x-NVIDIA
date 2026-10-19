@@ -218,7 +218,9 @@ OBSERVE_JS = r"""
   }
 
   const h1 = document.querySelector('h1');
-  const heading = clean(h1 ? h1.innerText : (document.querySelector('h2') || {}).innerText || '');
+  // textContent keeps the authored case (innerText applies CSS text-transform: uppercase).
+  const h = h1 || document.querySelector('h2');
+  const heading = clean(h ? h.textContent : '');
   return {
     url: location.href, path: location.pathname + location.search, title: clean(document.title),
     heading: cut(heading, 120), scroll_y: Math.round(window.scrollY),
@@ -320,7 +322,9 @@ class RunBrowser:
 
     async def start(self) -> None:
         self._pw = await async_playwright().start()
-        self._browser = await self._pw.chromium.launch(headless=True, args=settings.chromium_args)
+        self._browser = await self._pw.chromium.launch(
+            headless=True, args=settings.chromium_args, channel=settings.browser_channel
+        )
 
     async def close(self) -> None:
         try:
