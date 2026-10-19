@@ -73,3 +73,20 @@ def test_url_rules():
     assert not is_public_ip("::1")
     assert same_site("https://www.a.com/x", "http://a.com/y")
     assert not same_site("https://a.com", "https://evil.com")
+
+
+def test_pick_option_matches_like_a_person():
+    from playwright.async_api import Error as PWError
+
+    from app.browser import describe_element, pick_option
+    from app.models import Element
+
+    opts = [["", "Select"], ["AL", "AL"], ["CA", "CA"], ["mon", "Monday morning"], ["tue", "Tuesday morning"]]
+    assert pick_option(opts, "ca") == "CA"
+    assert pick_option(opts, "Monday") == "mon"
+    with pytest.raises(PWError):
+        pick_option(opts, "California")  # not in the list: the persona is told so
+    with pytest.raises(PWError):
+        pick_option(opts, "morning")  # ambiguous partial match
+    el = Element(id=9, tag="select", role="combobox", name="State", options=["Select", "AL", "CA"], bbox=(0, 0, 10, 10))
+    assert describe_element(el).endswith("options: Select | AL | CA")

@@ -141,3 +141,15 @@ def test_ground_issue_tolerates_bad_step_value():
     raw = {"severity": "minor", "title": "t", "screen": "S1", "evidence": {"persona_id": "priya", "step": "#1"},
            "personas_hit": [], "quote": None, "why": "", "fix": {}}
     assert ground_issue(raw, walks=walks, screen_ids={"S1": "s1"}, labels={}) is not None
+
+
+def test_json_mode_decision_supports_fill_and_wait():
+    from app.walker import DECISION_SCHEMA, TOOL_NAMES
+
+    assert {"fill", "wait"} <= TOOL_NAMES
+    assert {"fill", "wait"} <= set(DECISION_SCHEMA["properties"]["action"]["enum"])
+    assert "fields" in DECISION_SCHEMA["properties"]
+    action, _, _ = action_from_call(ToolCall("fill", {"action": "fill", "fields": [{"element_id": 1, "text": "x"}]}))
+    assert action.kind == "fill" and action.fields[0].element_id == 1
+    wait, _, _ = action_from_call(ToolCall("wait", {}))
+    assert wait.kind == "wait" and label_action(wait, obs()) == "Waited a moment"

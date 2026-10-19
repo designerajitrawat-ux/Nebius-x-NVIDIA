@@ -10,7 +10,7 @@ Viewport = Literal["desktop", "mobile"]
 Stage = Literal["queued", "preparing", "recruiting", "testing", "reviewing", "writing", "done", "failed"]
 Outcome = Literal["completed", "gave_up", "stuck", "out_of_steps", "wrong_path", "error"]
 Severity = Literal["critical", "major", "minor"]
-ActionKind = Literal["click", "type", "fill", "scroll", "back", "give_up", "done"]
+ActionKind = Literal["click", "type", "fill", "scroll", "wait", "back", "give_up", "done"]
 FixType = Literal["copy", "css", "flow"]
 RunMode = Literal["live", "dry_run"]
 
@@ -49,6 +49,7 @@ class Element(BaseModel):
     value: str | None = None
     href: str | None = None
     checked: bool | None = None
+    options: list[str] | None = None  # <select> option texts (first 15, "…" if more)
     disabled: bool = False
     in_view: bool = True
     covered: bool = False  # another element sits on top of its center (e.g. a sticky banner)

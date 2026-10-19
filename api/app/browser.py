@@ -37,6 +37,31 @@ UA_MOBILE = (
 )
 
 
+QUIET_MS = 700  # no DOM changes for this long = settled
+QUIET_MAX_MS = 5_000  # upper bound, even if the page keeps animating or says "Processing…"
+# Resolves once the DOM has been still for `quiet` ms and nothing on screen says it's busy
+# ("Processing…", "Submitting...", aria-busy), or after `max` ms.
+QUIET_JS = r"""
+({ quiet, max }) => new Promise(resolve => {
+  const BUSY = /(processing|submitting|loading|confirming|saving|sending|please wait)|(…|\.\.\.)\s*$/i;
+  const busy = () => {
+    if (document.querySelector('[aria-busy="true"]')) return true;
+    for (const el of document.querySelectorAll('button, [role=button], [role=status], input[type=submit]')) {
+      const r = el.getBoundingClientRect();
+      if (r.width && r.height && BUSY.test((el.innerText || el.value || '').trim())) return true;
+    }
+    return false;
+  };
+  const tick = () => { clearTimeout(timer); timer = setTimeout(check, quiet); };
+  const check = () => (busy() ? tick() : done());
+  let timer = setTimeout(check, quiet);
+  const hard = setTimeout(done, max);
+  const mo = new MutationObserver(tick);
+  mo.observe(document, { subtree: true, childList: true, attributes: true, characterData: true });
+  function done() { mo.disconnect(); clearTimeout(timer); clearTimeout(hard); resolve(true); }
+})
+"""
+
 OFFSITE_HTML = "<!doctype html><title>Outside the test</title><h1>This page is outside the site being tested.</h1>"
 
 
@@ -54,7 +79,17 @@ OBSERVE_JS = r"""
     '[tabindex]:not([tabindex="-1"]),[contenteditable=""],[contenteditable=true]';
   const clean = s => (s || '').replace(/\s+/g, ' ').trim();
   const cut = (s, n) => { s = clean(s); return s.length > n ? s.slice(0, n - 1) + '…' : s; };
-  const byId = id => { const el = document.getElementById(id); return el ? clean(el.innerText || el.textContent) : ''; };
+  // Visible text of an element with a space between text nodes ("The Everyday Tee NEW COLORS", not "TeeNEW").
+  const textOf = el => {
+    const parts = [];
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    while (w.nextNode()) {
+      const p = w.currentNode.parentElement, t = clean(w.currentNode.textContent);
+      if (t && p && (!p.checkVisibility || p.checkVisibility({ visibilityProperty: true }))) parts.push(t);
+    }
+    return clean(parts.join(' '));
+  };
+  const byId = id => { const el = document.getElementById(id); return el ? textOf(el) : ''; };
   const labelText = el => el.labels ? Array.from(el.labels).map(l => clean(l.innerText || l.textContent)).join(' ') : '';
   const isField = el => ['INPUT', 'SELECT', 'TEXTAREA'].includes(el.tagName);
   const nameOf = el => {
@@ -68,7 +103,7 @@ OBSERVE_JS = r"""
       return labelText(el);
     }
     if (el.tagName === 'IMG') return clean(el.alt);
-    const txt = clean(el.innerText || el.textContent);
+    const txt = textOf(el);
     if (txt) return txt;
     const img = el.querySelector('img[alt]');
     if (img && clean(img.alt)) return clean(img.alt);
@@ -145,6 +180,9 @@ OBSERVE_JS = r"""
           ? (input.type === 'password' ? (input.value ? '••••' : '') : cut(input.value, 60)) || null : null,
         href: el.tagName === 'A' ? cut(el.getAttribute('href'), 80) : null,
         checked: ['checkbox', 'radio'].includes(input.type) ? !!input.checked : null,
+        options: input.tagName === 'SELECT'
+          ? Array.from(input.options).slice(0, 15).map(o => cut(o.text, 30)).concat(input.options.length > 15 ? ['…'] : [])
+          : null,
         disabled: !!(input.disabled || el.getAttribute('aria-disabled') === 'true'),
         in_view: inView(r),
         covered: inView(r) ? coveredAt(el, r) : false,
@@ -292,6 +330,20 @@ def fingerprint(path: str, heading: str, field_names: list[str]) -> str:
     return hashlib.sha1(key.encode("utf-8")).hexdigest()[:10]
 
 
+def pick_option(options: list[list[str]], text: str) -> str:
+    """Value of the <select> option a person meant: exact text/value first, then a unique partial match."""
+    want = " ".join(text.split()).lower()
+    if not want:
+        raise PWError("option not found")
+    for value, label in options:
+        if want in {label.lower(), value.lower()}:
+            return value
+    partial = [value for value, label in options if want in label.lower()]
+    if len(partial) == 1:
+        return partial[0]
+    raise PWError("option not found")
+
+
 def describe_element(e: Element) -> str:
     """One line per element for the decide prompt: [12] button "Get started" (covered)."""
     bits = [f"[{e.id}] {e.role}", f'"{e.name}"' if e.name else '""']
@@ -301,6 +353,8 @@ def describe_element(e: Element) -> str:
         bits.append(f'value "{e.value}"')
     if e.checked is not None:
         bits.append("checked" if e.checked else "unchecked")
+    if e.options:
+        bits.append("options: " + " | ".join(e.options))
     if e.href and e.role == "link":
         bits.append(f"→ {e.href}")
     if e.disabled:
@@ -413,12 +467,23 @@ class Session:
         self._last_url = self.page.url
 
     async def _settle(self) -> None:
-        try:
-            await self.page.wait_for_load_state("domcontentloaded", timeout=5_000)
-            await self.page.wait_for_load_state("networkidle", timeout=3_000)
-        except PWError:
-            pass
-        await asyncio.sleep(0.25)
+        """Wait like a person would: until the page has loaded and stopped changing for a moment.
+
+        Many forms show "Submitting…" and navigate a beat later; observing too early would show the
+        persona a page that's about to disappear. A navigation that starts mid-wait destroys the
+        evaluate context, so we loop and wait for the new page.
+        """
+        for _ in range(3):
+            try:
+                await self.page.wait_for_load_state("domcontentloaded", timeout=5_000)
+                await self.page.wait_for_load_state("networkidle", timeout=3_000)
+            except PWError:
+                pass
+            try:
+                await self.page.evaluate(QUIET_JS, {"quiet": QUIET_MS, "max": QUIET_MAX_MS})
+                return
+            except PWError:
+                continue  # context destroyed by a navigation: settle the new page
 
     async def observe(self, shot_name: str) -> Observation:
         """Screenshot to {run_dir}/{persona}/{shot_name}.jpg and read the screen."""
@@ -477,6 +542,10 @@ class Session:
                 dy = (-1 if action.direction == "up" else 1) * int((page.viewport_size or {"height": 800})["height"] * 0.8)
                 await page.evaluate("dy => window.scrollBy({top: dy, behavior: 'instant'})", dy)
                 await asyncio.sleep(0.3)
+                return True, None
+            if action.kind == "wait":
+                await asyncio.sleep(2.0)
+                await self._settle()
                 return True, None
             if action.kind == "back":
                 resp = await page.go_back(wait_until="domcontentloaded", timeout=8_000)
@@ -548,15 +617,8 @@ class Session:
     async def _type(self, loc: Any, text: str, submit: bool) -> None:
         tag = await loc.evaluate("e => e.tagName.toLowerCase() + ':' + (e.type || '')")
         if tag.startswith("select"):
-            try:
-                await loc.select_option(label=text, timeout=ACTION_TIMEOUT_MS)
-            except PWError:
-                options = await loc.evaluate("e => Array.from(e.options).map(o => [o.value, o.text])")
-                want = text.strip().lower()
-                match = next((v for v, t in options if want and (want in t.lower() or want == v.lower())), None)
-                if match is None:
-                    raise
-                await loc.select_option(value=match, timeout=ACTION_TIMEOUT_MS)
+            options = await loc.evaluate("e => Array.from(e.options).map(o => [o.value, o.text.trim()])")
+            await loc.select_option(value=pick_option(options, text), timeout=ACTION_TIMEOUT_MS)
             return
         if tag.endswith(":checkbox") or tag.endswith(":radio") or tag.startswith("label"):
             await loc.click(timeout=ACTION_TIMEOUT_MS)
@@ -587,6 +649,8 @@ def _friendly_action_error(msg: str) -> str:
         return "It isn't visible on screen."
     if "not editable" in low or "not an <input>" in low:
         return "That isn't something you can type into."
+    if "option not found" in low:
+        return "That option isn't in the list."
     if "disabled" in low:
         return "It's disabled."
     if "timeout" in low:

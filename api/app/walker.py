@@ -107,6 +107,7 @@ TOOLS = [
         ["fields"],
     ),
     _tool("scroll", "Scroll the page.", {"direction": {"type": "string", "enum": ["up", "down"]}}, ["direction"]),
+    _tool("wait", "Wait a couple of seconds for the page to respond (e.g. it says loading or submitting).", {}, []),
     _tool("back", "Go back to the previous page.", {}, []),
     _tool("give_up", "Stop: you would realistically quit here.", {"reason": {"type": "string"}}, ["reason"]),
     _tool("done", "Stop: the task is clearly finished on screen.", {"reason": {"type": "string"}}, ["reason"]),
@@ -205,6 +206,8 @@ def label_action(a: Action, obs: Observation) -> str:
         return f"Filled in {listed}" if names else "Filled in the form"
     if a.kind == "scroll":
         return f"Scrolled {a.direction or 'down'}"
+    if a.kind == "wait":
+        return "Waited a moment"
     if a.kind == "back":
         return "Went back"
     if a.kind == "done":
@@ -340,9 +343,10 @@ class NemotronBrain:
         json_messages = messages + [
             {
                 "role": "user",
-                "content": 'Answer as JSON only: {"action": "click|type|scroll|back|give_up|done", "element_id": int|null, '
-                '"text": str|null, "submit": bool, "direction": "up"|"down"|null, "reason": str|null, '
-                '"inner_voice": str, "confusion": 0-3}',
+                "content": 'Answer as JSON only: {"action": "click|type|fill|scroll|wait|back|give_up|done", '
+                '"element_id": int|null, "text": str|null, "submit": bool, '
+                '"fields": [{"element_id": int, "text": str}] (for fill), "direction": "up"|"down"|null, '
+                '"reason": str|null, "inner_voice": str, "confusion": 0-3}',
             }
         ]
         data, _ = await self.llm.chat_json(
