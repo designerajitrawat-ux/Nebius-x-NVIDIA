@@ -93,7 +93,28 @@ scripted policy instead of calling models, so the whole product (live lanes, rep
 the built-in sample sites at `http://localhost:3000/samples/signup/index.html` (also `checkout`, `booking`).
 Dry-run reports are labelled as such.
 
-Tests: `cd api && .venv/Scripts/python -m pytest`.
+On Windows, `.\scripts\dev.ps1 -DryRun` starts both servers in their own windows.
+
+Checks:
+
+- `cd api && .venv/Scripts/python -m pytest`, unit tests
+- `api/.venv/Scripts/python scripts/verify_samples.py`, drives all three sample flows at desktop and phone size
+  through the personas' own observe/act layer (choosing elements only from what the model sees) and proves each one
+  can be completed
+
+Deploying: see [`docs/deploy.md`](docs/deploy.md).
+
+## Safe to point at the internet
+
+The test browser opens URLs that strangers type in, so it's fenced in:
+
+- **Egress filter**: every request from the browser (pages, redirects, iframes, images, websockets) goes through a
+  local proxy that resolves the host itself and refuses private and internal addresses, so a page can't make the
+  server read its own network.
+- **Stays on your site**: links and scripts that leave the site under test are blocked; popups fold back into the tab.
+- **Limits**: per-visitor and server-wide rate limits, two runs at a time, a 15-minute cap per run, hard timeouts on
+  every browser step, and a credit budget that switches the demo to sample reports when it's used up.
+- **Prompt hygiene**: page text reaches the model marked as untrusted content, never as instructions.
 
 ## For judges
 

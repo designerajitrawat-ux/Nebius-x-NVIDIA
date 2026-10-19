@@ -1,5 +1,16 @@
 # 05, Build plan (7 days + buffer)
 
+## Status, 20 Oct (built ahead of plan without keys; see docs/log.md)
+
+| Day | State |
+|---|---|
+| 0 | Code side done. **Waiting on keys** → run `scripts/day0_test.py`, paste model IDs into `.env` |
+| 1–3 | Built and tested in dry run + against a mock Token Factory. **Acceptance needs one live run** (≥ 3 issues, cost ≤ $0.30) |
+| 4 | UI built from the brief. **Needs Ajit's design sign-off** |
+| 5 | Dockerfile, CI, auto-deploy workflow, `docs/deploy.md`, samples #2 #3 done. **Deploy clicks + live seeding left** |
+| 6 | README, Devpost draft, video script drafted. **`docs/feedback.md` needs real Token Factory experience; video is Ajit's** |
+| 7 | Not started (polish after live runs) |
+
 Deadline 30 Oct 10:30 PM IST. We submit **29 Oct**. Each day has acceptance criteria, if a day's criteria
 aren't met by its end, **cut scope the next morning**, don't extend.
 
