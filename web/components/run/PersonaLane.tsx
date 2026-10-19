@@ -69,7 +69,7 @@ export function PersonaLane({
             src={latest ? fileUrl(runId, latest.screenshot) : null}
             alt={latest?.see ? `What ${persona.name} sees: ${latest.see}` : `${persona.name}'s screen at step ${latest?.index ?? 0}`}
             viewport={persona.viewport}
-            emptyLabel={persona.viewport === "mobile" ? "Opening…" : "Opening the site…"}
+            emptyLabel={persona.viewport === "mobile" ? "…" : "Opening the site…"}
           />
         </div>
 

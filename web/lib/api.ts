@@ -175,10 +175,17 @@ export function subscribeRun(
     };
   }
 
-  const source = new EventSource(`${API_URL}/runs/${enc(id)}/events`);
+  const url = `${API_URL}/runs/${enc(id)}/events`;
+  let source: EventSource | null = null;
   let lastSeq = -1;
   let finished = false;
-  onConnection?.("connecting");
+  let attempt = 0;
+  let retryTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const detach = (es: EventSource) => {
+    for (const type of EVENT_TYPES) es.removeEventListener(type, handle);
+    es.close();
+  };
 
   const handle = (raw: Event) => {
     // The native connection "error" event shares the name with our `event: error`; only ours has data.
@@ -201,21 +208,39 @@ export function subscribeRun(
     onEvent(event);
     if (event.type === "report_ready" || event.type === "error") {
       finished = true;
-      source.close();
+      if (source) detach(source);
       onConnection?.("closed");
     }
   };
 
-  for (const type of EVENT_TYPES) source.addEventListener(type, handle);
-  source.onopen = () => onConnection?.("open");
-  source.onerror = () => {
+  const connect = () => {
     if (finished) return;
-    onConnection?.(source.readyState === EventSource.CLOSED ? "closed" : "reconnecting");
+    const es = new EventSource(url);
+    source = es;
+    for (const type of EVENT_TYPES) es.addEventListener(type, handle);
+    es.onopen = () => {
+      attempt = 0;
+      onConnection?.("open");
+    };
+    es.onerror = () => {
+      if (finished) return;
+      onConnection?.("reconnecting");
+      if (es.readyState === EventSource.CLOSED) {
+        // The browser gives up for good after a non-200 answer (e.g. a 502 while the API restarts).
+        // Retry ourselves with backoff; the server replays every event and duplicates are dropped by seq.
+        detach(es);
+        attempt += 1;
+        retryTimer = setTimeout(connect, Math.min(30_000, 2_000 * 2 ** Math.min(attempt - 1, 4)));
+      }
+    };
   };
+
+  onConnection?.("connecting");
+  connect();
 
   return () => {
     finished = true;
-    for (const type of EVENT_TYPES) source.removeEventListener(type, handle);
-    source.close();
+    if (retryTimer) clearTimeout(retryTimer);
+    if (source) detach(source);
   };
 }

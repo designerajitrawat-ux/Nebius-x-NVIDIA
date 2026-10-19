@@ -113,7 +113,8 @@ export function runReducer(state: LiveRun, action: RunAction): LiveRun {
   switch (event.type) {
     case "stage": {
       const stage = laterStage(state.stage, event.stage);
-      const ended = stage === "done" || stage === "failed";
+      // Judge by the event's own stage: after a "done" snapshot, replayed early events must not end the clock.
+      const ended = event.stage === "done" || event.stage === "failed";
       return {
         ...state,
         stage,
