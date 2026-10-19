@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+/*
+  FiveUsers tokens, docs/04-design-brief.md is the source of truth.
+  Defaults are reset so only brief tokens exist as utilities.
+*/
+
+@theme {
+  --color-*: initial;
+  --color-paper: #f7f6f2;
+  --color-ink: #17191c;
+  --color-ink-2: #5b6066;
+  --color-line: #e3e1da;
+  --color-card: #ffffff;
+  --color-signal: #e4572e;
+  --color-signal-soft: #fbe9e3;
+  --color-ok: #2e7d5b;
+  --color-ok-soft: #e3f1ea;
+  --color-warn: #c98a1a;
+  /* Text-only derivatives of the same hues, so small text passes AA (see DESIGN-NOTES.md). */
+  --color-signal-ink: #b93e1a;
+  --color-warn-ink: #8f6210;
+  --color-ok-ink: #256b4d;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --text-*: initial;
+  --text-13: 0.8125rem;
+  --text-13--line-height: 1.45;
+  --text-15: 0.9375rem;
+  --text-15--line-height: 1.5;
+  --text-17: 1.0625rem;
+  --text-17--line-height: 1.45;
+  --text-22: 1.375rem;
+  --text-22--line-height: 1.3;
+  --text-28: 1.75rem;
+  --text-28--line-height: 1.2;
+  --text-40: 2.5rem;
+  --text-40--line-height: 1.08;
+  --text-56: 3.5rem;
+  --text-56--line-height: 1.04;
+
+  --radius-*: initial;
+  --radius-control: 6px;
+  --radius-frame: 10px;
+  --radius-full: 9999px;
+
+  --shadow-*: initial;
+  --shadow-frame: 0 1px 2px rgba(23, 25, 28, 0.06), 0 8px 24px rgba(23, 25, 28, 0.08);
+
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-lane-in: lane-in 360ms var(--ease-out) both;
+  --animate-fade-in: fade-in 200ms linear both;
+
+  @keyframes lane-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@theme inline {
+  --font-display: var(--font-instrument-sans), "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+/* Content column: 1180px of content plus side padding. */
+@utility page {
+  width: 100%;
+  max-width: calc(1180px + 48px);
+  margin-inline: auto;
+  padding-inline: 16px;
+
+  @media (width >= 40rem) {
+    padding-inline: 24px;
+  }
+}
+
+/* Headings in Instrument Sans with tight tracking. */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* Persona inner voice, the one expressive typographic move. */
+@utility voice {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* Text links: real underlines, offset, ink. */
+@utility link {
+  color: var(--color-ink);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--color-ink) 40%, transparent);
+
+  &:hover {
+    text-decoration-color: var(--color-ink);
+  }
+}
+
+/* Primary action: ink on paper, 6px radius, no lift. */
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding-inline: 20px;
+  border-radius: var(--radius-control);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-size: var(--text-15);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color 150ms linear;
+
+  &:hover {
+    background: color-mix(in srgb, var(--color-ink) 86%, var(--color-paper));
+  }
+
+  &:disabled {
+    cursor: progress;
+    background: color-mix(in srgb, var(--color-ink) 72%, var(--color-paper));
+  }
+}
+
+/* Secondary action: hairline outline. */
+@utility btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding-inline: 12px;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--color-line);
+  background: transparent;
+  color: var(--color-ink);
+  font-size: var(--text-13);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition: border-color 150ms linear;
+
+  &:hover {
+    border-color: var(--color-ink-2);
+  }
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-15);
+    line-height: 1.5;
+    font-feature-settings: "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-signal-soft);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  [id] {
+    scroll-margin-top: 24px;
+  }
+
+  /* Report content comes from real sites and models: long URLs, model IDs and labels must
+     wrap instead of widening the page on a phone. */
+  td,
+  th,
+  p,
+  li,
+  blockquote {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
