@@ -1,4 +1,4 @@
-"""Shared data shapes. `web/lib/types.ts` mirrors these, change both together."""
+"""Shared data shapes. `web/lib/types.ts` mirrors these, so change both together."""
 
 from __future__ import annotations
 

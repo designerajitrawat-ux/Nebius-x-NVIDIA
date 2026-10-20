@@ -1,4 +1,4 @@
-/* Fernhill, demo signup flow for FiveUsers. All state lives in sessionStorage. */
+/* Fernhill: demo signup flow for FiveUsers. All state lives in sessionStorage. */
 (function () {
   'use strict';
 
@@ -239,7 +239,7 @@
     fillAccount();
     var project = store.get('fh_project', null);
     if (!project) {
-      document.title = 'Projects, Fernhill';
+      document.title = 'Projects · Fernhill';
       $('#boardMain').innerHTML =
         '<h1>No project open</h1><p class="sub">You haven\'t created a project yet.</p>' +
         '<a class="btn btn-primary" href="projects.html">Go to Home</a>';

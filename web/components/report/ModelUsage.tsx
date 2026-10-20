@@ -48,7 +48,7 @@ export function ModelUsage({ usage, research }: { usage: Usage; research: Refere
                 <td className="py-3 pr-4 text-right text-15 text-ink">{row.calls}</td>
                 <td className="py-3 pr-4 text-right text-15 text-ink">
                   {isSearch ? (
-                    "-"
+                    "n/a"
                   ) : (
                     <>
                       <span className="block sm:inline">{formatTokens(row.prompt_tokens)}</span>
@@ -57,7 +57,7 @@ export function ModelUsage({ usage, research }: { usage: Usage; research: Refere
                     </>
                   )}
                 </td>
-                <td className="py-3 text-right text-15 text-ink">{isSearch && row.cost_usd === 0 ? "-" : formatCost(row.cost_usd)}</td>
+                <td className="py-3 text-right text-15 text-ink">{isSearch && row.cost_usd === 0 ? "n/a" : formatCost(row.cost_usd)}</td>
               </tr>
             );
           })}
@@ -95,7 +95,7 @@ export function ModelUsage({ usage, research }: { usage: Usage; research: Refere
                 </a>
                 <p className="text-13 text-ink-2">
                   {hostOf(ref.url)}
-                  {ref.note ? `, ${ref.note}` : ""}
+                  {ref.note ? ` · ${ref.note}` : ""}
                 </p>
               </li>
             ))}

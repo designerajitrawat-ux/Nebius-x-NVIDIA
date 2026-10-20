@@ -6,7 +6,7 @@ export const fixtureHealth: Health = {
   mode: "live",
   models: {
     fast: { id: "nvidia/Nemotron-3.5-Lightning", label: "Nemotron 3.5 Lightning" },
-    vision: { id: "nvidia/nemotron-3-nano-omni", label: "Nemotron 3 Nano Omni" },
+    vision: { id: "nvidia/Nemotron-3.5-Super-VL", label: "Nemotron 3.5 Super VL" },
     agent: { id: "nvidia/nemotron-3-super-120b-a12b", label: "Nemotron 3 Super" },
     reason: { id: "nvidia/Nemotron-3-Ultra-550b-a55b", label: "Nemotron 3 Ultra" },
   },

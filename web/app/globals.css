@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
-  FiveUsers tokens, docs/04-design-brief.md is the source of truth.
+  FiveUsers tokens. docs/04-design-brief.md is the source of truth.
   Defaults are reset so only brief tokens exist as utilities.
 */
 
@@ -100,7 +100,7 @@
   letter-spacing: -0.02em;
 }
 
-/* Persona inner voice, the one expressive typographic move. */
+/* Persona inner voice: the one expressive typographic move. */
 @utility voice {
   font-family: var(--font-serif);
   font-style: italic;

@@ -26,7 +26,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: {
-    default: "FiveUsers, five AI users test your product",
+    default: "FiveUsers · Five AI users test your product",
     template: "%s · FiveUsers",
   },
   description: "Five AI users walk through your product before real ones do.",

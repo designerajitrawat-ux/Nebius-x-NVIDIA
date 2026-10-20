@@ -228,9 +228,9 @@ async def recruit(
     """Returns (personas, generated_by_model)."""
     notes = "\n".join(f"- {r.title}: {r.note}" for r in brief.research[:6]) or "- (no research available)"
     prompt = (
-        f"Product: {brief.host}, {brief.title}\nCategory: {brief.category}\nWhat the first screen says: {brief.text}\n"
+        f"Product: {brief.host} ({brief.title})\nCategory: {brief.category}\nWhat the first screen says: {brief.text}\n"
         f"Task every participant will attempt: {task}\n"
-        f"Target audience: {audience or 'not specified, pick realistic users for this category'}\n\n"
+        f"Target audience: {audience or 'not specified. Pick realistic users for this category'}\n\n"
         f"Research notes (from web search):\n{notes}\n\n"
         f"Recruit exactly {settings.max_personas} participants, one per archetype, adapted to this product:\n"
         + "\n".join(f"{i + 1}. {a}" for i, a in enumerate(ARCHETYPES[: settings.max_personas]))

@@ -1,5 +1,6 @@
-# 04, Design brief
+# 04 · Design brief
 
+Owner: Ajit (UI/UX designer). Ajit directs and reviews. "Design" is 25% of the score,
 and most hackathon entries will be dark-mode dashboards with purple glows and identical rounded cards. We are
 not doing that.
 
@@ -7,7 +8,7 @@ not doing that.
 
 - "AI agent dashboard" results: near-black backgrounds, purple/blue gradient glows, glassy cards, tiny
   charts everywhere. **This is the default. Avoid it.**
-- Light, Linear/Notion-like product UIs read as modern and calm, and, crucially, **screenshots are our
+- Light, Linear/Notion-like product UIs read as modern and calm, and (crucially) **screenshots are our
   main content**, and screenshots read far better on a light, neutral surface.
 - Persona templates are photo-heavy; we use **no stock photos** (brand-safe, faster, more distinctive).
 - Heatmap/session-replay tools gave one useful idea: friction shown as **numbered pins on the actual
@@ -18,7 +19,7 @@ not doing that.
 
 FiveUsers is a research instrument. The report should feel like a **well-kept lab notebook**: calm paper
 surface, precise annotations, one signal color for problems, evidence (screenshots) front and center. The
-memorable element is the **annotated screenshot with numbered pins and persona quotes beside it**, spend
+memorable element is the **annotated screenshot with numbered pins and persona quotes beside it**. Spend
 all the boldness there; everything else stays disciplined.
 
 ## Tokens
@@ -32,7 +33,7 @@ all the boldness there; everything else stays disciplined.
 | `ink-2` | `#5B6066` | secondary text |
 | `line` | `#E3E1DA` | hairlines, borders |
 | `card` | `#FFFFFF` | elevated surfaces (screenshot frames, report cards) |
-| `signal` | `#E4572E` | friction, critical issues, pins, the ONE accent |
+| `signal` | `#E4572E` | friction, critical issues, pins: the ONE accent |
 | `signal-soft` | `#FBE9E3` | signal backgrounds |
 | `ok` | `#2E7D5B` | task completed, passes |
 | `ok-soft` | `#E3F1EA` | |
@@ -46,9 +47,9 @@ are distinguished by **initial-letter marks** and names, not colors.
 ### Type
 
 - **Display / headings:** `Instrument Sans` (Google Fonts), or `Geist` as fallback. Tight tracking, weights 500/600.
-- **Body / UI:** `Inter` at 15px/1.5. (One sans is fine; if two, make them clearly distinct, Instrument Sans has
+- **Body / UI:** `Inter` at 15px/1.5. (One sans is fine; if two, make them clearly distinct; Instrument Sans has
   enough character at large sizes.)
-- **Persona inner-voice quotes:** `Instrument Serif` italic, this is the one expressive typographic move. The
+- **Persona inner-voice quotes:** `Instrument Serif` italic. This is the one expressive typographic move. The
   quotes are the human-sounding part of the product; the serif marks them as "someone's voice", not system text.
 - No monospace for labels. No all-caps eyebrows. No "→" glued to buttons.
 
@@ -58,7 +59,7 @@ Type scale: 13 / 15 / 17 / 22 / 28 / 40 / 56. Line lengths ≤ 72ch.
 
 - Max content width 1180px, left-aligned text, 12-col grid, 24px gutters, 8px spacing base.
 - Radii: 6px on controls, 10px on screenshot frames, 0 on hairline tables. Not one radius on everything.
-- Shadows: screenshot frames only, `0 1px 2px rgba(23,25,28,.06), 0 8px 24px rgba(23,25,28,.08)`. Nothing
+- Shadows: screenshot frames only: `0 1px 2px rgba(23,25,28,.06), 0 8px 24px rgba(23,25,28,.08)`. Nothing
   else gets a shadow.
 - Borders carry structure: tables and lists use 1px `line` hairlines, not cards.
 
@@ -98,7 +99,7 @@ Type scale: 13 / 15 / 17 / 22 / 28 / 40 / 56. Line lengths ≤ 72ch.
 ```
 
 Hero is the headline + the form. No illustration, no gradient blob. The sample links are the fastest path for
-judges, make them prominent.
+judges, so make them prominent.
 
 ### 2. Live run (`/run/[id]`)
 
@@ -135,7 +136,7 @@ Issues ────────────────────────�
 │  [screenshot with numbered pins ①②]       │  Pricing page appears before signup
 │                                            │  Hit by: Priya, Maya, Dev
 │                                            │  "I just wanted to try it. Why am I
-│                                            │   picking a plan?", Priya
+│                                            │   picking a plan?" (Priya)
 └────────────────────────────────────────────┘  Fix (flow): route "Get started" to
                                                  signup; show plans after first project.
                                                  See how others do it: Linear · Notion   (Tavily)
@@ -167,3 +168,5 @@ keyboard-operable forms. Screenshots have alt text generated from the vision ste
 
 ## Before building any screen
 
+Write a 10-line plan (what's the hero element, what's quiet, which tokens) and check it against the
+"defaults to avoid" list in this brief. Then build. Then screenshot and self-critique once.

@@ -1,4 +1,4 @@
-# 03, Architecture
+# 03 · Architecture
 
 ## System overview
 
@@ -24,7 +24,7 @@
 | Step | Model env var | Expected ID (verify on Day 0) | Why this tier |
 |---|---|---|---|
 | Product category, JSON repair | `NEMOTRON_FAST` (3.5 Lightning / Nano 30B) | `nvidia/Nemotron-3_5-Lightning` | tiny calls, $0.06/M |
-| Screenshot → "what this persona sees"; expert heuristic review | `NEMOTRON_VISION` (3 Nano Omni) | `nvidia/Nemotron-3-Nano-Omni` | only multimodal Nemotron; cheap |
+| Screenshot → "what this persona sees"; expert heuristic review | `NEMOTRON_VISION` (3.5 Super VL) | `nvidia/Nemotron-3.5-Super-VL` | the multimodal Nemotron on our account (Nano Omni isn't listed) |
 | Persona generation; per-step decide (tool calls) | `NEMOTRON_AGENT` (3 Super 120B) | `nvidia/nemotron-3-super-120b-a12b` | agentic reasoning at $0.30/M |
 | Final synthesis + prioritization + fixes | `NEMOTRON_REASON` (3 Ultra 550B) | `nvidia/Nemotron-3-Ultra-550b-a55b` | one big call per run, heaviest reasoning |
 
@@ -50,7 +50,7 @@ Model IDs must be confirmed from `GET /v1/models` on Day 0 and written into `.en
 
 - **Vision input**: OpenAI-style `content: [{type:"text"}, {type:"image_url", image_url:{url: ...}}]`. Base64
   data URLs are supported; our screenshots live on disk, so send `data:image/jpeg;base64,...`. Confirm on Day 0
-  that the Nano Omni model ID accepts images (the docs example uses a Qwen VL model; test ours).
+  that the vision model ID accepts images (verified 20 Oct: Super VL does, with thinking off) (the docs example uses a Qwen VL model; test ours).
 - **Structured output**: `response_format={"type":"json_schema","json_schema":{name, schema, strict}}` or
   `{"type":"json_object"}`. Only models tagged "JSON mode" on their card support it. Docs recommend putting the
   schema **in the prompt too**. Always handle `message.refusal` and invalid JSON.
@@ -62,7 +62,7 @@ Model IDs must be confirmed from `GET /v1/models` on Day 0 and written into `.en
 - Also exists on Token Factory (not used in v1, mention in "what's next"): embeddings, rerank, Batch API,
   **Sandboxes** (isolated code execution, the Coding track's "Token Factory Sandboxes").
 
-## `api/app/llm.py`, single entry point
+## `api/app/llm.py`: single entry point
 
 ```python
 async def chat(tier: Tier, messages, *, tools=None, json_schema=None, max_tokens=..., temperature=...) -> LLMResult
@@ -98,7 +98,7 @@ Responsibilities:
 2. `NEMOTRON_AGENT` → JSON array of 5 personas (schema in `models.py`)
 3. Persist to run folder
 
-## `walker.py`, persona agent
+## `walker.py`: persona agent
 
 ```
 for step in range(persona.max_steps):
@@ -172,18 +172,18 @@ GET  /samples              list of committed sample reports
 
 ## Web
 
-- `app/page.tsx`, start form (url, task, audience) + sample picker + "what happens" strip
-- `app/run/[id]/page.tsx`, 5 live lanes (persona card header, current screenshot, inner-voice line,
+- `app/page.tsx`: start form (url, task, audience) + sample picker + "what happens" strip
+- `app/run/[id]/page.tsx`: 5 live lanes (persona card header, current screenshot, inner-voice line,
   confusion meter); stage rail at top; SSE via `EventSource`
-- `app/r/[id]/page.tsx`, report (see design brief)
-- `lib/api.ts`, typed client; `NEXT_PUBLIC_API_URL`
+- `app/r/[id]/page.tsx`: report (see design brief)
+- `lib/api.ts`: typed client; `NEXT_PUBLIC_API_URL`
 
 ## Deployment
 
 - API: Hugging Face Spaces, Docker SDK. Base image `mcr.microsoft.com/playwright/python:v1.4x-jammy`. Port
   7860. Secrets as Space secrets. Enable persistent storage if free tier allows; otherwise rely on samples.
 - Web: Vercel, root `web/`. Env `NEXT_PUBLIC_API_URL`.
-- Fallback for API: Render free web service (Docker), slower cold starts.
+- Fallback for API: Render free web service (Docker), with slower cold starts.
 
 ## Cost model (per run, estimated)
 

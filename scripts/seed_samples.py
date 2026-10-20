@@ -96,7 +96,7 @@ def seed(api: str, web: str, key: str | None, only: list[str], timeout_s: int, s
                 "completed": report["completed"], "total": report["total"], "order": order,
             }
             (out / "sample.json").write_text(json.dumps(info, ensure_ascii=False, indent=1), encoding="utf-8")
-            print(f"  saved {out} , {report['headline']}  (${report['usage']['total_cost_usd']:.4f}, mode {report['mode']})")
+            print(f"  saved {out}: {report['headline']}  (${report['usage']['total_cost_usd']:.4f}, mode {report['mode']})")
     return 0
 
 

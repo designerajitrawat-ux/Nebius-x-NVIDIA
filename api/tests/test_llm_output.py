@@ -1,4 +1,4 @@
-"""LLM client output handling with a fake Token Factory client, no network."""
+"""LLM client output handling with a fake Token Factory client (no network)."""
 
 import asyncio
 import dataclasses

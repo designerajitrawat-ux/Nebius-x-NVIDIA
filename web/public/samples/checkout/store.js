@@ -1,4 +1,4 @@
-/* Larkspur Supply, demo store for FiveUsers. State lives in sessionStorage. No real payments. */
+/* Larkspur Supply: demo store for FiveUsers. State lives in sessionStorage. No real payments. */
 (function () {
   'use strict';
 
@@ -286,7 +286,7 @@
   function initProduct() {
     var params = new URLSearchParams(location.search);
     var p = product(params.get('id')) || PRODUCTS[0];
-    document.title = p.name + ', Larkspur Supply';
+    document.title = p.name + ' · Larkspur Supply';
     var state = { color: p.colors[0], size: null };
 
     $('[data-crumb]').textContent = p.name;
@@ -487,7 +487,7 @@
     var o = store.get('ls_order', null);
     var main = $('[data-confirm]');
     if (!o) {
-      document.title = 'No recent order, Larkspur Supply';
+      document.title = 'No recent order · Larkspur Supply';
       main.innerHTML = '<h1>No recent order</h1><p class="lead">We couldn\'t find an order from this session.</p><a class="btn" href="index.html">Continue shopping</a>';
       return;
     }

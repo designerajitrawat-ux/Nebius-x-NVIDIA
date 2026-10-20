@@ -147,7 +147,7 @@ export const fixtureTranscripts: Record<string, TranscriptStep[]> = {
   ]),
   rohan: steps([
     ["/", D.home, "Headline, “Get started”, “Log in”.", "Get started. Go.", 0, 'Clicked "Get started"'],
-    ["/pricing", D.pricing, "Plans before signup. Starter is the cheapest.", "Pricing first. Fine, Starter, I'll downgrade later.", 1, 'Clicked "Choose" on Starter'],
+    ["/pricing", D.pricing, "Plans before signup. Starter is the cheapest.", "Pricing first. Fine, Starter. I'll downgrade later.", 1, 'Clicked "Choose" on Starter'],
     ["/signup", D.signup, "Email, password, a terms checkbox, Continue.", "Standard form. Email, password, done.", 0, 'Typed "rohan@studio.example" into "Email"'],
     ["/onboarding/workspace", D.workspace, "Workspace name and a “Workspace slug” field.", "Slug, sure. Same as the name.", 0, 'Typed "studio" into "Workspace slug"'],
     ["/onboarding/invite", D.invite, "Invite form with a big “Send invites” button. The skip link is faint grey.", "Not inviting anyone yet. Where's skip? Oh, that grey thing.", 1, 'Clicked "Skip for now"'],
@@ -195,8 +195,8 @@ const usageRows = [
   },
   {
     tier: "vision",
-    model: "nvidia/nemotron-3-nano-omni",
-    label: "Nemotron 3 Nano Omni",
+    model: "nvidia/Nemotron-3.5-Super-VL",
+    label: "Nemotron 3.5 Super VL",
     calls: 39,
     prompt_tokens: 74_100,
     completion_tokens: 9_400,
@@ -286,7 +286,7 @@ export const fixtureReport: Report = {
           note: "A “Start free” path beside the plans keeps first-timers moving.",
         },
       ],
-      alt: "Pricing page with three plan columns, Starter, Team and Business, each with a “Choose” button. No free option or trial is shown.",
+      alt: "Pricing page with three plan columns (Starter, Team and Business), each with a “Choose” button. No free option or trial is shown.",
     },
     {
       id: 2,
@@ -366,7 +366,7 @@ export const fixtureReport: Report = {
         type: "copy",
         summary: "Name the field for what it does and show the result as people type.",
         before: "Workspace slug",
-        after: "Web address, fernhill.app/asha-studio",
+        after: "Web address: fernhill.app/asha-studio",
       },
       refs: [],
       alt: "Workspace setup with two fields, “Workspace name” and “Workspace slug”, and a Continue button.",

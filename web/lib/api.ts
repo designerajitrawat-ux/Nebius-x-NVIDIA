@@ -23,7 +23,7 @@ export class ApiRequestError extends Error {
 }
 
 const NETWORK_MESSAGE =
-  "We couldn't reach the test lab. It may still be waking up, try again in a few seconds.";
+  "We couldn't reach the test lab. It may still be waking up. Try again in a few seconds.";
 
 const STATUS_DEFAULTS: Record<number, { code: string; message: string }> = {
   400: { code: "bad_request", message: "The test lab couldn't use that request. Check the fields and try again." },
@@ -54,7 +54,7 @@ async function toApiError(res: Response): Promise<ApiRequestError> {
   try {
     body = await res.json();
   } catch {
-    // not JSON, keep the fallback
+    // not JSON, so keep the fallback
   }
   const detail = isRecord(body) ? body.detail : undefined;
   if (isApiError(detail)) return new ApiRequestError(detail.code, detail.message, res.status);

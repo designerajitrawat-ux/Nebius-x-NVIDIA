@@ -140,7 +140,7 @@ def main() -> int:
             )
             answer = (r.choices[0].message.content or "").strip()
             ok = "free trial" in answer.lower()
-            print(f"Reply: {answer!r} → {'READS IMAGES ✓' if ok else 'did not read the button, check this model'}")
+            print(f"Reply: {answer!r} → {'READS IMAGES ✓' if ok else 'did not read the button. Check this model'}")
             print(account(vision, r.usage))
         except Exception as e:  # noqa: BLE001
             print("Vision failed:", type(e).__name__, str(e)[:300])
@@ -176,21 +176,21 @@ def main() -> int:
 
     print("\n== 6. Tavily ==")
     if not TAVILY_KEY:
-        print("TAVILY_API_KEY missing, skipped (add it before Day 1).")
+        print("TAVILY_API_KEY missing. Skipped (add it before Day 1).")
     else:
         try:
             from tavily import TavilyClient
 
             res = TavilyClient(api_key=TAVILY_KEY).search("usability testing with five users Nielsen", max_results=2, search_depth="basic")
             first = (res.get("results") or [{}])[0]
-            print("Top result:", first.get("title"), "-", first.get("url"))
+            print("Top result:", first.get("title"), "| URL:", first.get("url"))
         except Exception as e:  # noqa: BLE001
             print("Tavily failed:", type(e).__name__, str(e)[:200])
 
     print(f"\nEstimated spend for this test: ${spent:.6f}")
     print("\nPaste into .env:")
     for name, val in (("NEMOTRON_FAST", fast), ("NEMOTRON_VISION", vision), ("NEMOTRON_AGENT", agent), ("NEMOTRON_REASON", reason)):
-        print(f"{name}={val or ''}" + ("" if val else "    # not found, pick one from the list above"))
+        print(f"{name}={val or ''}" + ("" if val else "    # not found. Pick one from the list above"))
     return 0
 
 

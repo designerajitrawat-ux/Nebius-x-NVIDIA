@@ -1,11 +1,18 @@
-"""Pure helpers for turning model text into data. No I/O, unit-tested in tests/test_parsing.py."""
+"""Pure helpers for turning model text into data. No I/O. Unit-tested in tests/test_parsing.py."""
 
 from __future__ import annotations
 
 import json
 import re
 from dataclasses import dataclass
+from datetime import date
 from typing import Any
+
+def today_note(today: date | None = None) -> str:
+    """Models don't know today's date; without it a correct calendar for this month looks "wrong" to them."""
+    d = today or date.today()
+    return f"Today is {d.strftime('%A')}, {d.day} {d.strftime('%B %Y')}."
+
 
 _THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL | re.IGNORECASE)
 _FENCE_RE = re.compile(r"```(?:json|JSON)?\s*(.*?)```", re.DOTALL)

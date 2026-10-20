@@ -20,7 +20,7 @@ It is intentionally **not** inside `web/public` so it is never web-served.
   different `<h1>` ("No project open", "No recent order", "No booking found"). Success can only be reached
   through the flow.
 - Each footer carries a small line saying it is a fictional company used for usability-testing demos. The checkout
-  shows "Demo store, no real payment is taken" above the card fields.
+  shows a demo-store notice ("no real payment is taken") above the card fields.
 - Severity scale: **critical** blocks or derails most users, or risks the wrong outcome. **Major** causes
   significant friction or errors. **Minor** is an annoyance or polish issue.
 - Categories: flow, copy, form, visual, a11y, mobile, feedback.
@@ -101,8 +101,8 @@ a handling fee and tax) appears only on the last step, behind a button labelled 
 **M**. Decoys: the Heavyweight Pocket Tee has no blue (Oat, Black, Rust). The Long-Sleeve Rib Tee comes in "Slate", a
 blue-grey, and is long-sleeved.
 
-**Success:** `confirmed.html` with `<h1>` **"Order confirmed, #1042"** (rendered uppercase by CSS). The line item
-reads **"The Everyday Tee, Harbor / M"**. With standard shipping the total paid is **$43.97**:
+**Success:** `confirmed.html` with `<h1>` **"Order confirmed"** with order number **#1042** (rendered uppercase by CSS). The line item
+is **The Everyday Tee**, color **Harbor**, size **M**. With standard shipping the total paid is **$43.97**:
 $28.00 + $9.95 shipping + $3.50 handling + $2.52 tax.
 Wrong-path outcomes still reach this page, so check the line item. Examples: "Bone / M" (the default colour was
 kept), the wrong size, or quantity 2 (Add to bag clicked twice).
@@ -118,7 +118,7 @@ kept), the wrong size, or quantity 2 (Add to bag clicked twice).
    Phone** (required, though not marked). Click **Proceed**.
 5. On `payment.html`, Standard shipping is preselected. Enter any card number of 13–19 digits, Name on card,
    Expiration as `MM/YY` or `MM/YYYY` (future), and a 3–4 digit Security code. Click **Continue**, which places the order.
-6. `confirmed.html` shows "Order confirmed, #1042".
+6. `confirmed.html` shows "Order confirmed" with order number #1042.
 
 ### Deliberate flaws
 

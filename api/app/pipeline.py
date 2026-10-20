@@ -72,7 +72,7 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
 
     try:
         async with asyncio.timeout(RUN_TIMEOUT_S):
-            # 1. Preparing, can we load the site at all?
+            # 1. Preparing: can we load the site at all?
             await set_stage("preparing")
             await browser.start()
             probe = await browser.session(persona_id="prep", viewport="desktop", start_url=url, run_dir=run_dir)
@@ -85,7 +85,7 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
                 await probe.close()
             brief = site_brief(url, first)
 
-            # 2. Recruiting, research + personas
+            # 2. Recruiting: research + personas
             await set_stage("recruiting")
             if dry:
                 brief.category = "website"
@@ -99,7 +99,7 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
             store.write_json(run_id, "brief.json", {"category": brief.category, "research": [r.model_dump() for r in brief.research]})
             await bus.emit("personas", lanes=[Lane(persona=p).model_dump() for p in personas])
 
-            # 3. Testing, five walkers in parallel
+            # 3. Testing: five walkers in parallel
             await set_stage("testing")
             brain = DryBrain() if dry else NemotronBrain(llm)
             sem = asyncio.Semaphore(settings.walker_concurrency)
@@ -119,7 +119,7 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
                         await session.open()
                         wr = await walk(p, session, brain, task=task, run_id=run_id, run_dir=run_dir,
                                         max_steps=settings.max_steps, on_step=on_step, should_stop=credits_gone)
-                    except Exception as e:  # noqa: BLE001, one persona failing must not sink the run
+                    except Exception as e:  # noqa: BLE001 (one persona failing must not sink the run)
                         log.exception("walker %s failed", p.id)
                         reason = str(e) if isinstance(e, SiteUnreachable) else "This persona's browser session failed"
                         wr = WalkResult(p, PersonaResult(persona_id=p.id, outcome="error", reason=reason, steps=0,
@@ -135,13 +135,13 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
             if not any(w.steps for w in walks):
                 raise SiteUnreachable("None of the personas could use the site. Check the URL, or try a sample.")
 
-            # 4. Reviewing, expert pass on every visited screen
+            # 4. Reviewing: expert pass on every visited screen
             await set_stage("reviewing")
             screens, expert = await review(
                 model, {w.persona.id: w.observations for w in walks if w.observations}, task=task, run_dir=run_dir, run_id=run_id
             )
 
-            # 5. Writing, synthesis, references, annotated screenshots
+            # 5. Writing: synthesis, references, annotated screenshots
             await set_stage("writing")
             syn = await synthesize(model, task=task, url=url, category=brief.category, walks=walks,
                                    screens=screens, expert=expert, run_id=run_id)
@@ -234,7 +234,7 @@ def assemble(
         w.persona.id: [
             TranscriptStep(
                 index=st.index, path=st.path, screenshot=st.screenshot, see=st.see, inner_voice=st.inner_voice,
-                confusion=st.confusion, action=st.action.label + ("" if st.action_ok else f", {st.action_error}"),
+                confusion=st.confusion, action=st.action.label + ("" if st.action_ok else f": {st.action_error}"),
             )
             for st in w.steps
         ]

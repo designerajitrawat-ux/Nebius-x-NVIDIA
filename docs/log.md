@@ -1,10 +1,11 @@
 # Build log
 
+Three lines per day: done / blocked / tomorrow. The log is appended each day.
 
 ## 2026-10-19 (Day 0)
 - done: starter folder, docs, prompts, day0 script
 
-## 2026-10-19/20 (Day 0 night, plan changed: build everything that doesn't need keys)
+## 2026-10-19/20 (Day 0 night; plan changed to build everything that doesn't need keys)
 - done:
   - API pipeline end to end (llm, browser, personas, walker with `fill`, expert, synthesis, report, guard, SSE,
     routes) + DRY_RUN mode; 45 unit tests green.
@@ -21,7 +22,7 @@
 - tomorrow: first live run on the signup sample; compare the report with docs/samples.md and tune prompts;
   judges' "Will It Ship" session 9:30 PM IST; GitHub username for the header link.
 
-## 2026-10-20 (Day 1, early, still no keys; hardening)
+## 2026-10-20 (Day 1, early: still no keys; hardening)
 - done:
   - `scripts/verify_samples.py`: personas' own browser layer now completes all three sample flows on desktop and
     phone (was 0/6: late navigations after "Submitting…" and <select> options the persona couldn't see;
@@ -35,7 +36,7 @@
 - blocked: keys (Token Factory, Tavily); GitHub username for the header link.
 - next: day0_test.py → first live run on the signup sample → compare with docs/samples.md → tune prompts.
 
-## 2026-10-20 (Day 1, keys in, first live runs on Nemotron)
+## 2026-10-20 (Day 1: keys in, first live runs on Nemotron)
 - done:
   - Moved to a new laptop (Python 3.14 works: 61 tests, verify_samples 6/6). Credits: Token Factory promo applied
     (balance $29.50), Builder Program application sent; Tavily coupon BBDEVPOST → 8,000 credits.

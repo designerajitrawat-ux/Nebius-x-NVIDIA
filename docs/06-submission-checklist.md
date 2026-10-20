@@ -1,4 +1,4 @@
-# 06, Submission checklist (Devpost)
+# 06 · Submission checklist (Devpost)
 
 Submit on **29 Oct 2026**. Hard deadline 30 Oct 10:30 PM IST.
 
@@ -29,15 +29,15 @@ Submit on **29 Oct 2026**. Hard deadline 30 Oct 10:30 PM IST.
 - **Feedback** on Token Factory / Nemotron / NVIDIA tools (required; copy from `docs/feedback.md`; be specific:
   onboarding, docs, tool-calling reliability, vision quality, pricing, what we'd want next)
 - City event: none (India had no event), leave blank
-- "Existed before submission period?", No
+- "Existed before submission period?": No
 
 ## Video outline (≤ 2:45 target)
 
 0:00–0:15  Problem: nobody tests before shipping; 5 users find 85% of issues; getting 5 is the hard part
 0:15–0:30  "FiveUsers: five AI users walk through your product before real ones do." Enter URL + task.
 0:30–1:15  Live lanes: five personas recruited (Tavily + Nemotron Super), walking in parallel; one gets
-           stuck, show inner voice; one completes. Say: "every step runs on NVIDIA Nemotron via Nebius
-           Token Factory, Nano Omni reads screens, Super decides, Ultra writes the report."
+           stuck (show inner voice); one completes. Say: "every step runs on NVIDIA Nemotron via Nebius
+           Token Factory. Super VL reads screens, Super decides, Ultra writes the report."
 1:15–2:15  Report: headline, annotated screenshot with pins, persona quote, concrete fix, Tavily competitor
            references, friction map, model usage footer.
 2:15–2:40  Who it's for + what's next (Figma input, auth flows, CI integration). Repo + license on screen.

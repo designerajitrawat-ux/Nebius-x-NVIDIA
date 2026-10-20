@@ -107,16 +107,16 @@ def to_markdown(rep: Report, file_base: str) -> str:
         f"**Date:** {date} · {rep.total} personas · {rep.completed} completed · {gave_up} did not",
     ]
     if rep.mode == "dry_run":
-        out += ["", "> Dry run, persona decisions were scripted; no models were called."]
+        out += ["", "> Dry run: persona decisions were scripted; no models were called."]
     if rep.degraded:
         out += ["", "> Written by Nemotron Super because Nemotron Ultra was unavailable."]
     out += ["", "## Issues", ""]
     for i in rep.issues:
-        out += [f"### {i.id}. {i.severity.capitalize()}, {i.title}", ""]
+        out += [f"### {i.id}. {i.severity.capitalize()}: {i.title}", ""]
         out += [f"![{i.alt or i.title}]({file_base}/{annotated_name(i.screenshot)})", ""]
-        out += [f"**Screen:** {i.screen_label}  ", f"**Hit by:** {', '.join(names.get(p, p) for p in i.personas_hit) or '-'}", ""]
+        out += [f"**Screen:** {i.screen_label}  ", f"**Hit by:** {', '.join(names.get(p, p) for p in i.personas_hit) or 'none'}", ""]
         if i.quote:
-            out += [f"> “{i.quote.text}”, {names.get(i.quote.persona_id, i.quote.persona_id)}", ""]
+            out += [f"> {names.get(i.quote.persona_id, i.quote.persona_id)}: “{i.quote.text}”", ""]
         out += [f"**Why it matters:** {i.why}", "", f"**Fix ({i.fix.type}):** {i.fix.summary}", ""]
         if i.fix.type == "css" and i.fix.after:
             out += ["```css", i.fix.after, "```", ""]
@@ -130,11 +130,11 @@ def to_markdown(rep: Report, file_base: str) -> str:
             out += ["See how others do it (via Tavily): " + " · ".join(f"[{r.title}]({r.url})" for r in i.refs), ""]
     if rep.friction_map:
         out += ["## Friction map", "", "| Screen | Personas in trouble | Visits | Worst issue |", "|---|---|---|---|"]
-        out += [f"| {f.label} | {f.hits} | {f.visits} | {f'#{f.worst_issue_id}' if f.worst_issue_id else '-'} |" for f in rep.friction_map]
+        out += [f"| {f.label} | {f.hits} | {f.visits} | {f'#{f.worst_issue_id}' if f.worst_issue_id else 'none'} |" for f in rep.friction_map]
         out.append("")
     out += ["## Personas", "", "| Persona | Archetype | Device | Outcome | Steps | Time |", "|---|---|---|---|---|---|"]
     out += [
-        f"| {p.name}, {p.age} | {p.archetype} | {p.viewport} | {OUTCOME_TEXT.get(p.outcome, p.outcome)}, {p.reason} | {p.steps} | {p.seconds:.0f} s |"
+        f"| {p.name}, {p.age} | {p.archetype} | {p.viewport} | {OUTCOME_TEXT.get(p.outcome, p.outcome)}: {p.reason} | {p.steps} | {p.seconds:.0f} s |"
         for p in rep.personas
     ]
     if rep.expert:

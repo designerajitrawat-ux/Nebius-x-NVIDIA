@@ -29,10 +29,11 @@ Every model call goes through one client, [`api/app/llm.py`](api/app/llm.py), po
 |---|---|---|---|
 | Recruiting | **Nemotron 3.5 Lightning** | Classifies the product category | [`personas.py`](api/app/personas.py) |
 | Recruiting | **Nemotron 3 Super 120B** | Writes five personas from Tavily research | [`personas.py`](api/app/personas.py) |
-| Testing, every step | **Nemotron 3 Nano Omni** (vision) | Looks at the screenshot *as that persona*: what do I notice, what's confusing | [`walker.py`](api/app/walker.py) |
-| Testing, every step | **Nemotron 3 Super 120B** (tool calling) | Decides the next action in character: `click`, `type`, `fill`, `scroll`, `back`, `give_up`, `done` + inner voice + confusion 0–3 | [`walker.py`](api/app/walker.py) |
-| Reviewing | **Nemotron 3 Nano Omni** (vision) | Heuristic evaluation (Nielsen's 10) of every screen visited | [`expert.py`](api/app/expert.py) |
-| Writing | **Nemotron 3 Ultra 550B** | One reasoning call turns all logs into ranked issues with fixes | [`synthesis.py`](api/app/synthesis.py) |
+| Testing: every step | **Nemotron 3.5 Super VL** (vision) | Looks at the screenshot *as that persona*: what do I notice, what's confusing | [`walker.py`](api/app/walker.py) |
+| Testing: every step | **Nemotron 3 Super 120B** (tool calling) | Decides the next action in character: `click`, `type`, `fill`, `scroll`, `back`, `give_up`, `done` + inner voice + confusion 0–3 | [`walker.py`](api/app/walker.py) |
+| Testing: every "done" | **Nemotron 3.5 Super VL** (vision) | Checks the screenshot: is the goal really achieved on screen? | [`walker.py`](api/app/walker.py) |
+| Reviewing | **Nemotron 3.5 Super VL** (vision) | Heuristic evaluation (Nielsen's 10) of every screen visited | [`expert.py`](api/app/expert.py) |
+| Writing | **Nemotron 3 Ultra 550B** | One call turns all logs into ranked issues with fixes | [`synthesis.py`](api/app/synthesis.py) |
 
 A typical run is ~80 Nemotron calls and costs about **$0.10–0.20**; the report's footer shows the exact calls,
 tokens and cost per model for that run.
@@ -51,8 +52,8 @@ web (Next.js, Vercel)                       api (FastAPI + Playwright, Hugging F
   /            start a test   ── POST /runs ──▶  1 Preparing   load the site, first screenshot
   /run/[id]    five live lanes ◀── SSE ──────    2 Recruiting  Tavily research → Super writes 5 personas
   /r/[id]      the report     ◀── JSON ──────    3 Testing     5 browser contexts in parallel; per step:
-                                                               screenshot → Omni perceives → Super decides → act
-                                                 4 Reviewing   Omni heuristics + deterministic WCAG checks
+                                                               screenshot → Super VL perceives → Super decides → act
+                                                 4 Reviewing   Super VL heuristics + deterministic WCAG checks
                                                  5 Writing     Ultra synthesis → grounded issues → pins → Tavily refs
 ```
 
@@ -62,7 +63,9 @@ Design choices that keep reports honest:
 - **Quotes are verbatim**: a persona quote must match a line that persona actually "thought" during the run.
 - **Graceful degradation**: vision fails → decide from the element list; tool calls unparsable → JSON mode;
   Ultra fails → Super writes the report (flagged); Tavily down → report without references.
-- **Accessibility checks are deterministic** (labels, names, alt text, contrast, tap targets), no LLM guessing.
+- **"Done" is checked, not trusted**: a persona's "done" only counts if the vision model sees the goal achieved
+  on the screenshot; a persona who reached the goal without noticing still counts as completed.
+- **Accessibility checks are deterministic** (labels, names, alt text, contrast, tap targets), with no LLM guessing.
 
 ## Run locally
 
@@ -97,8 +100,8 @@ On Windows, `.\scripts\dev.ps1 -DryRun` starts both servers in their own windows
 
 Checks:
 
-- `cd api && .venv/Scripts/python -m pytest`, unit tests
-- `api/.venv/Scripts/python scripts/verify_samples.py`, drives all three sample flows at desktop and phone size
+- `cd api && .venv/Scripts/python -m pytest`: unit tests
+- `api/.venv/Scripts/python scripts/verify_samples.py`: drives all three sample flows at desktop and phone size
   through the personas' own observe/act layer (choosing elements only from what the model sees) and proves each one
   can be completed
 
@@ -119,7 +122,7 @@ The test browser opens URLs that strangers type in, so it's fenced in:
 ## For judges
 
 - Sample reports load instantly (pre-generated on the three sample sites, which are deliberately flawed and
-  brand-free, see [`docs/samples.md`](docs/samples.md)).
+  brand-free; see [`docs/samples.md`](docs/samples.md)).
 - Public runs are limited to 2 per hour per IP to protect the credit budget. Judges can skip the limit by sending
   the header `X-FiveUsers-Key: <token>` (token in the Devpost submission notes).
 - `GET /health` shows the configured Nemotron models, credits remaining and available samples.
@@ -133,4 +136,4 @@ The test browser opens URLs that strangers type in, so it's fenced in:
 
 ## License
 
-MIT, see [`LICENSE`](LICENSE).
+MIT. See [`LICENSE`](LICENSE).

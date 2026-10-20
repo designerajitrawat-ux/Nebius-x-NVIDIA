@@ -1,6 +1,6 @@
 """Egress filter for the test browser: a tiny local HTTP/CONNECT proxy that refuses private addresses.
 
-Chromium sends every request through it, navigations, redirects, iframes, images, fetch, websockets -
+Chromium sends every request through it (navigations, redirects, iframes, images, fetch, websockets),
 so a public page can't make our server's browser read internal services (SSRF). The proxy resolves each
 host itself and connects to exactly the IP it checked, so DNS rebinding can't slip a private address in
 between the check and the connection. Disabled when ALLOW_PRIVATE_URLS is set (local development).

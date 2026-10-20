@@ -96,3 +96,11 @@ def test_unquote_only_strips_whole_line_quotes():
     assert unquote('"Get started" should be it.') == '"Get started" should be it.'
     assert unquote('"Get started" or "Log in"?') == '"Get started" or "Log in"?'
     assert unquote("plain") == "plain"
+
+
+def test_today_note_names_the_day_and_date():
+    from datetime import date
+
+    from app.parsing import today_note
+
+    assert today_note(date(2026, 10, 20)) == "Today is Tuesday, 20 October 2026."

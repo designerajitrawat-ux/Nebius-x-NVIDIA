@@ -1,4 +1,4 @@
-# Deploy (Day 5), click by click
+# Deploy (Day 5): click by click
 
 Two pieces: the **API** on a Hugging Face Space (Docker) and the **web app** on Vercel. Pushes to `main`
 redeploy both automatically once this is set up. Do the steps in order; each one says how to check it worked.

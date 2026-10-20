@@ -1,6 +1,6 @@
-# 05, Build plan (7 days + buffer)
+# 05 · Build plan (7 days + buffer)
 
-## Status, 20 Oct (built ahead of plan without keys; see docs/log.md)
+## Status: 20 Oct (built ahead of plan without keys; see docs/log.md)
 
 | Day | State |
 |---|---|
@@ -11,12 +11,12 @@
 | 6 | README, Devpost draft, video script drafted. **`docs/feedback.md` needs real Token Factory experience; video is Ajit's** |
 | 7 | Not started (polish after live runs) |
 
-Deadline 30 Oct 10:30 PM IST. We submit **29 Oct**. Each day has acceptance criteria, if a day's criteria
+Deadline 30 Oct 10:30 PM IST. We submit **29 Oct**. Each day has acceptance criteria. If a day's criteria
 aren't met by its end, **cut scope the next morning**, don't extend.
 
 Human (Ajit) owns: accounts, keys, deploy clicks, design review, video, Devpost form.
 
-## Day 0, Mon 19 Oct (tonight)
+## Day 0: Mon 19 Oct (tonight)
 
 Human:
 - [ ] Token Factory account (India, Visa, international ON) → apply promo `NEBIUS-DEVPOST-GLOBAL26` → join
@@ -26,23 +26,24 @@ Human:
 - [ ] Vercel + Hugging Face accounts (GitHub login)
 - [ ] Tomorrow 9:30 PM IST: judges' "Will It Ship" session
 
+Code:
 - [ ] Scaffold repo from this starter; `python scripts/day0_test.py` → lists models, makes one Nemotron call,
       one Tavily call, prints cost
 - [ ] Write confirmed model IDs into `.env.example` comments
 
 **Accept:** `day0_test.py` prints a Nemotron reply + a Tavily result + estimated cost. Nothing else.
 
-## Day 1, Tue 20 Oct: backend skeleton
+## Day 1: Tue 20 Oct: backend skeleton
 
 - [ ] `api/` FastAPI app, `llm.py` with cost ledger + JSON/tool helpers + tests for cost math and tool parsing
 - [ ] `browser.py`: open URL, screenshot, element extraction with `data-fu-id`, click/type/scroll/back
 - [ ] `personas.py`: Tavily context → 5 personas JSON (test on 2 sample sites)
 - [ ] `store.py` + run folders; `POST /runs` creates a run and runs stages 1–2 only
-- [ ] Sample site #1 (`web/public/samples/signup/`), static HTML with deliberate flaws
+- [ ] Sample site #1 (`web/public/samples/signup/`): static HTML with deliberate flaws
 
 **Accept:** `POST /runs` on sample #1 returns 5 personas and a first screenshot in `/data/runs/{id}`.
 
-## Day 2, Wed 21 Oct: one persona walks
+## Day 2: Wed 21 Oct: one persona walks
 
 - [ ] `walker.py` full loop for ONE persona (vision → decide via tools → act → log), step cap, stuck detection
 - [ ] SSE endpoint streams `persona_step` events
@@ -51,7 +52,7 @@ Human:
 **Accept:** One persona completes or gives up on sample #1 end-to-end, visible live in the browser.
 **If not met:** simplify decide step to JSON-mode (no tool calling) on Day 3 morning.
 
-## Day 3, Thu 22 Oct: five personas, expert, synthesis
+## Day 3: Thu 22 Oct: five personas, expert, synthesis
 
 - [ ] 5 walkers in parallel (semaphore), mobile viewport persona
 - [ ] `expert.py` (vision heuristics + deterministic a11y)
@@ -62,7 +63,7 @@ Human:
 **Accept:** A full run on sample #1 produces `report.json` with ≥ 3 issues, each with screenshot + pin + fix.
 Cost per run printed ≤ $0.30.
 
-## Day 4, Fri 23 Oct: the real UI
+## Day 4: Fri 23 Oct: the real UI
 
 Read `docs/04-design-brief.md` first. Ajit reviews at end of day.
 - [ ] Tokens, fonts, layout shell
@@ -74,7 +75,7 @@ Read `docs/04-design-brief.md` first. Ajit reviews at end of day.
 
 **Accept:** Ajit signs off on all 3 screens against the brief (or lists ≤ 5 fixes for Day 5 morning).
 
-## Day 5, Sat 24 Oct: deploy + harden
+## Day 5: Sat 24 Oct: deploy + harden
 
 - [ ] API → HF Spaces (Docker). Secrets set. Persistent `/data` if available.
 - [ ] Web → Vercel. `NEXT_PUBLIC_API_URL` set. CORS.
@@ -85,22 +86,22 @@ Read `docs/04-design-brief.md` first. Ajit reviews at end of day.
 
 **Accept:** Live URL end-to-end on 3 samples from a phone and a laptop. Demo mode works when budget capped.
 
-## Day 6, Sun 25 Oct: submission materials
+## Day 6: Sun 25 Oct: submission materials
 
 - [ ] README: what/why/how, architecture diagram, **exact places Nemotron tiers / Token Factory / Tavily are used**,
       setup, judge instructions (token), cost notes, limitations
 - [ ] LICENSE check visible on GitHub About
-- [ ] `docs/feedback.md`, specific feedback on Token Factory onboarding, Nemotron tool calling, vision, docs
+- [ ] `docs/feedback.md`: specific feedback on Token Factory onboarding, Nemotron tool calling, vision, docs
 - [ ] Devpost description draft (`docs/devpost-description.md`)
 - [ ] Video script + shot list (`docs/video-script.md`), ≤ 2:45
 - Human: record screen (OBS) + voiceover; no music or royalty-free only
 
 **Accept:** README done, video recorded (raw).
 
-## Day 7, Mon 26 Oct: polish
+## Day 7: Mon 26 Oct: polish
 
 - [ ] Fix anything from video recording that looked wrong
-- [ ] Final design pass (Ajit), typography, spacing, copy
+- [ ] Final design pass (Ajit): typography, spacing, copy
 - [ ] Repo audit: no secrets, no junk, `.env.example` complete, `npm run build` + `pytest` green
 - Human: edit video, upload to YouTube (public), fill Devpost draft fully
 
@@ -111,6 +112,7 @@ Read `docs/04-design-brief.md` first. Ajit reviews at end of day.
 - Re-run samples on prod, confirm budget remaining ≥ $15 for judging
 - Submit. Screenshot the confirmation.
 
+## Daily ritual
 
 1. Read this file; find today.
 2. `git pull`; run tests.

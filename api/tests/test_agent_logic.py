@@ -1,4 +1,4 @@
-"""Walker action handling, persona finalization and synthesis grounding, no model calls."""
+"""Walker action handling, persona finalization and synthesis grounding (no model calls)."""
 
 from app.models import Element, Observation, Persona, PersonaResult, Step, Action
 from app.parsing import ToolCall

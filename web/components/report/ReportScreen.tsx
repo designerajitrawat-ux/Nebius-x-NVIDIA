@@ -112,7 +112,7 @@ function ReportView({ report }: { report: Report }) {
         {report.mode === "dry_run" || report.degraded ? (
           <div className="mt-4 flex flex-col gap-2">
             {report.mode === "dry_run" ? (
-              <p className="text-13 text-ink-2">Dry run, persona decisions were scripted; no models were called.</p>
+              <p className="text-13 text-ink-2">Dry run: persona decisions were scripted, and no models were called.</p>
             ) : null}
             {report.degraded ? (
               <p className="text-13 text-ink-2">Written by Nemotron Super because Ultra was unavailable.</p>

@@ -1,4 +1,4 @@
-# 01, Hackathon brief (what we are competing in)
+# 01 · Hackathon brief (what we are competing in)
 
 Source of truth: https://nebiusglobalaihackathon.devpost.com/ (overview, rules, FAQs, updates). Read on 19 Oct 2026.
 
@@ -17,7 +17,7 @@ judge from video + description only, but a live URL is still expected.
 
 ## Two hard requirements (Stage 1 pass/fail)
 
-1. The project makes a **runtime call to the Nebius Token Factory inference API** (or runs on Nebius AI Cloud, we don't use AI Cloud).
+1. The project makes a **runtime call to the Nebius Token Factory inference API** (or runs on Nebius AI Cloud; we don't use AI Cloud).
 2. Uses **at least one NVIDIA open-source model** (Nemotron family for us).
 
 Calling Nemotron through any other provider (HF, OpenRouter) does **not** count.
@@ -41,14 +41,14 @@ persona research and competitor references. Make it visible in the UI and README
 - Overall: $20K / $10K / $6K (any track)
 - Track winner: NVIDIA Jetson Orin Nano
 - A project can win **one overall award OR one track award + one bonus award**
-- Most Valuable Feedback: $100 + swag (10 winners), the feedback section is a real, separate prize
+- Most Valuable Feedback: $100 + swag (10 winners). The feedback section is a real, separate prize
 
-## Judging (Stage 2), 4 criteria, equally weighted, scored 1–5
+## Judging (Stage 2): 4 criteria, equally weighted, scored 1–5
 
-1. **Technological Implementation**, how well built; how effectively Token Factory + Nemotron are used
-2. **Design**, complete, coherent product experience, not a proof of concept
-3. **Potential Impact**, credible, specific case for a real problem for a real audience, shown in the demo
-4. **Quality of the Idea**, creative, non-obvious use; genuine understanding of the problem space
+1. **Technological Implementation**: how well built; how effectively Token Factory + Nemotron are used
+2. **Design**: complete, coherent product experience, not a proof of concept
+3. **Potential Impact**: credible, specific case for a real problem for a real audience, shown in the demo
+4. **Quality of the Idea**: creative, non-obvious use; genuine understanding of the problem space
 
 Tie-break: criterion 1 first, then 2, 3, 4.
 
@@ -68,6 +68,7 @@ Tie-break: criterion 1 first, then 2, 3, 4.
 - Hide API keys; `.env` + `.gitignore`; check repo before submit
 - Make the required tools impossible to miss: in description, "Built With", and **with audio** in the video
 - Video = pitch, not tutorial. Problem → solution working → who it's for → how Nebius/NVIDIA are used
+- Using AI coding assistants to build is explicitly fine
 
 ## Extra credits/links found in Updates
 
@@ -76,7 +77,7 @@ Tie-break: criterion 1 first, then 2, 3, 4.
 - Nebius live build session recording (Devpost YouTube) shows: Hermes agent → Token Factory, model comparison
   via a judge prompt, a **vision model used as a visual QA judge on screenshots**, the same pattern as our
   expert pass. Good precedent to cite in the description.
-- Organizers: "Submit early, video uploads and last-minute debugging always take longer than expected."
+- Organizers: "Submit early: video uploads and last-minute debugging always take longer than expected."
 
 ## Ownership rule
 

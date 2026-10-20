@@ -1,4 +1,4 @@
-"""Expert pass: for every distinct screen the personas saw -
+"""Expert pass: for every distinct screen the personas saw, a
 NEMOTRON_VISION heuristic review (Nielsen's 10) + deterministic accessibility checks (no LLM)."""
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ from pathlib import Path
 from .browser import describe_element
 from .llm import LLM, LLMError, image_part
 from .models import A11yIssue, ExpertFinding, Observation
-from .parsing import short
+from .parsing import short, today_note
 
 log = logging.getLogger("fiveusers.expert")
 
@@ -56,7 +56,7 @@ A11Y_RULES: dict[str, tuple[str, str, str, str]] = {
     "input_no_label": (
         "Form fields need labels (WCAG 1.3.1)",
         "major",
-        "A form field has no label{text}, placeholder text disappears as soon as you type.",
+        "A form field has no label{text}. Placeholder text disappears as soon as you type.",
         "Add a visible <label> tied to the field with for/id; keep the placeholder only as an example.",
     ),
     "control_no_name": (
@@ -148,7 +148,7 @@ def a11y_findings(info: ScreenInfo) -> list[ExpertFinding]:
         detail = items[0][0].detail
         finding = template.format(text=text)
         if kind in {"low_contrast", "small_target"} and detail:
-            finding = finding.rstrip(".") + f", {detail}."
+            finding = finding.rstrip(".") + f". Measured: {detail}."
         first_issue, first_obs = items[0]
         out.append(
             ExpertFinding(
@@ -180,7 +180,7 @@ async def vision_findings(llm: LLM, info: ScreenInfo, *, task: str, run_dir: Pat
                 {
                     "role": "system",
                     "content": "You are a senior UX reviewer doing a heuristic evaluation (Nielsen's 10 usability heuristics). "
-                    "You report only problems you can actually see in the screenshot. JSON only.",
+                    f"You report only problems you can actually see in the screenshot. {today_note()} JSON only.",
                 },
                 {
                     "role": "user",
@@ -188,7 +188,7 @@ async def vision_findings(llm: LLM, info: ScreenInfo, *, task: str, run_dir: Pat
                         {
                             "type": "text",
                             "text": (
-                                f"Page: {obs.path}, \"{obs.title}\". Users on this page are trying to: {task}.\n"
+                                f"Page: {obs.path}, titled \"{obs.title}\". Users on this page are trying to: {task}.\n"
                                 f"Interactive elements (id, role, name):\n{elements}\n\n"
                                 f"List at most {MAX_VISION_FINDINGS} real usability problems on this screen, most severe first. "
                                 "Each: heuristic (one of Nielsen's 10, exact name), severity (critical = blocks the task, "

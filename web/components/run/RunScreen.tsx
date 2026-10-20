@@ -139,7 +139,7 @@ function RunHeader({ run, connection }: { run: LiveRun; connection: ConnectionSt
         </h1>
         {run.audience ? <p className="mt-1 text-13 text-ink-2">Audience: {run.audience}</p> : null}
         {run.mode === "dry_run" ? (
-          <p className="mt-2 text-13 text-ink-2">Dry run, persona decisions are scripted, no models are called.</p>
+          <p className="mt-2 text-13 text-ink-2">Dry run: persona decisions are scripted, and no models are called.</p>
         ) : null}
       </div>
       <dl className="flex shrink-0 gap-6 text-13 tabular-nums">

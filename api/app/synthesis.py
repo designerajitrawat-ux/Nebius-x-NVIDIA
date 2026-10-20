@@ -18,7 +18,7 @@ from . import tavily_client
 from .expert import ScreenInfo
 from .llm import LLM, LLMError
 from .models import ExpertFinding, Fix, Issue, Observation, Persona, Quote, Reference, Step
-from .parsing import clamp_int, short
+from .parsing import clamp_int, short, today_note
 from .report import pin_for_bbox, task_phrase
 from .walker import WalkResult
 
@@ -98,7 +98,7 @@ def build_context(
         )
     lines += ["", "SCREENS:"]
     for s in screens:
-        lines.append(f"- {sid[s.screen]}: {s.label}, visited by {', '.join(sorted(s.visitors))}")
+        lines.append(f"- {sid[s.screen]}: {s.label} (visited by {', '.join(sorted(s.visitors))})")
     lines += ["", "STEP LOGS (persona #step screen confusion: inner voice -> action [result]):"]
     for w in walks:
         for st in w.steps:
@@ -118,12 +118,12 @@ def build_context(
 
 SYSTEM = (
     "You are a principal UX researcher writing the findings of a moderated usability test with five participants. "
-    "You are precise, evidence-driven and practical. You never invent evidence. JSON only."
+    "You are precise, evidence-driven and practical. You never invent evidence. Plain punctuation, no em dashes. JSON only."
 )
 
 
 def instructions(n: int, completed: int, task: str) -> str:
-    return f"""Write the findings as JSON.
+    return f"""Write the findings as JSON. {today_note()} Dates on the site near today are correct, not a bug.
 
 headline: one plain sentence stating the result as a fact with counts, e.g. "{n - completed} of {n} users could not {task_phrase(task)}." (if everyone finished: "All {n} users finished, but ..."). No hype, no "insights".
 subline: one sentence naming the main cause.

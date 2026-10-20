@@ -44,7 +44,7 @@ async def search(query: str, *, max_results: int = 3, run_id: str | None = None,
         )
     except TavilyUnavailable:
         raise
-    except Exception as e:  # noqa: BLE001, any Tavily/network error degrades the same way
+    except Exception as e:  # noqa: BLE001 (any Tavily/network error degrades the same way)
         log.warning("tavily failed (%s): %s", step, type(e).__name__)
         raise TavilyUnavailable(type(e).__name__) from e
     store.record_usage(

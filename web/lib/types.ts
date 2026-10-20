@@ -1,4 +1,4 @@
-// Mirrors api/app/models.py, change both together.
+// Mirrors api/app/models.py. Change both together.
 
 export type Viewport = "desktop" | "mobile";
 export type Stage =

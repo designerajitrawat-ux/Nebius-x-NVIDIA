@@ -1,4 +1,4 @@
-# 02, Product spec: FiveUsers
+# 02 · Product spec: FiveUsers
 
 **Five AI users walk through your product before real ones do.**
 
@@ -6,13 +6,13 @@
 
 Usability testing is the single highest-leverage thing a product team can do, and almost nobody does it
 before shipping: recruiting takes days, sessions cost $50–150 per participant, and small teams/solo
-founders skip it entirely. Designers end up asking a colleague "does this make sense?", one person, same
+founders skip it entirely. Designers end up asking a colleague "does this make sense?": one person, same
 context, same blind spots. Nielsen's classic finding: testing with ~5 users surfaces ~85% of usability
 problems. The problem isn't that five is too few. It's that five is too hard to get.
 
 ## Who it's for
 
-- Product designers and UX designers (primary, the owner's own role)
+- Product designers and UX designers (primary; the owner's own role)
 - Indie hackers / solo founders shipping without a research budget
 - Small product teams before a release
 
@@ -22,13 +22,13 @@ Input → `url`, `task` (natural language), optional `audience` (e.g. "first-tim
 
 Output → a shareable report in ~3–5 minutes:
 
-1. **Task outcome per persona**, completed / gave up / wrong path, with step count and time
-2. **Friction map**, which screens caused confusion, how many personas hit each
+1. **Task outcome per persona**: completed / gave up / wrong path, with step count and time
+2. **Friction map**: which screens caused confusion, how many personas hit each
 3. **Severity-ranked issues** (Critical / Major / Minor), each with an annotated screenshot, which personas
    hit it, a quote in the persona's voice, and a **concrete fix** (copy rewrite, CSS snippet, or flow change)
-4. **Persona transcripts**, step-by-step what each AI user saw, thought, did
-5. **Expert pass**, heuristic + accessibility findings per visited page
-6. **Competitor references** (Tavily), how 2–3 comparable products handle the same step
+4. **Persona transcripts**: step-by-step what each AI user saw, thought, did
+5. **Expert pass**: heuristic + accessibility findings per visited page
+6. **Competitor references** (Tavily): how 2–3 comparable products handle the same step
 7. Export as Markdown; share by link
 
 ## The five personas (generated per run, not fixed)
@@ -36,14 +36,14 @@ Output → a shareable report in ~3–5 minutes:
 Nemotron Super generates 5 personas tailored to the product category + audience. Default archetypes it
 draws from:
 
-- **First-timer**, never seen this category of product
-- **Power user in a hurry**, knows the category, zero patience, skims
-- **Mobile-only / small viewport**, runs at 390px width
-- **Older / lower digital confidence**, reads everything, afraid of mistakes
-- **Non-native English reader**, trips on jargon and idioms
+- **First-timer**: never seen this category of product
+- **Power user in a hurry**: knows the category, zero patience, skims
+- **Mobile-only / small viewport**: runs at 390px width
+- **Older / lower digital confidence**: reads everything, afraid of mistakes
+- **Non-native English reader**: trips on jargon and idioms
 - (alternates: accessibility-focused keyboard user; skeptical buyer; distracted parent)
 
-Each persona has: name, one-line bio, goal, patience (screens before they would quit, a prompt cue; the persona decides when to give up), reading style, what frustrates them, a
+Each persona has: name, one-line bio, goal, patience (screens before they would quit; this is a prompt cue, and the persona decides when to give up), reading style, what frustrates them, a
 "voice" (how they talk in notes).
 
 ## Pipeline (user-visible stages)

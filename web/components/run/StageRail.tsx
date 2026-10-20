@@ -16,7 +16,7 @@ export function StageRail({ stage, failedAt }: { stage: Stage; failedAt: Stage |
   let summary: string;
   if (allDone) summary = "All stages done";
   else if (activeIndex >= 0)
-    summary = `${RAIL_STAGES[activeIndex].label}${failed ? ", stopped" : ""} · ${activeIndex + 1} of ${RAIL_STAGES.length}`;
+    summary = `${RAIL_STAGES[activeIndex].label}${failed ? " (stopped)" : ""} · ${activeIndex + 1} of ${RAIL_STAGES.length}`;
   else summary = "Waiting to start";
 
   return (

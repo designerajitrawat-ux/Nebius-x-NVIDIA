@@ -1,4 +1,4 @@
-/* Marlowe Studio, demo booking flow for FiveUsers. State lives in sessionStorage. */
+/* Marlowe Studio: demo booking flow for FiveUsers. State lives in sessionStorage. */
 (function () {
   'use strict';
 
@@ -267,7 +267,7 @@
     var b = store.get('ms_booking', null);
     var acc = store.get('ms_account', null);
     if (!b || !b.confirmed || !acc) {
-      document.title = 'No booking found, Marlowe Studio';
+      document.title = 'No booking found · Marlowe Studio';
       $('[data-booked]').innerHTML = '<h1>No booking found</h1><p class="lead">We couldn\'t find a confirmed appointment in this session.</p>' +
         '<a class="btn" href="services.html">Book an appointment</a>';
       return;

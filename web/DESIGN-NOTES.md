@@ -70,7 +70,7 @@ Working plan for the three screens, checked against `docs/04-design-brief.md`. T
   on the same screenshot show their pins too, smaller and linked to their issue; the current one gets a soft
   halo. Tall full-page screenshots are cropped to the viewport ratio and scrolled so the pin sits in view.
 - Text column: pin number + severity word (signal-ink / warn-ink / ink-2), 22px title, screen, "Hit by",
-  persona quote in Instrument Serif italic 22px with "- Name" in Inter, why, fix block, references.
+  persona quote in Instrument Serif italic 22px with the persona's name below it in Inter, why, fix block, references.
 - Fix block: "Copy fix" / "CSS fix" / "Flow fix" label, summary, then before/after. Copy shows the old text
   struck through, CSS shows two mono code blocks, flow shows two short paths.
 - Header line in ink-2 13px with "Copy link" and "Export as Markdown" as hairline buttons. Headline 28px,

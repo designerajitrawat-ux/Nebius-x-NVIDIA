@@ -24,7 +24,7 @@ export function StartScreen() {
         </p>
       ) : null}
       {h?.mode === "dry_run" ? (
-        <p className="text-13 text-ink-2">Dry run, persona decisions are scripted, no models are called.</p>
+        <p className="text-13 text-ink-2">Dry run: persona decisions are scripted, and no models are called.</p>
       ) : null}
       {h?.mode === "unconfigured" ? (
         <p className="text-13 text-ink-2">

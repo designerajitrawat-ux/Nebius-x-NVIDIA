@@ -1,4 +1,4 @@
-"""`python -m app`, run the API locally (port 7860, like Hugging Face Spaces)."""
+"""`python -m app` runs the API locally (port 7860, like Hugging Face Spaces)."""
 
 import asyncio
 import os

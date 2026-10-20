@@ -1,4 +1,4 @@
-# FiveUsers API, Hugging Face Spaces (Docker SDK), port 7860.
+# FiveUsers API on Hugging Face Spaces (Docker SDK), port 7860.
 # Base image ships Chromium + its system deps for exactly this Playwright version.
 FROM mcr.microsoft.com/playwright/python:v1.64.0-noble
 

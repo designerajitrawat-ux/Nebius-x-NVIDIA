@@ -30,7 +30,7 @@ export function formatDuration(seconds: number): string {
   return s === 0 ? `${m} min` : `${m} min ${String(s).padStart(2, "0")} s`;
 }
 
-/** "1:04", a running clock. */
+/** A running clock, such as "1:04". */
 export function formatClock(seconds: number): string {
   const total = Math.max(0, Math.floor(seconds));
   const m = Math.floor(total / 60);

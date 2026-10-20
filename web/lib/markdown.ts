@@ -15,14 +15,14 @@ export function reportToMarkdown(report: Report): string {
     `${report.task} · ${report.site} · ${formatDate(report.created_at)} · ${report.total} personas · ${report.completed} completed`,
     "",
   );
-  if (report.mode === "dry_run") out.push("> Dry run, persona decisions were scripted; no models were called.", "");
+  if (report.mode === "dry_run") out.push("> Dry run: persona decisions were scripted, and no models were called.", "");
   if (report.degraded) out.push("> Written by Nemotron Super because Ultra was unavailable.", "");
 
   out.push("## Issues", "");
   for (const issue of report.issues) {
-    out.push(`### ${issue.id}. ${SEVERITY_LABEL[issue.severity]}, ${issue.title}`, "");
+    out.push(`### ${issue.id}. ${SEVERITY_LABEL[issue.severity]}: ${issue.title}`, "");
     out.push(`Screen: ${issue.screen_label} · Hit by ${issue.personas_hit.map(name).join(", ")}`, "");
-    if (issue.quote) out.push(`> “${issue.quote.text}”, ${name(issue.quote.persona_id)}`, "");
+    if (issue.quote) out.push(`> ${name(issue.quote.persona_id)}: “${issue.quote.text}”`, "");
     out.push(issue.why, "");
     out.push(`**${FIX_LABEL[issue.fix.type]}:** ${issue.fix.summary}`, "");
     if (issue.fix.type === "css") {
@@ -34,7 +34,7 @@ export function reportToMarkdown(report: Report): string {
     }
     if (issue.refs.length > 0) {
       out.push("See how others do it (via Tavily):");
-      for (const ref of issue.refs) out.push(`- [${ref.title}](${ref.url})${ref.note ? `, ${ref.note}` : ""}`);
+      for (const ref of issue.refs) out.push(`- [${ref.title}](${ref.url})${ref.note ? `: ${ref.note}` : ""}`);
       out.push("");
     }
   }
@@ -47,7 +47,7 @@ export function reportToMarkdown(report: Report): string {
 
   out.push("## Personas", "", "| Persona | Outcome | Steps | Time |", "|---|---|---|---|");
   for (const p of report.personas) {
-    out.push(`| ${p.name}, ${p.age}, ${p.archetype} | ${OUTCOME_LABEL[p.outcome]} | ${p.steps} | ${formatDuration(p.seconds)} |`);
+    out.push(`| ${p.name}, ${p.age} · ${p.archetype} | ${OUTCOME_LABEL[p.outcome]} | ${p.steps} | ${formatDuration(p.seconds)} |`);
   }
   out.push("");
 

@@ -70,7 +70,7 @@ export function IssueBlock({
                 <span aria-hidden="true">”</span>
               </p>
             </blockquote>
-            <figcaption className="mt-2 text-13 text-ink-2">- {nameOf(issue.quote.persona_id)}</figcaption>
+            <figcaption className="mt-2 text-13 text-ink-2">{nameOf(issue.quote.persona_id)}</figcaption>
           </figure>
         ) : null}
 
@@ -91,7 +91,7 @@ export function IssueBlock({
                   </a>
                   <p className="text-13 text-ink-2">
                     {hostOf(ref.url)}
-                    {ref.note ? `, ${ref.note}` : ""}
+                    {ref.note ? ` · ${ref.note}` : ""}
                   </p>
                 </li>
               ))}

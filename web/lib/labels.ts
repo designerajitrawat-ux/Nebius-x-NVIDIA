@@ -103,7 +103,7 @@ export const FIX_LABEL: Record<FixType, string> = {
 
 export const TIER_ORDER = ["fast", "vision", "agent", "reason", "tavily", "dry"];
 
-/** What each tier did in a run, the "which Nemotron did what" line. */
+/** What each tier did in a run: the "which Nemotron did what" line. */
 export const TIER_ROLE: Record<string, string> = {
   fast: "Labelled page elements and wrote short summaries",
   vision: "Read every screenshot in character, then reviewed each page",

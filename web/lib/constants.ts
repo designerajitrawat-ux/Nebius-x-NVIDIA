@@ -1,7 +1,7 @@
 import type { SampleInfo } from "./types";
 
 /** Public repo. Replace OWNER before submission. */
-export const GITHUB_URL = "https://github.com/OWNER/fiveusers";
+export const GITHUB_URL = "https://github.com/designerajitrawat-ux/Nebius-x-NVIDIA";
 
 export const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:7860").replace(/\/+$/, "");
 
