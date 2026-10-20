@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { DesignCredit } from "./DesignCredit";
 
 /** Quiet footer. `aside` holds page-specific facts such as credits remaining. */
 export function SiteFooter({ aside }: { aside?: ReactNode }) {
@@ -10,7 +11,10 @@ export function SiteFooter({ aside }: { aside?: ReactNode }) {
           <span aria-hidden="true" className="hidden h-1 w-1 rounded-full bg-ink/25 sm:block" />
           <span>Runs on Nebius Token Factory · NVIDIA Nemotron · Tavily</span>
         </p>
-        {aside ? <div className="tabular-nums">{aside}</div> : null}
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-5">
+          {aside ? <div className="tabular-nums">{aside}</div> : null}
+          <DesignCredit />
+        </div>
       </div>
     </footer>
   );

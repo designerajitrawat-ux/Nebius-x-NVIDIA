@@ -5,6 +5,18 @@ redeploy both automatically once this is set up. Do the steps in order; each one
 
 Placeholders: `<hf>` = your Hugging Face username, `<app>` = your Vercel project name.
 
+## Timeline (code stays private until the end)
+
+| When | What |
+|---|---|
+| Now | Create the Hugging Face Space as **Private** and deploy the API to it. Open `/health` in a browser where you are logged in to Hugging Face to check it (private Spaces need that login). |
+| 27 Oct | Switch the Space to **Public**, connect Vercel (step 2), seed the samples on production (step 3), run the production checks (step 5). |
+| 28 Oct | Make the GitHub repo public and check the License shows MIT in About. |
+| 29 Oct | Submit on Devpost. |
+
+A public Space shows the API code in its Files tab, which is why it stays private until 27 Oct. Vercel only
+publishes the built web app, not its source.
+
 ## 0. Before you start
 
 - Keys work locally: `api\.venv\Scripts\python scripts\day0_test.py` prints a Nemotron reply and a Tavily result.
@@ -16,7 +28,7 @@ Placeholders: `<hf>` = your Hugging Face username, `<app>` = your Vercel project
 ## 1. API → Hugging Face Space
 
 1. huggingface.co → **New** → **Space**. Name `fiveusers-api`, SDK **Docker** → **Blank**, hardware
-   **CPU basic (free)**, visibility **Public**. Create.
+   **CPU basic (free)**, visibility **Private** for now (switch to Public on 27 Oct). Create.
 2. Space → **Settings** → **Variables and secrets**:
 
    | Type | Name | Value |

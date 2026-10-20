@@ -115,6 +115,9 @@ A few decisions that make the report trustworthy:
 - A CI check: run the five users on every preview deploy and comment the report on the pull request
 - Token Factory Sandboxes and the Batch API for cheaper nightly runs
 
+## Design
+Product and visual design by Ajit Singh Rawat: https://ajitrawat.framer.website/
+
 ## Built with
 nebius-token-factory, nvidia-nemotron, tavily, python, fastapi, playwright, next.js, typescript, tailwind,
 hugging-face-spaces, vercel

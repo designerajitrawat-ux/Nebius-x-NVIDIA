@@ -1,5 +1,6 @@
 "use client";
 
+import { DesignCredit } from "@/components/DesignCredit";
 import { motion } from "motion/react";
 import { useReducedMotion } from "@/lib/motion";
 import Link from "next/link";
@@ -280,6 +281,7 @@ function RunFooter() {
     <footer className="page relative mt-auto pt-20 pb-8">
       <div className="flex flex-col gap-1 border-t border-night-line pt-4 text-13 text-white/60 sm:flex-row sm:items-baseline sm:justify-between">
         <p>Runs on Nebius Token Factory · NVIDIA Nemotron · Tavily</p>
+        <DesignCredit dark />
       </div>
     </footer>
   );

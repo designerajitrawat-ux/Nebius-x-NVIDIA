@@ -1,7 +1,10 @@
 import type { SampleInfo } from "./types";
 
-/** Public repo. Replace OWNER before submission. */
+/** Code repository. */
 export const GITHUB_URL = "https://github.com/designerajitrawat-ux/Nebius-x-NVIDIA";
+
+/** Product and visual design credit in the footer. */
+export const DESIGNER_URL = "https://ajitrawat.framer.website/";
 
 export const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:7860").replace(/\/+$/, "");
 

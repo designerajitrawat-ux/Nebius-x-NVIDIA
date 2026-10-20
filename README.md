@@ -134,6 +134,11 @@ The test browser opens URLs that strangers type in, so it's fenced in:
   for talking to real customers.
 - Accessibility checks are a quick scan, not a full audit.
 
+## Credits
+
+Product and visual design by [Ajit Singh Rawat](https://ajitrawat.framer.website/). Feedback on Nebius Token
+Factory and NVIDIA Nemotron, with the experiments behind it: [`docs/feedback.md`](docs/feedback.md).
+
 ## License
 
 MIT. See [`LICENSE`](LICENSE).

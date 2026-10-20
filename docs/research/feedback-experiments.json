@@ -1,0 +1,585 @@
+{
+ "date": "2026-10-20 18:51",
+ "endpoint": "https://api.tokenfactory.nebius.com/v1/",
+ "E1_tool_calling": {
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "calls": 30,
+  "structured_tool_calls": 29,
+  "valid_targets": 29,
+  "errors": 0,
+  "tools_used": {
+   "click": 21,
+   "fill": 2,
+   "scroll": 3,
+   "type": 3
+  },
+  "latency": {
+   "n": 30,
+   "p50_s": 1.447,
+   "p95_s": 6.477,
+   "max_s": 6.507
+  },
+  "rows": [
+   {
+    "page": "/samples/signup/index.html",
+    "persona": "First-timer",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 4877,
+    "out_tokens": 63
+   },
+   {
+    "page": "/samples/signup/index.html",
+    "persona": "Power user in a hurry",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1447,
+    "out_tokens": 106
+   },
+   {
+    "page": "/samples/signup/index.html",
+    "persona": "Mobile-only",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1095,
+    "out_tokens": 79
+   },
+   {
+    "page": "/samples/signup/index.html",
+    "persona": "Older, lower digital confidence",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1258,
+    "out_tokens": 63
+   },
+   {
+    "page": "/samples/signup/index.html",
+    "persona": "Non-native English reader",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 5426,
+    "out_tokens": 67
+   },
+   {
+    "page": "/samples/signup/pricing.html",
+    "persona": "First-timer",
+    "structured": true,
+    "valid_target": true,
+    "tool": "scroll",
+    "ms": 1130,
+    "out_tokens": 69
+   },
+   {
+    "page": "/samples/signup/pricing.html",
+    "persona": "Power user in a hurry",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 4272,
+    "out_tokens": 77
+   },
+   {
+    "page": "/samples/signup/pricing.html",
+    "persona": "Mobile-only",
+    "structured": true,
+    "valid_target": true,
+    "tool": "scroll",
+    "ms": 1161,
+    "out_tokens": 75
+   },
+   {
+    "page": "/samples/signup/pricing.html",
+    "persona": "Older, lower digital confidence",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 6039,
+    "out_tokens": 91
+   },
+   {
+    "page": "/samples/signup/pricing.html",
+    "persona": "Non-native English reader",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 2048,
+    "out_tokens": 77
+   },
+   {
+    "page": "/samples/signup/signup.html?plan=team",
+    "persona": "First-timer",
+    "structured": true,
+    "valid_target": true,
+    "tool": "type",
+    "ms": 1249,
+    "out_tokens": 86
+   },
+   {
+    "page": "/samples/signup/signup.html?plan=team",
+    "persona": "Power user in a hurry",
+    "structured": true,
+    "valid_target": true,
+    "tool": "fill",
+    "ms": 3095,
+    "out_tokens": 288
+   },
+   {
+    "page": "/samples/signup/signup.html?plan=team",
+    "persona": "Mobile-only",
+    "structured": true,
+    "valid_target": true,
+    "tool": "type",
+    "ms": 1361,
+    "out_tokens": 138
+   },
+   {
+    "page": "/samples/signup/signup.html?plan=team",
+    "persona": "Older, lower digital confidence",
+    "structured": true,
+    "valid_target": true,
+    "tool": "type",
+    "ms": 1525,
+    "out_tokens": 79
+   },
+   {
+    "page": "/samples/signup/signup.html?plan=team",
+    "persona": "Non-native English reader",
+    "structured": true,
+    "valid_target": true,
+    "tool": "fill",
+    "ms": 6507,
+    "out_tokens": 228
+   },
+   {
+    "page": "/samples/checkout/product.html?id=everyday-tee",
+    "persona": "First-timer",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1345,
+    "out_tokens": 75
+   },
+   {
+    "page": "/samples/checkout/product.html?id=everyday-tee",
+    "persona": "Power user in a hurry",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1096,
+    "out_tokens": 97
+   },
+   {
+    "page": "/samples/checkout/product.html?id=everyday-tee",
+    "persona": "Mobile-only",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1017,
+    "out_tokens": 78
+   },
+   {
+    "page": "/samples/checkout/product.html?id=everyday-tee",
+    "persona": "Older, lower digital confidence",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1095,
+    "out_tokens": 67
+   },
+   {
+    "page": "/samples/checkout/product.html?id=everyday-tee",
+    "persona": "Non-native English reader",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1507,
+    "out_tokens": 64
+   },
+   {
+    "page": "/samples/booking/index.html",
+    "persona": "First-timer",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1118,
+    "out_tokens": 63
+   },
+   {
+    "page": "/samples/booking/index.html",
+    "persona": "Power user in a hurry",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 6477,
+    "out_tokens": 62
+   },
+   {
+    "page": "/samples/booking/index.html",
+    "persona": "Mobile-only",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 899,
+    "out_tokens": 79
+   },
+   {
+    "page": "/samples/booking/index.html",
+    "persona": "Older, lower digital confidence",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1567,
+    "out_tokens": 79
+   },
+   {
+    "page": "/samples/booking/index.html",
+    "persona": "Non-native English reader",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 6299,
+    "out_tokens": 77
+   },
+   {
+    "page": "/samples/booking/services.html",
+    "persona": "First-timer",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 5229,
+    "out_tokens": 126
+   },
+   {
+    "page": "/samples/booking/services.html",
+    "persona": "Power user in a hurry",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1108,
+    "out_tokens": 109
+   },
+   {
+    "page": "/samples/booking/services.html",
+    "persona": "Mobile-only",
+    "structured": false,
+    "valid_target": false,
+    "tool": null,
+    "ms": 2609,
+    "out_tokens": 400
+   },
+   {
+    "page": "/samples/booking/services.html",
+    "persona": "Older, lower digital confidence",
+    "structured": true,
+    "valid_target": true,
+    "tool": "scroll",
+    "ms": 1236,
+    "out_tokens": 113
+   },
+   {
+    "page": "/samples/booking/services.html",
+    "persona": "Non-native English reader",
+    "structured": true,
+    "valid_target": true,
+    "tool": "click",
+    "ms": 1195,
+    "out_tokens": 98
+   }
+  ]
+ },
+ "E2_reasoning_on_off": {
+  "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+  "context_chars": 15466,
+  "rows": [
+   {
+    "thinking": true,
+    "finish_reason": "stop",
+    "prompt_tokens": 4255,
+    "out_tokens": 1508,
+    "ms": 5106,
+    "json_parsed": true,
+    "issues": 8,
+    "cost_usd": 0.0088
+   },
+   {
+    "thinking": true,
+    "finish_reason": "stop",
+    "prompt_tokens": 4255,
+    "out_tokens": 1472,
+    "ms": 5131,
+    "json_parsed": true,
+    "issues": 8,
+    "cost_usd": 0.0087
+   },
+   {
+    "thinking": false,
+    "finish_reason": "stop",
+    "prompt_tokens": 4255,
+    "out_tokens": 1053,
+    "ms": 3811,
+    "json_parsed": true,
+    "issues": 16,
+    "cost_usd": 0.0074
+   },
+   {
+    "thinking": false,
+    "finish_reason": "stop",
+    "prompt_tokens": 4255,
+    "out_tokens": 581,
+    "ms": 2603,
+    "json_parsed": true,
+    "issues": 8,
+    "cost_usd": 0.006
+   }
+  ]
+ },
+ "E3_vision_judge": {
+  "model": "nvidia/Nemotron-3.5-Super-VL",
+  "screens": 24,
+  "positives": 10,
+  "correct": 24,
+  "true_positives": 10,
+  "true_negatives": 14,
+  "latency": {
+   "n": 24,
+   "p50_s": 1.023,
+   "p95_s": 1.289,
+   "max_s": 1.296
+  },
+  "rows": [
+   {
+    "screen": "pezej3l6vf/diego/14.jpg",
+    "truth": true,
+    "said": true,
+    "ms": 962
+   },
+   {
+    "screen": "aigh9oncdc/diego/14.jpg",
+    "truth": true,
+    "said": true,
+    "ms": 827
+   },
+   {
+    "screen": "ozluo54js6/koji/14.jpg",
+    "truth": true,
+    "said": true,
+    "ms": 1052
+   },
+   {
+    "screen": "pezej3l6vf/aisha/12.jpg",
+    "truth": true,
+    "said": true,
+    "ms": 1296
+   },
+   {
+    "screen": "aigh9oncdc/diego/12.jpg",
+    "truth": true,
+    "said": true,
+    "ms": 991
+   },
+   {
+    "screen": "ozluo54js6/margaret/17.jpg",
+    "truth": true,
+    "said": true,
+    "ms": 1250
+   },
+   {
+    "screen": "bc6yhqc4t4/diego/12.jpg",
+    "truth": true,
+    "said": true,
+    "ms": 1289
+   },
+   {
+    "screen": "pezej3l6vf/diego/17.jpg",
+    "truth": true,
+    "said": true,
+    "ms": 856
+   },
+   {
+    "screen": "aigh9oncdc/diego/13.jpg",
+    "truth": true,
+    "said": true,
+    "ms": 879
+   },
+   {
+    "screen": "ozluo54js6/aisha/14.jpg",
+    "truth": true,
+    "said": true,
+    "ms": 1104
+   },
+   {
+    "screen": "ozluo54js6/aisha/13.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 922
+   },
+   {
+    "screen": "aigh9oncdc/aisha/13.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 1072
+   },
+   {
+    "screen": "bc6yhqc4t4/amina/11.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 904
+   },
+   {
+    "screen": "aigh9oncdc/sunita/13.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 951
+   },
+   {
+    "screen": "pezej3l6vf/mei/13.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 1023
+   },
+   {
+    "screen": "pezej3l6vf/kofi/09.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 915
+   },
+   {
+    "screen": "aigh9oncdc/wei/09.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 1116
+   },
+   {
+    "screen": "x9kf6lnanr/diego/10.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 860
+   },
+   {
+    "screen": "bc6yhqc4t4/sunita/06.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 854
+   },
+   {
+    "screen": "bc6yhqc4t4/kwame/03.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 943
+   },
+   {
+    "screen": "pezej3l6vf/diego/03.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 1174
+   },
+   {
+    "screen": "ozluo54js6/aisha/04.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 1071
+   },
+   {
+    "screen": "aigh9oncdc/sunita/01.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 1152
+   },
+   {
+    "screen": "ozluo54js6/sofia/02.jpg",
+    "truth": false,
+    "said": false,
+    "ms": 1176
+   }
+  ]
+ },
+ "E4_default_reasoning_vision": {
+  "model": "nvidia/Nemotron-3.5-Super-VL",
+  "max_tokens": 60,
+  "rows": [
+   {
+    "enable_thinking": "default (on)",
+    "empty": true,
+    "finish_reason": "length",
+    "out_tokens": 60,
+    "ms": 1235
+   },
+   {
+    "enable_thinking": "default (on)",
+    "empty": true,
+    "finish_reason": "length",
+    "out_tokens": 60,
+    "ms": 1232
+   },
+   {
+    "enable_thinking": "default (on)",
+    "empty": true,
+    "finish_reason": "length",
+    "out_tokens": 60,
+    "ms": 988
+   },
+   {
+    "enable_thinking": "default (on)",
+    "empty": true,
+    "finish_reason": "length",
+    "out_tokens": 60,
+    "ms": 1058
+   },
+   {
+    "enable_thinking": false,
+    "empty": false,
+    "finish_reason": "stop",
+    "out_tokens": 17,
+    "ms": 1103
+   },
+   {
+    "enable_thinking": false,
+    "empty": false,
+    "finish_reason": "stop",
+    "out_tokens": 17,
+    "ms": 1252
+   },
+   {
+    "enable_thinking": false,
+    "empty": false,
+    "finish_reason": "stop",
+    "out_tokens": 17,
+    "ms": 1087
+   },
+   {
+    "enable_thinking": false,
+    "empty": false,
+    "finish_reason": "stop",
+    "out_tokens": 17,
+    "ms": 1077
+   }
+  ]
+ },
+ "E5_burst": {
+  "model": "nvidia/Nemotron-3_5-Lightning",
+  "concurrent": 24,
+  "succeeded": 24,
+  "errors": [],
+  "wall_s": 3.18,
+  "latency": {
+   "n": 24,
+   "p50_s": 1.148879,
+   "p95_s": 3.124647,
+   "max_s": 3.136
+  }
+ },
+ "E6_date_awareness": {
+  "actual_date": "2026-10-20",
+  "answers": {
+   "nvidia/Nemotron-3_5-Lightning": "2025-01-23",
+   "nvidia/nemotron-3-super-120b-a12b": "2025-04-16",
+   "nvidia/Nemotron-3.5-Super-VL": "2024-05-23"
+  }
+ },
+ "experiment_cost_usd": 0.0719
+}
