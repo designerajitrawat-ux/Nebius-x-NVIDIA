@@ -32,6 +32,7 @@ from .models import (
     Usage,
     UsageRow,
 )
+from .parsing import plain_dashes
 from .personas import default_personas, infer_category, recruit, research, site_brief
 from .report import annotate, to_markdown
 from .store import store
@@ -156,7 +157,8 @@ async def run_pipeline(run_id: str, *, url: str, task: str, audience: str | None
                 degraded=syn.degraded, refs_status=refs_status, research=brief.research,
             )
             annotate(run_dir, rep.issues)
-            store.write_json(run_id, "report.json", rep.model_dump())
+            # Models and web snippets still slip in em dashes now and then; the published report never shows one.
+            store.write_json(run_id, "report.json", plain_dashes(rep.model_dump()))
             store.finish_run(run_id, status="done")
             await bus.emit("stage", stage="done", at=time.time(), cost_usd=rep.usage.total_cost_usd)
             await bus.emit("report_ready", report_id=run_id)

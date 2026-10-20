@@ -53,3 +53,8 @@ Three lines per day: done / blocked / tomorrow. The log is appended each day.
   - Last run: 3 of 5 completed; issues found S1/S2 (pricing, card), S11 (unlabeled +), S13 (project key).
 - blocked: GitHub username (push + header link); Builder Program promo email.
 - next: runs on checkout + booking samples → seed the 3 demo reports → README/docs say Super VL instead of Nano Omni.
+- later on Day 1:
+  - Models now get today's date. Before that, a correct October 2026 calendar was reported as a critical "wrong month" bug.
+  - Published reports never contain em dashes: models and web snippets are cleaned before the report is saved.
+  - Live demo samples saved in api/samples: signup 4 of 5 finished, booking 4 of 5, checkout 0 of 5 (unlabeled colour swatches).
+  - GitHub repo: designerajitrawat-ux/Nebius-x-NVIDIA.

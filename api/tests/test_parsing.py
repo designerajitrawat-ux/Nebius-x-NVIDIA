@@ -104,3 +104,10 @@ def test_today_note_names_the_day_and_date():
     from app.parsing import today_note
 
     assert today_note(date(2026, 10, 20)) == "Today is Tuesday, 20 October 2026."
+
+
+def test_plain_dashes_reaches_every_string():
+    from app.parsing import plain_dashes
+
+    data = {"a": "Fast \u2014 and clear", "b": ["x\u2014y", 3], "c": {"d": "ok"}}
+    assert plain_dashes(data) == {"a": "Fast - and clear", "b": ["x - y", 3], "c": {"d": "ok"}}

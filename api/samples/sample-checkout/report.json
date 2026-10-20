@@ -1,0 +1,1310 @@
+{
+ "id": "sample-checkout",
+ "mode": "live",
+ "degraded": false,
+ "created_at": 1792473599.6033118,
+ "url": "http://localhost:3000/samples/checkout/index.html",
+ "site": "localhost:3000",
+ "task": "Buy a medium t-shirt in blue and pay by card",
+ "audience": null,
+ "category": "online clothing store",
+ "headline": "5 of 5 users could not buy a medium t-shirt in blue and pay by card.",
+ "subline": "Color swatches have no visible labels or selection state, so users cannot identify or confirm the blue option.",
+ "completed": 0,
+ "total": 5,
+ "personas": [
+  {
+   "id": "ana",
+   "name": "Ana",
+   "age": 28,
+   "initial": "A",
+   "archetype": "first-timer",
+   "bio": "Junior graphic designer who recently moved to Portland and needs basic workwear; she's never bought clothes online before and prefers supporting sustainable…",
+   "viewport": "desktop",
+   "outcome": "out_of_steps",
+   "reason": "Stopped after 16 screens without finishing",
+   "steps": 17,
+   "seconds": 70.0
+  },
+  {
+   "id": "diego",
+   "name": "Diego",
+   "age": 35,
+   "initial": "D",
+   "archetype": "power user in a hurry",
+   "bio": "Freelance photographer in Barcelona who lives in tees between shoots; he orders basics monthly and expects speed - no time for distractions.",
+   "viewport": "desktop",
+   "outcome": "stuck",
+   "reason": "Three actions in a row changed nothing",
+   "steps": 7,
+   "seconds": 27.4
+  },
+  {
+   "id": "zahara",
+   "name": "Zahara",
+   "age": 24,
+   "initial": "Z",
+   "archetype": "mobile-only",
+   "bio": "University student in Nairobi studying environmental science; she manages her budget carefully and buys durable basics to avoid fast fashion waste.",
+   "viewport": "mobile",
+   "outcome": "out_of_steps",
+   "reason": "Stopped after 16 screens without finishing",
+   "steps": 17,
+   "seconds": 69.0
+  },
+  {
+   "id": "elaine",
+   "name": "Elaine",
+   "age": 68,
+   "initial": "E",
+   "archetype": "older, lower digital confidence",
+   "bio": "Retired librarian in Bristol who volunteers at a community garden; she values quality and longevity in clothing but worries about making online mistakes.",
+   "viewport": "desktop",
+   "outcome": "stuck",
+   "reason": "Three actions in a row changed nothing",
+   "steps": 16,
+   "seconds": 62.0
+  },
+  {
+   "id": "kwame",
+   "name": "Kwame",
+   "age": 42,
+   "initial": "K",
+   "archetype": "non-native English reader",
+   "bio": "Software engineer originally from Accra, now based in Berlin; he speaks fluent German but shops in English and often misses idiomatic phrases or cultural…",
+   "viewport": "desktop",
+   "outcome": "out_of_steps",
+   "reason": "Stopped after 16 screens without finishing",
+   "steps": 16,
+   "seconds": 72.4
+  }
+ ],
+ "issues": [
+  {
+   "id": 1,
+   "severity": "critical",
+   "title": "Color swatches lack visible labels and selection state",
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "screenshot": "ana/02.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.8906,
+    "y": 0.0912
+   },
+   "personas_hit": [
+    "ana",
+    "diego",
+    "elaine",
+    "kwame",
+    "zahara"
+   ],
+   "quote": {
+    "persona_id": "ana",
+    "text": "Trying to see if this first color dot is blue"
+   },
+   "why": "All five users repeatedly clicked unlabeled color swatches (element 7) trying to find blue, but the swatches show no text labels, no hover/focus indication, and no selected state. Users could not identify which swatch represented blue nor confirm a selection, causing repeated trial-and-error clicks and eventual abandonment.",
+   "fix": {
+    "type": "css",
+    "summary": "Add visible text labels to each color swatch and a clear selected state indicator.",
+    "before": "Color swatches are icon-only buttons with no accessible name, no visible label, and no visual selected state.",
+    "after": ".color-swatch { position: relative; } .color-swatch::after { content: attr(data-color-name); position: absolute; bottom: -1.5em; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 0.75rem; color: #333; } .color-swatch[aria-pressed=\"true\"] { outline: 3px solid #0066cc; outline-offset: 2px; }"
+   },
+   "refs": [
+    {
+     "title": "29 Best Clothing Brand Website Examples 2026 - Colorlib",
+     "url": "https://colorlib.com/wp/clothing-brand-website-examples",
+     "note": "What stands out: The clean, minimalist layout lets the work speak for itself - no distractions, just great design. ### 22. Bombas Built with: Shopify Socks, underwear, and t-shirts with one-donated-per-purchased…"
+    },
+    {
+     "title": "10 UX Best Practices to Follow in 2026",
+     "url": "https://uxpilot.ai/blogs/ux-best-practices",
+     "note": "Interviews (qualitative) – Talk to users via one-on-one calls, focus groups, or surveys. You can ask open-ended questions like \"What's frustrating about X?\" or \"Walk me through how you do Y.\" Observation (behavioral) –…"
+    }
+   ],
+   "alt": "I notice the product page for a white t-shirt called The Everyday Tee. I need to find the blue color option and select size M. The color dots are small and I am not sure which one is blue. I wish things were labeled more simply."
+  },
+  {
+   "id": 2,
+   "severity": "critical",
+   "title": "Checkout page missing; users land on product homepage",
+   "screen": "1a188798fb",
+   "screen_label": "Better basics, worn daily",
+   "screenshot": "ana/01.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.177,
+    "y": 0.9838
+   },
+   "personas_hit": [
+    "ana",
+    "diego",
+    "elaine",
+    "kwame",
+    "zahara"
+   ],
+   "quote": {
+    "persona_id": "ana",
+    "text": "Let me check out the Everyday Tee first - that sounds like what I'm looking for"
+   },
+   "why": "The URL path '/checkout/' serves a product homepage (S1) with no cart, checkout form, or payment controls. Users must first navigate to a product page (S2), select options, add to bag, then find a separate checkout flow. None reached payment.",
+   "fix": {
+    "type": "flow",
+    "summary": "Route '/checkout/' to a checkout flow with cart summary and payment, or rename the URL to match the product listing page.",
+    "before": "Current flow: /checkout/ -> product homepage (S1) -> product page (S2) -> add to bag -> unknown cart -> unknown checkout.",
+    "after": "Expected flow: /checkout/ -> cart review -> shipping -> payment -> confirmation. If the page is a product listing, change the URL to '/shop/' or '/products/'."
+   },
+   "refs": [
+    {
+     "title": "9 UX Design Practices for Online Ecommerce Stores",
+     "url": "https://uxpilot.ai/blogs/ux-design-online-store",
+     "note": "For example, Patagonia displays them in the Shopping Cart section, before users proceed to the actual checkout. The online store eliminates any unpleasant surprises - users are more likely to complete the checkout if…"
+    },
+    {
+     "title": "Ecommerce UX Best Practices: User Experience Design Guide",
+     "url": "https://www.instinctools.com/blog/ecommerce-ux-best-practices",
+     "note": "### 1. First interaction with your website They say that the UX of the homepage of an online store is critical for your business. But what about a shopping card? Or a product page? In reality, users can land anywhere…"
+    }
+   ],
+   "alt": "I see a blue t-shirt on the page. I need to find a size medium and a way to add it to my cart. The color swatches are small and I am not sure which one is the exact blue I want. I do not see a clear size selector yet."
+  },
+  {
+   "id": 3,
+   "severity": "major",
+   "title": "Size buttons lack visible selected state",
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "screenshot": "diego/04.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.7195,
+    "y": 0.68
+   },
+   "personas_hit": [
+    "ana",
+    "diego",
+    "elaine",
+    "kwame",
+    "zahara"
+   ],
+   "quote": {
+    "persona_id": "diego",
+    "text": "Medium size selected, quick and easy."
+   },
+   "why": "Users clicked 'M' (element 20) but received no visual confirmation that Medium was selected. Diego clicked M twice (steps 4 and 6), Ana clicked M then later doubted selection, Zahara scrolled up/down to verify. The absence of a selected state forces users to guess or re-click.",
+   "fix": {
+    "type": "css",
+    "summary": "Add a clear selected state style to size buttons.",
+    "before": "Size buttons (XS, S, M, L, XL, XXL) show no visual difference when selected.",
+    "after": ".size-button[aria-pressed=\"true\"] { background-color: #000; color: #fff; border-color: #000; } .size-button:focus-visible { outline: 3px solid #0066cc; outline-offset: 2px; }"
+   },
+   "refs": [
+    {
+     "title": "Always Use “Buttons” for Size Selection (28% of Desktop Sites Don’t) – Baymard",
+     "url": "https://baymard.com/research-articles/use-buttons-for-size-selection",
+     "note": "“This just has a ring around. I don’t know if that means it is selected?” H&M exposes the size selectors, but the indication that a size has been selected is overly subtle - once clicked, a small ring encircles the “M”…"
+    },
+    {
+     "title": "Everything You Need to Know for PERFECT Button States In UX Design",
+     "url": "https://www.youtube.com/watch?v=hrRBGjYjTfA",
+     "note": "[1:14] It's a subtle color or shadow change that lets the user know that they can interact with the button, but it can't be too noticeable because that's just going to lead to visual noise, which can then disrupt the…"
+    }
+   ],
+   "alt": "I see a product page for The Everyday Tee. I need to find the blue color and medium size to buy it. The color swatches and size buttons are clear and easy to read. I can add it to my bag quickly.I see a product page for The Everyday Tee. I need to find the blue color and medium size to buy it. The…"
+  },
+  {
+   "id": 4,
+   "severity": "major",
+   "title": "Color swatches and navigation buttons have no accessible names",
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "screenshot": "ana/02.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.8906,
+    "y": 0.0912
+   },
+   "personas_hit": [
+    "ana",
+    "diego",
+    "elaine",
+    "kwame",
+    "zahara"
+   ],
+   "quote": {
+    "persona_id": "ana",
+    "text": "Trying to see if this first color dot is blue"
+   },
+   "why": "Element 7 (color swatch) and header icon buttons (elements 7, 8, 9) have empty accessible names. Screen readers announce only 'button'. Kwame (non-native English reader) and Elaine (lower digital confidence) cannot rely on visual cues alone. This violates WCAG 4.1.2 and blocks non-visual users from identifying controls.",
+   "fix": {
+    "type": "copy",
+    "summary": "Provide accessible names for each color swatch and icon-only navigation button.",
+    "before": "<button class=\"color-swatch\" aria-label=\"\"></button> and <button aria-label=\"\"><svg>...</svg></button>",
+    "after": "<button class=\"color-swatch\" aria-label=\"Select Blue\"></button> and <button aria-label=\"Open menu\"><svg>...</svg></button>"
+   },
+   "refs": [],
+   "alt": "I notice the product page for a white t-shirt called The Everyday Tee. I need to find the blue color option and select size M. The color dots are small and I am not sure which one is blue. I wish things were labeled more simply."
+  },
+  {
+   "id": 5,
+   "severity": "major",
+   "title": "Touch targets smaller than 40x40 px on mobile",
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "screenshot": "zahara/12.jpg",
+   "viewport": [
+    390,
+    844
+   ],
+   "pin": {
+    "x": 0.8231,
+    "y": 0.0355
+   },
+   "personas_hit": [
+    "zahara"
+   ],
+   "quote": {
+    "persona_id": "zahara",
+    "text": "Looking for the blue color option among those small dots"
+   },
+   "why": "Zahara (mobile-only) struggled to tap the small color swatches (element 3 on S2, element 7 on S3). Expert findings measure tap targets at 34x34 px, below the 40x40 px minimum (WCAG 2.5.8). This caused mis-taps and difficulty selecting blue on mobile.",
+   "fix": {
+    "type": "css",
+    "summary": "Increase tap target size for color swatches and navigation controls to at least 40x40 px.",
+    "before": ".color-swatch { width: 24px; height: 24px; } .nav-icon { width: 34px; height: 34px; }",
+    "after": ".color-swatch { width: 44px; height: 44px; } .nav-icon { min-width: 44px; min-height: 44px; }"
+   },
+   "refs": [],
+   "alt": "I notice the product page for The Everyday Tee. I need to find the blue color option and select medium size before adding to bag. The color dots are small and might be hard to tap accurately on my phone."
+  },
+  {
+   "id": 6,
+   "severity": "minor",
+   "title": "Low contrast text on navigation and size labels",
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "screenshot": "elaine/03.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.0367,
+    "y": 0.1713
+   },
+   "personas_hit": [
+    "elaine",
+    "kwame"
+   ],
+   "quote": {
+    "persona_id": "elaine",
+    "text": "Trying to find the blue color selection"
+   },
+   "why": "Navigation text ('Shop', 'Tees') and size label 'XXL' measure 3.2:1 contrast, below the 4.5:1 AA requirement (WCAG 1.4.3). Elaine (68, lower digital confidence) and Kwame (non-native reader) may struggle to read these labels, adding cognitive load during an already confusing task.",
+   "fix": {
+    "type": "css",
+    "summary": "Increase text contrast to at least 4.5:1 for navigation and size labels.",
+    "before": ".nav-link, .size-label { color: #777; } /* 3.2:1 on white */",
+    "after": ".nav-link, .size-label { color: #444; } /* 7:1 on white */"
+   },
+   "refs": [],
+   "alt": "I notice the product page for The Everyday Tee. I am looking for the blue color circle and the medium size button so I can add the shirt to my bag. The price is clear but I do not see the card payment area yet."
+  }
+ ],
+ "friction_map": [
+  {
+   "screen": "2f243bae31",
+   "label": "The Everyday Tee",
+   "path": "/samples/checkout/product.html?id=everyday-tee",
+   "hits": 4,
+   "visits": 4,
+   "worst_issue_id": null
+  },
+  {
+   "screen": "6a70351df0",
+   "label": "The Everyday Tee",
+   "path": "/samples/checkout/product.html?id=everyday-tee",
+   "hits": 3,
+   "visits": 5,
+   "worst_issue_id": 1
+  }
+ ],
+ "expert": [
+  {
+   "screen": "1a188798fb",
+   "screen_label": "Better basics, worn daily",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "critical",
+   "finding": "The page is titled checkout but displays a product homepage with no cart, checkout form, or payment controls, so users cannot buy a medium blue t-shirt or pay by card.",
+   "suggestion": "Replace the homepage content with the actual checkout page containing cart summary, size/color selection, and card payment fields.",
+   "element_id": null,
+   "screenshot": "ana/01.jpg"
+  },
+  {
+   "screen": "1a188798fb",
+   "screen_label": "Better basics, worn daily",
+   "source": "vision",
+   "heuristic": "Error prevention",
+   "severity": "major",
+   "finding": "The blue t-shirt image has a row of five color swatches with no visible selection state, so users cannot confirm they have chosen blue before adding to cart.",
+   "suggestion": "Add a clear visual indicator (border or highlight) to the selected blue swatch and label it 'Blue'.",
+   "element_id": null,
+   "screenshot": "ana/01.jpg"
+  },
+  {
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "major",
+   "finding": "The color swatches (Bone, Black, Grey, Blue, Green) and size buttons (XS, S, M, L, XL, XXL) show no visible selected state, so users cannot confirm they have chosen blue and Medium before adding to bag.",
+   "suggestion": "Add a clear visual indicator (such as a border or highlight) to the selected color and size buttons.",
+   "element_id": null,
+   "screenshot": "ana/02.jpg"
+  },
+  {
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "source": "vision",
+   "heuristic": "Error prevention",
+   "severity": "major",
+   "finding": "The XXL size button is disabled with no explanation, which may confuse users and prevent them from understanding size availability.",
+   "suggestion": "Remove the disabled XXL button or replace it with an unavailable state accompanied by a tooltip or message explaining why it cannot be selected.",
+   "element_id": 23,
+   "screenshot": "ana/02.jpg"
+  },
+  {
+   "screen": "2f243bae31",
+   "screen_label": "The Everyday Tee",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "major",
+   "finding": "The color swatches (element IDs 7, 8, 9, and others) have no visible labels or selected state, so a user cannot confirm they have chosen blue for the t-shirt.",
+   "suggestion": "Add visible color names beneath each swatch and a clear selected indicator (such as a border) on the active color.",
+   "element_id": 7,
+   "screenshot": "ana/03.jpg"
+  },
+  {
+   "screen": "2f243bae31",
+   "screen_label": "The Everyday Tee",
+   "source": "vision",
+   "heuristic": "Error prevention",
+   "severity": "major",
+   "finding": "The XXL size button is disabled with no explanation, which may confuse users about stock availability and prevent them from understanding size constraints.",
+   "suggestion": "Replace the disabled state with a tooltip or inline text explaining that XXL is out of stock.",
+   "element_id": 23,
+   "screenshot": "ana/03.jpg"
+  },
+  {
+   "screen": "1a188798fb",
+   "screen_label": "Better basics, worn daily",
+   "source": "a11y",
+   "heuristic": "Controls need accessible names (WCAG 4.1.2)",
+   "severity": "major",
+   "finding": "A control has no accessible name, so screen readers announce just \"button\".",
+   "suggestion": "Give icon-only buttons an aria-label (e.g. aria-label=\"Close\") or visible text.",
+   "element_id": 7,
+   "screenshot": "ana/01.jpg"
+  },
+  {
+   "screen": "1a188798fb",
+   "screen_label": "Better basics, worn daily",
+   "source": "a11y",
+   "heuristic": "Touch targets too small (WCAG 2.5.8)",
+   "severity": "major",
+   "finding": "Tap target (“Menu”; “Larkspur Supply”; “View all 24 styles” +2 more) is smaller than 40×40 px on a phone. Measured: 34×34px.",
+   "suggestion": "Make interactive elements at least 44×44 px (min-height/min-width or padding).",
+   "element_id": 1,
+   "screenshot": "zahara/01.jpg"
+  },
+  {
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "source": "a11y",
+   "heuristic": "Controls need accessible names (WCAG 4.1.2)",
+   "severity": "major",
+   "finding": "A control has no accessible name, so screen readers announce just \"button\".",
+   "suggestion": "Give icon-only buttons an aria-label (e.g. aria-label=\"Close\") or visible text.",
+   "element_id": 7,
+   "screenshot": "ana/02.jpg"
+  },
+  {
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "source": "a11y",
+   "heuristic": "Text contrast (WCAG 1.4.3)",
+   "severity": "major",
+   "finding": "Low-contrast text (“Shop”; “Tees”; “XXL” +3 more). Measured: 3.2:1 (needs 4.5:1).",
+   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
+   "element_id": 10,
+   "screenshot": "ana/02.jpg"
+  },
+  {
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "source": "a11y",
+   "heuristic": "Touch targets too small (WCAG 2.5.8)",
+   "severity": "major",
+   "finding": "Tap target (“Menu”; “Larkspur Supply”; “Size guide” +13 more) is smaller than 40×40 px on a phone. Measured: 34×34px.",
+   "suggestion": "Make interactive elements at least 44×44 px (min-height/min-width or padding).",
+   "element_id": 1,
+   "screenshot": "zahara/08.jpg"
+  },
+  {
+   "screen": "2f243bae31",
+   "screen_label": "The Everyday Tee",
+   "source": "a11y",
+   "heuristic": "Controls need accessible names (WCAG 4.1.2)",
+   "severity": "major",
+   "finding": "A control has no accessible name, so screen readers announce just \"button\".",
+   "suggestion": "Give icon-only buttons an aria-label (e.g. aria-label=\"Close\") or visible text.",
+   "element_id": 7,
+   "screenshot": "ana/03.jpg"
+  },
+  {
+   "screen": "2f243bae31",
+   "screen_label": "The Everyday Tee",
+   "source": "a11y",
+   "heuristic": "Text contrast (WCAG 1.4.3)",
+   "severity": "major",
+   "finding": "Low-contrast text (“Shop”; “Tees”; “XXL” +3 more). Measured: 3.2:1 (needs 4.5:1).",
+   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
+   "element_id": 10,
+   "screenshot": "ana/03.jpg"
+  },
+  {
+   "screen": "2f243bae31",
+   "screen_label": "The Everyday Tee",
+   "source": "a11y",
+   "heuristic": "Touch targets too small (WCAG 2.5.8)",
+   "severity": "major",
+   "finding": "Tap target (“Menu”; “Larkspur Supply”; “Size guide” +13 more) is smaller than 40×40 px on a phone. Measured: 34×34px.",
+   "suggestion": "Make interactive elements at least 44×44 px (min-height/min-width or padding).",
+   "element_id": 1,
+   "screenshot": "zahara/13.jpg"
+  },
+  {
+   "screen": "1a188798fb",
+   "screen_label": "Better basics, worn daily",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "Three buttons in the header (ids 7, 8, 9) have empty accessible names and only show icons, making their purpose unclear.",
+   "suggestion": "Add visible text labels or aria-labels to the search, account, and cart buttons.",
+   "element_id": 7,
+   "screenshot": "ana/01.jpg"
+  },
+  {
+   "screen": "1a188798fb",
+   "screen_label": "Better basics, worn daily",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "Button id 8 has an empty accessible name and only an icon, making its purpose unclear.",
+   "suggestion": "Add a visible text label or aria-label to this button.",
+   "element_id": 8,
+   "screenshot": "ana/01.jpg"
+  },
+  {
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "The top navigation buttons (ids 7, 8, 9) and the product gallery buttons (ids 12, 13, 14, 15, 16) have empty accessible names, making their purpose unclear to users relying on assistive technology or keyboard navigation.",
+   "suggestion": "Provide descriptive aria-labels or visible text for all icon-only buttons so their function is recognizable.",
+   "element_id": null,
+   "screenshot": "ana/02.jpg"
+  },
+  {
+   "screen": "2f243bae31",
+   "screen_label": "The Everyday Tee",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "The top navigation buttons (element IDs 7, 8, 9) are icon-only with no text labels, forcing users to guess their function.",
+   "suggestion": "Add visible text labels such as 'Search', 'Account', and 'Bag' next to or beneath each icon.",
+   "element_id": null,
+   "screenshot": "ana/03.jpg"
+  },
+  {
+   "screen": "6a70351df0",
+   "screen_label": "The Everyday Tee",
+   "source": "a11y",
+   "heuristic": "Images need text alternatives (WCAG 1.1.1)",
+   "severity": "minor",
+   "finding": "An image has no alt attribute (“data:image/svg+xml,%3Csvg%20xmlns%3D%22…”).",
+   "suggestion": "Add alt text describing what the image conveys, or alt=\"\" if purely decorative.",
+   "element_id": null,
+   "screenshot": "ana/02.jpg"
+  },
+  {
+   "screen": "2f243bae31",
+   "screen_label": "The Everyday Tee",
+   "source": "a11y",
+   "heuristic": "Images need text alternatives (WCAG 1.1.1)",
+   "severity": "minor",
+   "finding": "An image has no alt attribute (“data:image/svg+xml,%3Csvg%20xmlns%3D%22…”).",
+   "suggestion": "Add alt text describing what the image conveys, or alt=\"\" if purely decorative.",
+   "element_id": null,
+   "screenshot": "ana/03.jpg"
+  }
+ ],
+ "transcripts": {
+  "ana": [
+   {
+    "index": 1,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "ana/01.jpg",
+    "see": "I see a blue t-shirt on the page. I need to find a size medium and a way to add it to my cart. The color swatches are small and I am not sure which one is the exact blue I want. I do not see a clear size selector yet.",
+    "inner_voice": "Let me check out the Everyday Tee first - that sounds like what I'm looking for",
+    "confusion": 0,
+    "action": "Clicked \"The Everyday Tee New colors $28 5 colors\""
+   },
+   {
+    "index": 2,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/02.jpg",
+    "see": "I notice the product page for a white t-shirt called The Everyday Tee. I need to find the blue color option and select size M. The color dots are small and I am not sure which one is blue. I wish things were labeled more simply.",
+    "inner_voice": "Trying to see if this first color dot is blue",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 3,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/03.jpg",
+    "see": "I notice the product page for The Everyday Tee. I need to find the blue color and size M. The size buttons are clear but the color dots are small and I am not sure which one is blue. The add to bag button is easy to see.",
+    "inner_voice": "Let me see what these color buttons do - hoping one is blue",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 4,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/04.jpg",
+    "see": "I see a product page for a t shirt called The Everyday Tee. I need to find the blue color and the medium size so I can add it to my bag and pay by card. The size guide link is small and I am not sure if the blue circle is the right shade.",
+    "inner_voice": "Medium size selected, now need to find blue color",
+    "confusion": 0,
+    "action": "Clicked \"M\""
+   },
+   {
+    "index": 5,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/05.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color option and the medium size. The medium size is already selected. I need to click the blue circle and then add to bag. It is clear and easy to read.",
+    "inner_voice": "Looking for the blue color swatch among these buttons",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 6,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/06.jpg",
+    "see": "I see a product page for a blue t shirt called The Everyday Tee. I am looking for the add to bag button and the checkout area. The size and color options are clear but I wish the checkout steps were labeled more simply.",
+    "inner_voice": "Now I'll click Add to Bag to put the shirt in my cart.",
+    "confusion": 0,
+    "action": "Clicked \"Add to bag\""
+   },
+   {
+    "index": 7,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/07.jpg",
+    "see": "I see a product page for a white t shirt called The Everyday Tee. I need to find the blue color option and select size medium. The color dots are small and I am not sure which one is blue. The checkout process makes me nervous.",
+    "inner_voice": "I'll try the first color button hoping it might be blue",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 8,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/08.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for a blue color option and a medium size to add to my bag. The color dots are small and I am not sure which one is blue. The checkout button is not visible yet.",
+    "inner_voice": "I hope this is the blue color option",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 9,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/09.jpg",
+    "see": "I notice the page for The Everyday Tee. I am looking for a blue color option and the medium size. I see the medium size is already selected but the color shown is Bone. I need to click the blue circle to change the color before I add it to my bag.",
+    "inner_voice": "Looking for blue color option among those circles",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 10,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/10.jpg",
+    "see": "I notice the product page for The Everyday Tee. I need to find the blue color option and select medium size. The color dots are small and hard to tell apart. I am nervous about clicking checkout without being sure.",
+    "inner_voice": "Checking if this first button is a color selector for blue",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 11,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/11.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color option and the medium size. I see the size medium is selected but the color is set to bone. I need to click the blue dot to change the color before I add it to my bag.",
+    "inner_voice": "Looking for the blue color swatch among these buttons.",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 12,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/12.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color option and the medium size. It is confusing that the color is currently set to Bone and not blue. I need to click the blue circle before adding to bag.",
+    "inner_voice": "Trying to select blue color",
+    "confusion": 2,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 13,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/13.jpg",
+    "see": "I notice a product page for a white t-shirt called The Everyday Tee. I am looking for a blue color option and a medium size. The medium size is already selected but the color shown is bone so I need to click the blue dot. The checkout process feels a bit nerve wracking.",
+    "inner_voice": "Trying to find the blue color option.",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 14,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/14.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color option and the medium size to add to my bag. It is confusing that the current color shown is bone and not blue even though I see a blue dot.",
+    "inner_voice": "I hope this changes the color to blue since I need a medium blue tee.",
+    "confusion": 2,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 15,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/15.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for a blue color option and the add to bag button. The color dots are small and I am not sure which one is blue. I wish things were labeled more simply.",
+    "inner_voice": "I hope I can see the color choices clearer further down.",
+    "confusion": 1,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 16,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/16.jpg",
+    "see": "I see the Larkspur Supply website. I am looking for a blue medium t-shirt and a place to pay by card. It is confusing because I do not see color or size options on this page and I am not sure how to start checkout.",
+    "inner_voice": "Let me check Details & fit first",
+    "confusion": 1,
+    "action": "Clicked \"Details & fit\""
+   },
+   {
+    "index": 17,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "ana/17.jpg",
+    "see": "I notice the brand name Larkspur Supply at the top. I am looking for a way to pick the color blue and the size medium for a t shirt. I do not see an add to cart button yet and I am nervous about checkout.",
+    "inner_voice": "I'm stuck because I don't see how to choose blue or add the shirt to my bag.",
+    "confusion": 3,
+    "action": "Gave up: I cannot find color selection or add to cart button; still on product page…"
+   }
+  ],
+  "diego": [
+   {
+    "index": 1,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "diego/01.jpg",
+    "see": "I see a blue t-shirt and a homepage. I need the product page to pick medium and pay by card. The color swatches are visible but I do not see a size selector or an add to cart button. This page feels like marketing not a shop.",
+    "inner_voice": "Need to find the Everyday Tee product page to select size and buy.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 2,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "diego/02.jpg",
+    "see": "I see a clean shop page with three tees. I need to click TEES to find a medium blue shirt and buy it fast. The layout is simple but I do not see a blue option on these first three items so I must navigate further.I see a clean shop page with three tees. I need to click TEES to find a medium blue shirt and buy it fast. The layout is simple but I do not see a blue option on these first three items so I must navigate…",
+    "inner_voice": "Need to see tee options quickly.",
+    "confusion": 0,
+    "action": "Clicked \"Tees\""
+   },
+   {
+    "index": 3,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "diego/03.jpg",
+    "see": "I see the new arrivals page with three tees shown. I need to find a blue medium t-shirt and buy it with a card. The layout is clean but I do not see size or color options on this screen and I have to click into a product to check availability.",
+    "inner_voice": "Need to see product options for size and color.",
+    "confusion": 0,
+    "action": "Clicked \"The Everyday Tee New colors $28 5 colors\""
+   },
+   {
+    "index": 4,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "diego/04.jpg",
+    "see": "I see a product page for The Everyday Tee. I need to find the blue color and medium size to buy it. The color swatches and size buttons are clear and easy to read. I can add it to my bag quickly.I see a product page for The Everyday Tee. I need to find the blue color and medium size to buy it. The color swatches and size buttons are clear and easy to read. I can add it to my bag quickly.",
+    "inner_voice": "Medium size selected, quick and easy.",
+    "confusion": 0,
+    "action": "Clicked \"M\""
+   },
+   {
+    "index": 5,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "diego/05.jpg",
+    "see": "I see the product page for The Everyday Tee. I need to select blue and medium then add to bag. The size M is already chosen but the color is set to Bone. I need to click the blue swatch before I can buy. It is clear and simple.",
+    "inner_voice": "Looking for blue color swatch",
+    "confusion": 0,
+    "action": "Clicked \"XS\""
+   },
+   {
+    "index": 6,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "diego/06.jpg",
+    "see": "I notice the product page for The Everyday Tee. I need the blue color and medium size. The blue dot and M button are visible. Nothing is confusing. The layout is clean and I can add to bag quickly.",
+    "inner_voice": "Selecting medium size",
+    "confusion": 0,
+    "action": "Clicked \"M\""
+   },
+   {
+    "index": 7,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "diego/07.jpg",
+    "see": null,
+    "inner_voice": "Nothing I do here seems to work. I'm done.",
+    "confusion": 3,
+    "action": "Gave up: Nothing I try changes anything on this screen"
+   }
+  ],
+  "zahara": [
+   {
+    "index": 1,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "zahara/01.jpg",
+    "see": "I notice the brand name Larkspur Supply and a blue t shirt. I am looking for a size selector and an add to cart button so I can buy the medium blue tee and pay by card. The text is clear but I do not see the size options yet and I worry the buttons will be too small to tap on my phone.",
+    "inner_voice": "Looking for the tee product page to select size and color.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 2,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "zahara/02.jpg",
+    "see": "I notice the Larkspur Supply homepage. I am looking for a medium blue t-shirt and a way to pay by card. The menu button is small and might be hard to tap. I do not see a clear search bar or size selector on this screen.",
+    "inner_voice": "Looking for t-shirt options or a clearer path to shop",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 3,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "zahara/03.jpg",
+    "see": "I notice the Larkspur Supply homepage showing long sleeve tees and hoodies. I need to find a medium blue t shirt to buy with my card. The page is clean but I do not see a t shirt section yet. I might have to scroll down or use the menu to find what I need.",
+    "inner_voice": "Looking for the tees section to find a medium blue t-shirt.",
+    "confusion": 0,
+    "action": "Clicked \"Tees\""
+   },
+   {
+    "index": 4,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "zahara/04.jpg",
+    "see": "I notice the Larkspur Supply homepage with new arrivals. I am looking for a medium blue t-shirt and a way to pay by card. The text is small and the buttons look tiny which makes me worry I will miss taps on my phone.",
+    "inner_voice": "Looking for tees section to find a blue medium shirt.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 5,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "zahara/05.jpg",
+    "see": "I notice the Larkspur Supply logo and two clothing items at the top. I am looking for a blue medium t-shirt to buy with my card. The page shows an overshirt and a hoodie but no t-shirts. The text is clear but I do not see a search bar or a way to filter for tees. I rely on my phone for everything so if I cannot find the product quickly I will leave.",
+    "inner_voice": "Still scrolling to find the everyday tee section.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 6,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "zahara/06.jpg",
+    "see": "I notice the Larkspur Supply homepage first. I am looking for a way to browse products or a search icon to find a medium blue t-shirt. The layout is clean but I do not see a clear shop button or product grid on this screen. It is confusing because I cannot tell where to start shopping for the shirt.",
+    "inner_voice": "I'll try Shop new arrivals to see products.",
+    "confusion": 0,
+    "action": "Clicked \"Shop new arrivals\""
+   },
+   {
+    "index": 7,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "zahara/07.jpg",
+    "see": "I see the Larkspur Supply website with new arrivals. I need to find a medium blue t-shirt and a way to pay by card. The prices and color counts are clear but I do not see a size selector or a checkout button yet. The text is easy to read.",
+    "inner_voice": "Checking the Everyday Tee for blue options",
+    "confusion": 0,
+    "action": "Clicked \"The Everyday Tee New colors $28 5 colors\""
+   },
+   {
+    "index": 8,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "zahara/08.jpg",
+    "see": "I see a white t-shirt on the Larkspur Supply site. I need to find a size selector and a color option for blue so I can buy a medium blue tee and pay by card. The page is clean but I do not see any buttons for size or color yet. I need to scroll down to find them.",
+    "inner_voice": "Still looking for size and color choices.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 9,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "zahara/09.jpg",
+    "see": "I see the Larkspur Supply website with product images and a brand label. I need to find a medium blue t-shirt and a way to pay by card. The page shows only close up fabric details and no clear navigation or product selection. It is hard to read because the buttons are tiny and I cannot find where to choose size or color.I see the Larkspur Supply website with product images and a brand label. I need to find a medium…",
+    "inner_voice": "Finally found the M button - hope it works!",
+    "confusion": 0,
+    "action": "Clicked \"M\""
+   },
+   {
+    "index": 10,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "zahara/10.jpg",
+    "see": "I notice the product page for a t shirt called The Everyday Tee. I am looking for the blue color option and the medium size to add to my bag. The blue circle is easy to see and the medium size button is clear. I do not see anything confusing so far.I notice the product page for a t shirt called The Everyday Tee. I am looking for the blue color option and the medium size to add to my bag. The blue circle is easy to…",
+    "inner_voice": "I'll scroll up to find the color options.",
+    "confusion": 0,
+    "action": "Scrolled up"
+   },
+   {
+    "index": 11,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "zahara/11.jpg",
+    "see": "I notice the header for Larkspur Supply and a product called The Everyday Tee. I am looking for a size and color selector so I can choose medium and blue. The page does not show those options yet so I do not know where to tap next. I rely on my phone for everything so if the buttons are tiny I will give up and shop elsewhere.",
+    "inner_voice": "Looking for color choices",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 12,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "zahara/12.jpg",
+    "see": "I notice the product page for The Everyday Tee. I need to find the blue color option and select medium size before adding to bag. The color dots are small and might be hard to tap accurately on my phone.",
+    "inner_voice": "Looking for the blue color option among those small dots",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 13,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "zahara/13.jpg",
+    "see": "I notice the product page for a shirt at Larkspur Supply. I need to find the blue color option and the medium size so I can add it to my bag and pay by card. The color dots are small and might be hard to tap accurately on my phone.",
+    "inner_voice": "Looking for blue color option",
+    "confusion": 0,
+    "action": "Clicked \"XS\""
+   },
+   {
+    "index": 14,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "zahara/14.jpg",
+    "see": "I see a product page for a shirt in the color Bone. I need to find the blue color option and select size Medium before I can add the item to my bag and pay by card. The color dots are small and might be hard to tap accurately on my phone.",
+    "inner_voice": "Trying to see if this is a color swatch for blue",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 15,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "zahara/15.jpg",
+    "see": "I notice the product page for The Everyday Tee priced at 28 dollars. I am looking for the blue color circle and the medium size button so I can add the shirt to my bag and pay by card. The buttons look small and might be hard to tap.",
+    "inner_voice": "Trying first color circle hoping it's blue",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 16,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "zahara/16.jpg",
+    "see": "I notice the brand Larkspur Supply and a product page for a shirt. I am looking for a medium blue t shirt and the add to bag button to pay by card. The size buttons look small and hard to tap on my phone. The color options show blue but I need to select it.",
+    "inner_voice": "Trying to select medium size again, hope it works this time.",
+    "confusion": 1,
+    "action": "Clicked \"M\""
+   },
+   {
+    "index": 17,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "zahara/17.jpg",
+    "see": "I notice the Larkspur Supply page for a shirt. I need to find the blue color and the medium size to buy a t-shirt and pay by card. The color circle for blue looks small and might be hard to tap on my phone. The size buttons are clear but the extra large button is cut off.",
+    "inner_voice": "I can't find the blue option and the buttons are too small.",
+    "confusion": 3,
+    "action": "Gave up: Could not select blue color or proceed to payment; color swatch too small to…"
+   }
+  ],
+  "elaine": [
+   {
+    "index": 1,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "elaine/01.jpg",
+    "see": "I notice a blue t-shirt and a shop called Larkspur Supply. I am looking for a way to pick a medium size and pay by card. The page is clear but I do not see the size or buy buttons yet.",
+    "inner_voice": "Let me look further down for the tee selection.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 2,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "elaine/02.jpg",
+    "see": "I notice the Larkspur Supply website with new arrivals. I am looking for a blue medium t-shirt to buy with a card. The page shows tees but I cannot see a blue one or a size selector yet. The text is clear and easy to read.",
+    "inner_voice": "Check the Everyday Tee for color and size choices.",
+    "confusion": 0,
+    "action": "Clicked \"The Everyday Tee New colors $28 5 colors\""
+   },
+   {
+    "index": 3,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/03.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color circle and the medium size button so I can add the shirt to my bag. The price is clear but I do not see the card payment area yet.",
+    "inner_voice": "Trying to find the blue color selection",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 4,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/04.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color option and the medium size so I can add it to my bag and pay by card. The layout is clear and nothing seems hard to read.",
+    "inner_voice": "Checking these buttons for color options",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 5,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/05.jpg",
+    "see": "I notice a product page for The Everyday Tee. I am looking for the blue color circle and the medium size button. I also want to find the add to bag button. The page is clear and easy to read. I do not see anything confusing. I can see the price is twenty eight dollars.",
+    "inner_voice": "Looking for the blue color selection among these buttons",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 6,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/06.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color circle and the medium size button so I can add the shirt to my bag and pay by card. The page is clear and easy to read.",
+    "inner_voice": "Looking for the blue color selection",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 7,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/07.jpg",
+    "see": "I see a product page for a tee called The Everyday Tee. I need to find the blue color and medium size then add it to my bag. The page is clean but I want to check the color dots carefully before I click.",
+    "inner_voice": "Let me start checking the sizes and colors available.",
+    "confusion": 0,
+    "action": "Clicked \"XS\""
+   },
+   {
+    "index": 8,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/08.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color circle and the medium size button so I can add the shirt to my bag. The text is clear but the color options are small and hard to distinguish.",
+    "inner_voice": "Now clicking Medium size as I need a medium tee",
+    "confusion": 0,
+    "action": "Clicked \"M\""
+   },
+   {
+    "index": 9,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/09.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color option and the medium size. The medium size is already selected but the color shown is Bone. I need to click the blue circle. The page is clear and easy to read.",
+    "inner_voice": "Looking for the blue color swatch to select.",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 10,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/10.jpg",
+    "see": "I notice the page for The Everyday Tee. I need to find the blue color option and confirm the medium size is selected. The size medium is already highlighted. I will look for the add to bag button to proceed with paying by card.",
+    "inner_voice": "Let me see the size guide to understand sizing better",
+    "confusion": 0,
+    "action": "Clicked \"Size guide\""
+   },
+   {
+    "index": 11,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/11.jpg",
+    "see": "I notice the Larkspur Supply website. I am looking for a blue medium t shirt and a way to pay by card. The size chart is visible but I do not see a clear product page or a blue t shirt option yet. The layout is simple but I need to find the right item first.",
+    "inner_voice": "I’m still not seeing where to select the color blue or confirm I’m looking at the Everyday Tee in medium. I should scroll down to see if there are color…",
+    "confusion": 1,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 12,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/12.jpg",
+    "see": "I notice the site is called Larkspur Supply and I see a menu with Tees. I am looking for a blue medium t-shirt and a way to pay by card. The page is simple but I do not see a blue t-shirt yet. I need to click Tees to find one. I like to read everything twice.",
+    "inner_voice": "Checking Details & fit for colors",
+    "confusion": 0,
+    "action": "Clicked \"Details & fit\""
+   },
+   {
+    "index": 13,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/13.jpg",
+    "see": "I see the Larkspur Supply website. I am looking for a blue medium t-shirt and a way to pay by card. I notice the size M is already selected. I do not see a colour selector or a clear checkout button yet. The text is clear and easy to read.",
+    "inner_voice": "Let me check Details & fit for color info",
+    "confusion": 0,
+    "action": "Clicked \"Details & fit\""
+   },
+   {
+    "index": 14,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/14.jpg",
+    "see": "I notice the Larkspur Supply website and a product page with size options. I am looking for a blue medium t shirt and a way to pay by card. It is confusing that I do not see a color selector or a blue shirt on this page.",
+    "inner_voice": "Checking Details & fit for color info",
+    "confusion": 0,
+    "action": "Clicked \"Details & fit\""
+   },
+   {
+    "index": 15,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/15.jpg",
+    "see": "I see a product page for a cream coloured garment. The size M is already selected. I need to find the blue colour option and the add to bag button. I do not see a colour selector and I am worried I might buy the wrong colour.",
+    "inner_voice": "Checking Details & fit again for color info",
+    "confusion": 1,
+    "action": "Clicked \"Details & fit\""
+   },
+   {
+    "index": 16,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "elaine/16.jpg",
+    "see": null,
+    "inner_voice": "Nothing I do here seems to work. I'm done.",
+    "confusion": 3,
+    "action": "Gave up: Nothing I try changes anything on this screen"
+   }
+  ],
+  "kwame": [
+   {
+    "index": 1,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "kwame/01.jpg",
+    "see": "I see a blue t-shirt on the right side of the screen. I need to find a size selector for medium and a button to add it to my cart. I do not see a clear place to select the size or color yet. The layout is clean but I am unsure where to click next to start the purchase.",
+    "inner_voice": "Looking for size/color selectors near the product.",
+    "confusion": 1,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 2,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "kwame/02.jpg",
+    "see": "I notice the navigation menu and new arrivals section. I am looking for a medium blue t-shirt to buy with a card. It is confusing because I do not see a clear size selector or a blue color option on these shirts.",
+    "inner_voice": "Looking for more items below the fold.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 3,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "kwame/03.jpg",
+    "see": "I see a clothing website with three items. I need to find a medium blue t-shirt and pay by card. I do not see a t-shirt section or a blue option on this page. The navigation menu has Tees but I am not sure if that will show what I need. I need to click Tees to continue.",
+    "inner_voice": "Looking for tees to find a medium blue one.",
+    "confusion": 0,
+    "action": "Clicked \"Tees\""
+   },
+   {
+    "index": 4,
+    "path": "/samples/checkout/index.html",
+    "screenshot": "kwame/04.jpg",
+    "see": "I see the Larkspur Supply website with the Tees tab selected. I am looking for a blue medium t-shirt and a way to pay by card. The page shows three shirts but I cannot see color options or a blue shirt yet. It is not clear how to select size or color from this view.",
+    "inner_voice": "I want to check if this tee comes in blue and medium size.",
+    "confusion": 0,
+    "action": "Clicked \"The Everyday Tee New colors $28 5 colors\""
+   },
+   {
+    "index": 5,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/05.jpg",
+    "see": "I notice the product page for The Everyday Tee. I need to find the blue color option and the medium size. The color dots are clear but I am not sure if the blue dot is the right shade. The size buttons are easy to read. I will click the blue dot and the M button. Then I will press add to bag and look for card payment.",
+    "inner_voice": "Selecting medium size",
+    "confusion": 0,
+    "action": "Clicked \"M\""
+   },
+   {
+    "index": 6,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/06.jpg",
+    "see": "I see a product page for The Everyday Tee. I am looking for the blue color option and the medium size. The blue dot is visible under color. The medium size is already selected. I can add this to the bag and pay by card.",
+    "inner_voice": "Selecting the blue color option",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 7,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/07.jpg",
+    "see": "I see the product page for a t-shirt called The Everyday Tee. I need to change the color to blue and keep the size at medium. The blue dot is visible under color options. I will click add to bag after selecting blue. The page is clear and easy to read.",
+    "inner_voice": "Looking for blue color option among the size buttons",
+    "confusion": 1,
+    "action": "Clicked \"XS\""
+   },
+   {
+    "index": 8,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/08.jpg",
+    "see": "I notice the product page for The Everyday Tee. I need to find the blue color and the medium size. The word re-cut is confusing because I do not know if it means a new version or a cut fabric. The size options are clear. I can pay by card later.",
+    "inner_voice": "Trying to pick a color, hoping this is blue.",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 9,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/09.jpg",
+    "see": "I notice the product page for The Everyday Tee priced at twenty eight dollars. I am looking for the blue color circle and the medium size button to select them. The term boxy fit is confusing because I do not know if it means the shirt will be too large for me.",
+    "inner_voice": "Looking for blue color option among the color buttons",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 10,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/10.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color circle and the medium size button. I am confused by the term ribbed crew neck because I do not know if that is a style I want.",
+    "inner_voice": "Looking for blue color option among buttons",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 11,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/11.jpg",
+    "see": "I see a product page for The Everyday Tee priced at 28 dollars. I need to select blue color and medium size then click add to bag. I am unsure about the phrase re-cut for this season and what it means for the fit.",
+    "inner_voice": "Trying to select a color, hoping this is blue.",
+    "confusion": 2,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 12,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/12.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color option and the medium size button. The term bone for the current color is confusing because I do not know if it means white or beige.",
+    "inner_voice": "Checking the first color button to see if it's blue",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 13,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/13.jpg",
+    "see": "I notice the product page for The Everyday Tee. I am looking for the blue color circle and the medium size button to select them before clicking add to bag. The phrase garment dyed confuses me because I do not know if it changes the blue color.",
+    "inner_voice": "Trying to find the blue color selection",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 14,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/14.jpg",
+    "see": "I see a product page for a white t-shirt called The Everyday Tee. I need to find the blue color and the medium size to buy it. The size guide link is confusing because I do not know if it will explain the sizing in a way I understand.",
+    "inner_voice": "Looking for color options to select blue",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 15,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/15.jpg",
+    "see": "I see a product page for a white t-shirt called The Everyday Tee. I need to select the blue color and the medium size to complete my task. The phrase re-cut for this season is confusing because I do not know if it means a new version or a different cut.",
+    "inner_voice": "Trying to change color to blue via first button",
+    "confusion": 2,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 16,
+    "path": "/samples/checkout/product.html?id=everyday-tee",
+    "screenshot": "kwame/16.jpg",
+    "see": "I see a product page for a t-shirt called The Everyday Tee. I need to find the color blue and the size medium to complete my task. I notice the color options are shown as dots but I am not sure which one is blue. The size medium button is clear.",
+    "inner_voice": "Selecting medium size",
+    "confusion": 0,
+    "action": "Clicked \"M\""
+   }
+  ]
+ },
+ "usage": {
+  "rows": [
+   {
+    "tier": "fast",
+    "model": "nvidia/Nemotron-3_5-Lightning",
+    "label": "Nemotron 3.5 Lightning",
+    "calls": 1,
+    "prompt_tokens": 219,
+    "completion_tokens": 9,
+    "cost_usd": 2e-05
+   },
+   {
+    "tier": "vision",
+    "model": "nvidia/Nemotron-3.5-Super-VL",
+    "label": "Nemotron 3.5 Super VL",
+    "calls": 80,
+    "prompt_tokens": 83586,
+    "completion_tokens": 5517,
+    "cost_usd": 0.03004
+   },
+   {
+    "tier": "agent",
+    "model": "nvidia/nemotron-3-super-120b-a12b",
+    "label": "Nemotron 3 Super",
+    "calls": 79,
+    "prompt_tokens": 249049,
+    "completion_tokens": 7099,
+    "cost_usd": 0.0811
+   },
+   {
+    "tier": "reason",
+    "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+    "label": "Nemotron 3 Ultra",
+    "calls": 1,
+    "prompt_tokens": 4660,
+    "completion_tokens": 2055,
+    "cost_usd": 0.01082
+   }
+  ],
+  "total_cost_usd": 0.122,
+  "tavily_calls": 5
+ },
+ "refs_status": "ok",
+ "research": [
+  {
+   "title": "Common UX Mistakes and Usability Trends - Insights by Digital Silk",
+   "url": "https://finance.yahoo.com/news/common-ux-mistakes-usability-trends-190000132.html",
+   "note": "The piece provides a consolidated overview of several commonly cited UX concerns, including: Navigation complexity and unclear information hierarchy Overly dense page layouts or distracting interface components…"
+  },
+  {
+   "title": "5 Apparel UX Best Practices – Baymard Institute",
+   "url": "https://baymard.com/research-articles/apparel-5-best-practices",
+   "note": "Indeed, during both desktop and mobile UX apparel usability testing, uncertainty around sizing was a common cause for abandoning a product.​‌‌‍‌‌‌‍‌‌‌‌‍‌‌‌‌‍‌‌‌‌‌‌‌‎ Moreover, a product that does not fit - whether it’s…"
+  },
+  {
+   "title": "1 Study on Disadvantages/Dissatisfaction of Online ...",
+   "url": "https://dr.lib.iastate.edu/server/api/core/bitstreams/7a08a98f-1ffb-4a67-915d-df945a84abe5/content",
+   "note": "texture, material durability, and stitching quality are common complaints. For example, an item that appears vibrant and well-made in online images may arrive with dull colors or flimsy fabric, leaving the buyer…"
+  },
+  {
+   "title": "Apparel E-commerce UX Research Launch – Baymard",
+   "url": "https://baymard.com/research-articles/apparel-ecommerce-ux-research-launch",
+   "note": "When color swatches appear to be available for all sizes when in fact some colors are unavailable, users experience needless frustration trying to find a color-size combination that meets their requirements. [...]…"
+  },
+  {
+   "title": "1 Study on Disadvantages/Dissatisfaction of Online ...",
+   "url": "https://dr.lib.iastate.edu/server/api/core/bitstreams/7a08a98f-1ffb-4a67-915d-df945a84abe5/content",
+   "note": "quality, and colour firsthand. By trying on products and immediately confirming 12 features like fabric feel and durability, this tactile experience is essential for helping clients make well-informed purchases. Online…"
+  },
+  {
+   "title": "Here Are the Top 4 Shopping Frustrations From Consumers - Business Insider",
+   "url": "https://www.businessinsider.com/sc/top-4-consumer-shopping-frustrations?IR=T",
+   "note": "For example, the IDC research shows a meaningful number (13%) of customers believe having a \"buy now pay later\" option is essential when shopping online and 31% consider it at least as a nice-to-have, according to the…"
+  }
+ ]
+}

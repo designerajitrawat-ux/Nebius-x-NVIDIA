@@ -1,0 +1,1246 @@
+{
+ "id": "sample-booking",
+ "mode": "live",
+ "degraded": false,
+ "created_at": 1792473703.5874789,
+ "url": "http://localhost:3000/samples/booking/index.html",
+ "site": "localhost:3000",
+ "task": "Book a haircut for next Saturday afternoon",
+ "audience": null,
+ "category": "hair salon booking",
+ "headline": "1 of 5 users could not book a haircut for next Saturday afternoon.",
+ "subline": "Kofi abandoned the task on the date and time screen because scrolling did not reveal Saturday time slots and the Continue button remained disabled without explanation.",
+ "completed": 4,
+ "total": 5,
+ "personas": [
+  {
+   "id": "amara",
+   "name": "Amara",
+   "age": 28,
+   "initial": "A",
+   "archetype": "First-timer",
+   "bio": "Junior graphic designer who recently moved to Harbour Row from another city and needs a haircut before starting her new job at a design agency next week…",
+   "viewport": "desktop",
+   "outcome": "completed",
+   "reason": "Booking confirmed for Saturday 24 October at 14:30.",
+   "steps": 10,
+   "seconds": 47.2
+  },
+  {
+   "id": "ben",
+   "name": "Ben",
+   "age": 35,
+   "initial": "B",
+   "archetype": "Power user in a hurry",
+   "bio": "Freelance photographer who shoots weddings and events on weekends. He gets his haircut every 3 weeks and always books last-minute - usually Thursday night for…",
+   "viewport": "desktop",
+   "outcome": "completed",
+   "reason": "Booking confirmed for Saturday 24 Oct at 14:30.",
+   "steps": 14,
+   "seconds": 62.9
+  },
+  {
+   "id": "kofi",
+   "name": "Kofi",
+   "age": 22,
+   "initial": "K",
+   "archetype": "Mobile-only",
+   "bio": "Community college student studying marine biology who lives two blocks from Harbour Row and gets his haircut every 6 weeks. He doesn’t own a laptop or tablet…",
+   "viewport": "mobile",
+   "outcome": "stuck",
+   "reason": "Three actions in a row changed nothing",
+   "steps": 7,
+   "seconds": 27.8
+  },
+  {
+   "id": "elena",
+   "name": "Elena",
+   "age": 68,
+   "initial": "E",
+   "archetype": "Older, lower digital confidence",
+   "bio": "Retired librarian who volunteers at the local maritime museum. She gets her hair cut every 8 weeks and prefers Marlowe Studio because it’s quiet and the…",
+   "viewport": "desktop",
+   "outcome": "completed",
+   "reason": "Booking confirmation shows correct date/time and email received.",
+   "steps": 16,
+   "seconds": 68.3
+  },
+  {
+   "id": "sofia",
+   "name": "Sofia",
+   "age": 41,
+   "initial": "S",
+   "archetype": "Non-native English reader",
+   "bio": "Nurse originally from Barcelona who works night shifts at the regional hospital and lives with her husband and daughter near Harbour Row. She gets her haircut…",
+   "viewport": "desktop",
+   "outcome": "completed",
+   "reason": "Booking confirmed for Saturday 24 October at 16:00.",
+   "steps": 11,
+   "seconds": 54.0
+  }
+ ],
+ "issues": [
+  {
+   "id": 1,
+   "severity": "critical",
+   "title": "Saturday time slots not visible after date selection",
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "screenshot": "kofi/03.jpg",
+   "viewport": [
+    390,
+    844
+   ],
+   "pin": {
+    "x": 0.7628,
+    "y": 0.5438
+   },
+   "personas_hit": [
+    "kofi"
+   ],
+   "quote": {
+    "persona_id": "kofi",
+    "text": "Maybe more dates appear if I scroll down."
+   },
+   "why": "After selecting Saturday 24, the time grid still showed 'Available times · Tuesday 20 October' and scrolling did not load Saturday slots, leaving Kofi unable to pick a time and causing abandonment after repeated failed scrolls.",
+   "fix": {
+    "type": "flow",
+    "summary": "Update the time grid to show Saturday slots immediately when a Saturday date is selected.",
+    "before": "Time grid label stays on Tuesday 20 October after clicking Sat 24; scrolling does not load Saturday times.",
+    "after": "When a date is clicked, fetch and render that date's time slots and update the label to the selected date."
+   },
+   "refs": [
+    {
+     "title": "How to Reduce Salon No-Shows: Proven Strategies That Actually Work | Bookeo",
+     "url": "https://www.bookeo.com/news/2026/02/reduce-salon-no-shows-proven-strategies-actually-work",
+     "note": "Medium salon example: “For all bookings, we require a minimum of 48 hours’ notice for cancelations or rescheduling. Cancelations made within 48 hours will result in a 50% charge. No-shows will be charged 100% of the…"
+    },
+    {
+     "title": "Time Picker UX: Best Practices, Patterns & Trends for 2026",
+     "url": "https://www.eleken.co/blog-posts/time-picker-ux",
+     "note": "### Efficiency Efficiency is about minimizing the steps users need to take to select a time, without compromising clarity. The goal is to make the process seamless and fast while giving users control. For example…"
+    }
+   ],
+   "alt": "I see the Marlowe Studio booking page. I am looking for next Saturday so I can pick an afternoon time. The calendar only shows this week and I do not see a way to move to next week. The buttons are small and hard to tap on my phone."
+  },
+  {
+   "id": 2,
+   "severity": "major",
+   "title": "Mismatched date label on time grid",
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "screenshot": "amara/03.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.6844,
+    "y": 0.5856
+   },
+   "personas_hit": [
+    "amara",
+    "ben",
+    "elena",
+    "kofi",
+    "sofia"
+   ],
+   "quote": {
+    "persona_id": "amara",
+    "text": "Now I need to select Saturday the 24th for my appointment."
+   },
+   "why": "The time grid header reads 'Available times · Tuesday 20 October' even after a Saturday date is chosen, so all users see a label that contradicts their selection and may think the date picker is broken.",
+   "fix": {
+    "type": "flow",
+    "summary": "Synchronize the time grid header with the selected date.",
+    "before": "Header remains 'Available times · Tuesday 20 October' after clicking Sat 24.",
+    "after": "Header updates to 'Available times · Saturday 24 October' when Sat 24 is selected."
+   },
+   "refs": [
+    {
+     "title": "Date-Input Form Fields: UX Design Guidelines - NN/G",
+     "url": "https://www.nngroup.com/articles/date-input",
+     "note": "Priceline rejected the date 9-3-17 without even providing suggestions on how to properly format it. Instead, it should have accepted it and parsed it for the user. Report errors appropriately. If a user enters a date…"
+    },
+    {
+     "title": "Time Picker UX: Best Practices, Patterns & Trends for 2026",
+     "url": "https://www.eleken.co/blog-posts/time-picker-ux",
+     "note": "For example, if a user books an appointment in one time zone but views it in another, things can quickly fall apart. As one Reddit user explained, “ It works perfectly fine if the user/business timezone is the same as…"
+    }
+   ],
+   "alt": "I notice I am on the date and time selection page for Marlowe Studio. I need to find Saturday the 24th of October for an afternoon haircut. It is confusing that the calendar shows Tuesday the 20th as today and I need to navigate to next week."
+  },
+  {
+   "id": 3,
+   "severity": "major",
+   "title": "Pre-checked marketing opt-in checkbox",
+   "screen": "2c682f88fd",
+   "screen_label": "Create an account to confirm",
+   "screenshot": "amara/06.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.2504,
+    "y": 0.9838
+   },
+   "personas_hit": [
+    "amara",
+    "ben",
+    "elena",
+    "sofia"
+   ],
+   "quote": {
+    "persona_id": "amara",
+    "text": "Filling in my details to create an account."
+   },
+   "why": "The 'Send me offers, events and seasonal news' checkbox is pre-checked, risking unintended consent for all four users who completed the form.",
+   "fix": {
+    "type": "copy",
+    "summary": "Uncheck the marketing consent checkbox by default.",
+    "before": "Checkbox 'Send me offers, events and seasonal news from Marlowe Studio.' is pre-checked.",
+    "after": "Checkbox is unchecked by default; user must opt in explicitly."
+   },
+   "refs": [
+    {
+     "title": "GDPR: best practice UX for obtaining marketing consent - Econsultancy",
+     "url": "https://econsultancy.com/best-practice-ux-gdpr-marketing-consent",
+     "note": "There’s a fairly unique bit of UX further down the form with users able to click to see an example newsletter (see the linked text in the screenshot below). This is an innovative way of helping the user decide whether…"
+    },
+    {
+     "title": "Marketing Mistakes: Opt-in vs Opt-out Checkboxes - SitePoint",
+     "url": "https://www.sitepoint.com/marketing-optin-vs-optout-checkboxes",
+     "note": "Some best practices for using opt-in checkboxes include making them easy to find and understand, clearly explaining the benefits of opting in, and respecting user privacy by making it easy to opt out. It’s also crucial…"
+    }
+   ],
+   "alt": "I see the Marlowe Studio booking page. I am looking for the date and time selector to book for next Saturday afternoon. The page asks me to create an account first, which feels like an extra step before I can confirm my appointment."
+  },
+  {
+   "id": 4,
+   "severity": "major",
+   "title": "Continue button disabled with no explanation",
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "screenshot": "ben/07.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.725,
+    "y": 0.9012
+   },
+   "personas_hit": [
+    "ben",
+    "kofi",
+    "elena"
+   ],
+   "quote": {
+    "persona_id": "ben",
+    "text": "Hopefully it works now that I picked a time."
+   },
+   "why": "The Continue button is visible but disabled until a time is chosen, yet it provides no inline message or tooltip telling users why it cannot be pressed, leading to repeated taps and uncertainty.",
+   "fix": {
+    "type": "copy",
+    "summary": "Add a visible hint or tooltip on the disabled Continue button explaining that a time must be selected first.",
+    "before": "Continue button disabled with no message.",
+    "after": "Continue button shows tooltip 'Please select a time to continue' when disabled."
+   },
+   "refs": [],
+   "alt": "I see the booking page for a Signature Cut and Finish. I am looking for open times next Saturday afternoon. The page shows Saturday 24 October with a grid of times. It is confusing that 14:30 is already selected and the continue button looks inactive."
+  },
+  {
+   "id": 5,
+   "severity": "major",
+   "title": "Forced account creation before booking confirmation",
+   "screen": "2c682f88fd",
+   "screen_label": "Create an account to confirm",
+   "screenshot": "ben/10.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.3688,
+    "y": 0.5825
+   },
+   "personas_hit": [
+    "ben",
+    "elena"
+   ],
+   "quote": {
+    "persona_id": "ben",
+    "text": "Just filling quickly to get past this annoying account step."
+   },
+   "why": "Users must fill a full registration form including date of birth and marketing opt-in before the booking is confirmed, which adds friction and caused Ben to use 'Change time' and Elena to navigate back and forth between screens.",
+   "fix": {
+    "type": "flow",
+    "summary": "Allow guest checkout with optional account creation after confirmation.",
+    "before": "Account creation with all fields is required before Proceed becomes active.",
+    "after": "Show a lightweight guest form (name, email, phone) and move account creation to a post-confirmation step."
+   },
+   "refs": [],
+   "alt": "I notice the booking is set for Saturday 24 October at 2:30 PM for a Signature Cut. I am looking for a list of open times to tap one. It is confusing that I am forced to create an account before I can see or pick a time slot."
+  },
+  {
+   "id": 6,
+   "severity": "minor",
+   "title": "Low contrast text on date and time screens",
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "screenshot": "elena/03.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.6844,
+    "y": 0.5856
+   },
+   "personas_hit": [
+    "elena",
+    "kofi"
+   ],
+   "quote": {
+    "persona_id": "elena",
+    "text": "Now I need to pick Saturday the 24th for my appointment."
+   },
+   "why": "Closed day labels and time buttons measured at 2.9:1 contrast, below the 4.5:1 threshold, making them hard to read for Elena and on mobile for Kofi.",
+   "fix": {
+    "type": "css",
+    "summary": "Increase text contrast for disabled dates and time buttons to meet WCAG 1.4.3.",
+    "before": "color: #999 on #f5f5f5 (2.9:1).",
+    "after": ".day.closed, .time-slot.disabled { color: #767676; }"
+   },
+   "refs": [],
+   "alt": "I notice the page is for picking a date and time for a Signature Cut and Finish. I need to find next Saturday, which is the 24th of October, and choose an afternoon slot. The calendar shows Saturday the 24th but the times below are for Tuesday the 20th. That is confusing."
+  }
+ ],
+ "friction_map": [
+  {
+   "screen": "50809d8756",
+   "label": "Pick a date and time",
+   "path": "/samples/booking/time.html",
+   "hits": 1,
+   "visits": 5,
+   "worst_issue_id": 1
+  },
+  {
+   "screen": "2c682f88fd",
+   "label": "Create an account to confirm",
+   "path": "/samples/booking/details.html",
+   "hits": 1,
+   "visits": 4,
+   "worst_issue_id": 3
+  }
+ ],
+ "expert": [
+  {
+   "screen": "cbf717fd55",
+   "screen_label": "Good hair, unhurried",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "major",
+   "finding": "The top banner states bookings are available Saturdays through December, but there is no calendar or date picker on this homepage to confirm next Saturday's availability.",
+   "suggestion": "Add a visible date selector or availability indicator on the homepage so users can verify next Saturday afternoon before clicking through.",
+   "element_id": null,
+   "screenshot": "amara/01.jpg"
+  },
+  {
+   "screen": "d8fba28d8a",
+   "screen_label": "Choose a service",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "major",
+   "finding": "The progress indicator at the top shows step 1 'SERVICE' as active, but provides no confirmation that a service has been selected after clicking any of the 'Select' buttons.",
+   "suggestion": "Add visual feedback (e.g., highlight the selected service card or show a confirmation message) immediately after a user clicks 'Select'.",
+   "element_id": 2,
+   "screenshot": "amara/02.jpg"
+  },
+  {
+   "screen": "d8fba28d8a",
+   "screen_label": "Choose a service",
+   "source": "vision",
+   "heuristic": "Error prevention",
+   "severity": "major",
+   "finding": "There is no way to filter or sort services by duration or price, making it difficult for a user booking a haircut for next Saturday afternoon to quickly find appropriately timed options.",
+   "suggestion": "Add filter controls for duration and price range above the service list.",
+   "element_id": null,
+   "screenshot": "amara/02.jpg"
+  },
+  {
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "major",
+   "finding": "The date grid shows 'Sat 24' as selectable, but the time grid below is labeled 'Available times · Tuesday 20 October', so users cannot see Saturday's slots and may think the date is broken.",
+   "suggestion": "When a date is tapped, immediately load and display that date's available times and update the subheading to match the selected date.",
+   "element_id": null,
+   "screenshot": "amara/03.jpg"
+  },
+  {
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "source": "vision",
+   "heuristic": "Error prevention",
+   "severity": "major",
+   "finding": "The 'Continue' button is visible but disabled with no message explaining that a time must be selected first, so users may tap it repeatedly and wonder why nothing happens.",
+   "suggestion": "Keep the button disabled but add inline helper text such as 'Please select a time to continue' near the time grid or button.",
+   "element_id": 32,
+   "screenshot": "amara/03.jpg"
+  },
+  {
+   "screen": "2c682f88fd",
+   "screen_label": "Create an account to confirm",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "major",
+   "finding": "The progress indicator shows step 3 'YOUR DETAILS' as active, but the page title and heading say 'Create an account', creating ambiguity about whether the user is booking or registering.",
+   "suggestion": "Align the step label with the page purpose, e.g. change step 3 to 'ACCOUNT DETAILS' or rename the page to 'Your details'.",
+   "element_id": null,
+   "screenshot": "amara/06.jpg"
+  },
+  {
+   "screen": "2c682f88fd",
+   "screen_label": "Create an account to confirm",
+   "source": "vision",
+   "heuristic": "Error prevention",
+   "severity": "major",
+   "finding": "The marketing checkbox 'Send me offers, events and seasonal news from Marlowe Studio.' is pre-checked, which can lead to unintended opt-in and form submission errors.",
+   "suggestion": "Uncheck the marketing checkbox by default so users actively consent.",
+   "element_id": 11,
+   "screenshot": "amara/06.jpg"
+  },
+  {
+   "screen": "34930be6a1",
+   "screen_label": "You're booked",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "major",
+   "finding": "The confirmation states 'We've sent a confirmation to amara@example.com' but provides no visual status indicator (e.g., sent, delivered, failed) or way to resend if the email never arrives.",
+   "suggestion": "Add a clear status badge such as 'Confirmation sent' and a 'Resend confirmation' link.",
+   "element_id": null,
+   "screenshot": "amara/10.jpg"
+  },
+  {
+   "screen": "34930be6a1",
+   "screen_label": "You're booked",
+   "source": "vision",
+   "heuristic": "Error prevention",
+   "severity": "major",
+   "finding": "The price is listed as 'from $68 (confirmed at your consultation)', leaving the final cost uncertain at the moment of booking.",
+   "suggestion": "Display the confirmed total price for this appointment instead of a starting price.",
+   "element_id": null,
+   "screenshot": "amara/10.jpg"
+  },
+  {
+   "screen": "cbf717fd55",
+   "screen_label": "Good hair, unhurried",
+   "source": "a11y",
+   "heuristic": "Controls need accessible names (WCAG 4.1.2)",
+   "severity": "major",
+   "finding": "A control has no accessible name, so screen readers announce just \"button\".",
+   "suggestion": "Give icon-only buttons an aria-label (e.g. aria-label=\"Close\") or visible text.",
+   "element_id": 17,
+   "screenshot": "kofi/01.jpg"
+  },
+  {
+   "screen": "d8fba28d8a",
+   "screen_label": "Choose a service",
+   "source": "a11y",
+   "heuristic": "Controls need accessible names (WCAG 4.1.2)",
+   "severity": "major",
+   "finding": "A control has no accessible name, so screen readers announce just \"button\".",
+   "suggestion": "Give icon-only buttons an aria-label (e.g. aria-label=\"Close\") or visible text.",
+   "element_id": 15,
+   "screenshot": "kofi/02.jpg"
+  },
+  {
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "source": "a11y",
+   "heuristic": "Controls need accessible names (WCAG 4.1.2)",
+   "severity": "major",
+   "finding": "A control has no accessible name, so screen readers announce just \"button\".",
+   "suggestion": "Give icon-only buttons an aria-label (e.g. aria-label=\"Close\") or visible text.",
+   "element_id": 4,
+   "screenshot": "amara/03.jpg"
+  },
+  {
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "source": "a11y",
+   "heuristic": "Text contrast (WCAG 1.4.3)",
+   "severity": "major",
+   "finding": "Low-contrast text (“Sun 25 Closed”; “Mon 26 Closed”; “10:00” +20 more). Measured: 2.9:1 (needs 4.5:1).",
+   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
+   "element_id": 11,
+   "screenshot": "amara/03.jpg"
+  },
+  {
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "source": "a11y",
+   "heuristic": "Touch targets too small (WCAG 2.5.8)",
+   "severity": "major",
+   "finding": "Tap target (“Marlowe Studio”; “Change service”; “10:00” +24 more) is smaller than 40×40 px on a phone. Measured: 151×26px.",
+   "suggestion": "Make interactive elements at least 44×44 px (min-height/min-width or padding).",
+   "element_id": 1,
+   "screenshot": "kofi/03.jpg"
+  },
+  {
+   "screen": "cbf717fd55",
+   "screen_label": "Good hair, unhurried",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "Multiple navigation links and buttons all point to services.html with generic labels like 'Book now', 'Book an appointment', and 'Book a cut', forcing users to remember which entry point they used.",
+   "suggestion": "Differentiate primary calls to action with distinct, context-specific labels such as 'Book a haircut' versus 'Book colour' to match the user's goal.",
+   "element_id": null,
+   "screenshot": "amara/01.jpg"
+  },
+  {
+   "screen": "d8fba28d8a",
+   "screen_label": "Choose a service",
+   "source": "vision",
+   "heuristic": "Flexibility and efficiency of use",
+   "severity": "minor",
+   "finding": "All ten 'Select' buttons have identical accessible names, so keyboard and screen-reader users cannot distinguish which service each button controls.",
+   "suggestion": "Give each 'Select' button a unique accessible name that includes the service title, e.g., 'Select Signature Cut & Finish'.",
+   "element_id": 2,
+   "screenshot": "amara/02.jpg"
+  },
+  {
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "source": "vision",
+   "heuristic": "Flexibility and efficiency of use",
+   "severity": "minor",
+   "finding": "The stylist dropdown is set to 'Any available stylist' and requires an extra click to filter by a specific stylist, which slows down users who already know who they want.",
+   "suggestion": "Add stylist filter chips above the date grid so users can jump directly to a preferred stylist without opening the dropdown.",
+   "element_id": 3,
+   "screenshot": "amara/03.jpg"
+  },
+  {
+   "screen": "50809d8756",
+   "screen_label": "Pick a date and time",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "Disabled time slots (e.g., 10:00, 16:30) are shown greyed out with no reason, so users must guess whether they are closed, booked, or outside opening hours.",
+   "suggestion": "Add a tooltip or small label on disabled slots explaining why they are unavailable, such as 'Closed' or 'Fully booked'.",
+   "element_id": null,
+   "screenshot": "amara/03.jpg"
+  },
+  {
+   "screen": "2c682f88fd",
+   "screen_label": "Create an account to confirm",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "The Date of birth field shows placeholder 'DD/MM/YYYY' but no inline hint about acceptable formats or age restrictions, forcing users to guess or discover errors after submission.",
+   "suggestion": "Add a visible format hint below the Date of birth input, such as 'Must be 16 or older'.",
+   "element_id": 8,
+   "screenshot": "amara/06.jpg"
+  },
+  {
+   "screen": "34930be6a1",
+   "screen_label": "You're booked",
+   "source": "vision",
+   "heuristic": "Flexibility and efficiency of use",
+   "severity": "minor",
+   "finding": "The 'Add to calendar' button offers no choice of calendar application or file format (e.g., .ics, Google Calendar, Outlook).",
+   "suggestion": "Provide a dropdown or multiple options so users can add the booking to their preferred calendar.",
+   "element_id": 2,
+   "screenshot": "amara/10.jpg"
+  },
+  {
+   "screen": "34930be6a1",
+   "screen_label": "You're booked",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "The reference code 'MS-4818' is shown without explaining where or how the user might need to use it (e.g., at check-in or when contacting support).",
+   "suggestion": "Add a short helper line such as 'Quote this reference at the studio or when contacting us.'",
+   "element_id": null,
+   "screenshot": "amara/10.jpg"
+  },
+  {
+   "screen": "cbf717fd55",
+   "screen_label": "Good hair, unhurried",
+   "source": "a11y",
+   "heuristic": "Text contrast (WCAG 1.4.3)",
+   "severity": "minor",
+   "finding": "Low-contrast text (“From our guest book, September”; “M”). Measured: 3.2:1 (needs 4.5:1).",
+   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
+   "element_id": null,
+   "screenshot": "amara/01.jpg"
+  },
+  {
+   "screen": "cbf717fd55",
+   "screen_label": "Good hair, unhurried",
+   "source": "a11y",
+   "heuristic": "Touch targets too small (WCAG 2.5.8)",
+   "severity": "minor",
+   "finding": "Tap target (“Marlowe Studio”; “Get the app”) is smaller than 40×40 px on a phone. Measured: 151×26px.",
+   "suggestion": "Make interactive elements at least 44×44 px (min-height/min-width or padding).",
+   "element_id": 1,
+   "screenshot": "kofi/01.jpg"
+  },
+  {
+   "screen": "d8fba28d8a",
+   "screen_label": "Choose a service",
+   "source": "a11y",
+   "heuristic": "Text contrast (WCAG 1.4.3)",
+   "severity": "minor",
+   "finding": "Low-contrast text (“2”; “2 DATE & TIME”; “3” +6 more). Measured: 2.9:1 (needs 4.5:1).",
+   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
+   "element_id": null,
+   "screenshot": "amara/02.jpg"
+  },
+  {
+   "screen": "d8fba28d8a",
+   "screen_label": "Choose a service",
+   "source": "a11y",
+   "heuristic": "Touch targets too small (WCAG 2.5.8)",
+   "severity": "minor",
+   "finding": "Tap target (“Marlowe Studio”; “Get the app”) is smaller than 40×40 px on a phone. Measured: 151×26px.",
+   "suggestion": "Make interactive elements at least 44×44 px (min-height/min-width or padding).",
+   "element_id": 1,
+   "screenshot": "kofi/02.jpg"
+  },
+  {
+   "screen": "2c682f88fd",
+   "screen_label": "Create an account to confirm",
+   "source": "a11y",
+   "heuristic": "Text contrast (WCAG 1.4.3)",
+   "severity": "minor",
+   "finding": "Low-contrast text (“1 SERVICE”; “2 DATE & TIME”; “*” +3 more). Measured: 2.9:1 (needs 4.5:1).",
+   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
+   "element_id": null,
+   "screenshot": "amara/06.jpg"
+  },
+  {
+   "screen": "34930be6a1",
+   "screen_label": "You're booked",
+   "source": "a11y",
+   "heuristic": "Text contrast (WCAG 1.4.3)",
+   "severity": "minor",
+   "finding": "Low-contrast text (“SERVICE”; “DATE”; “TIME” +4 more). Measured: 3.2:1 (needs 4.5:1).",
+   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
+   "element_id": null,
+   "screenshot": "amara/10.jpg"
+  }
+ ],
+ "transcripts": {
+  "amara": [
+   {
+    "index": 1,
+    "path": "/samples/booking/index.html",
+    "screenshot": "amara/01.jpg",
+    "see": "I notice the Marlowe Studio website for a hair studio in Harbour Row. I am looking for the booking button to schedule a haircut for next Saturday afternoon. The page is clear and easy to read.",
+    "inner_voice": "Let me check what booking options are available first.",
+    "confusion": 0,
+    "action": "Clicked \"Book now\""
+   },
+   {
+    "index": 2,
+    "path": "/samples/booking/services.html",
+    "screenshot": "amara/02.jpg",
+    "see": "I notice the Marlowe Studio booking page. I am looking for a haircut service for next Saturday afternoon. The page layout is clear and easy to read. I need to click Select for the Signature Cut and Finish service.",
+    "inner_voice": "I want to select the Signature Cut & Finish service for my haircut.",
+    "confusion": 0,
+    "action": "Clicked \"Select\""
+   },
+   {
+    "index": 3,
+    "path": "/samples/booking/time.html",
+    "screenshot": "amara/03.jpg",
+    "see": "I notice I am on the date and time selection page for Marlowe Studio. I need to find Saturday the 24th of October for an afternoon haircut. It is confusing that the calendar shows Tuesday the 20th as today and I need to navigate to next week.",
+    "inner_voice": "Now I need to select Saturday the 24th for my appointment.",
+    "confusion": 0,
+    "action": "Clicked \"Sat 24\""
+   },
+   {
+    "index": 4,
+    "path": "/samples/booking/time.html",
+    "screenshot": "amara/04.jpg",
+    "see": "I see the Marlowe Studio booking page. I am looking for a Saturday afternoon slot for a Signature Cut and Finish. The date October 24 is already selected. I need to pick a time after noon. The layout is clear and easy to read.",
+    "inner_voice": "I'll choose 14:30 for my Saturday afternoon haircut.",
+    "confusion": 0,
+    "action": "Clicked \"14:30\""
+   },
+   {
+    "index": 5,
+    "path": "/samples/booking/time.html",
+    "screenshot": "amara/05.jpg",
+    "see": "I notice the Marlowe Studio booking page is on the date and time step. I am looking for a Saturday afternoon slot for next week. The calendar shows Saturday 24 October is selected with 14:30 chosen, which matches my goal perfectly.",
+    "inner_voice": "Now clicking Continue to proceed to enter my details.",
+    "confusion": 0,
+    "action": "Clicked \"Continue\""
+   },
+   {
+    "index": 6,
+    "path": "/samples/booking/details.html",
+    "screenshot": "amara/06.jpg",
+    "see": "I see the Marlowe Studio booking page. I am looking for the date and time selector to book for next Saturday afternoon. The page asks me to create an account first, which feels like an extra step before I can confirm my appointment.",
+    "inner_voice": "Filling in my details to create an account.",
+    "confusion": 0,
+    "action": "Filled in \"First name *\", \"Last name *\", \"Email *\", \"Mobile number *\" and 3 more"
+   },
+   {
+    "index": 7,
+    "path": "/samples/booking/details.html",
+    "screenshot": "amara/07.jpg",
+    "see": "I notice I am on the final step of booking a haircut at Marlowe Studio. I am looking for a way to confirm my account details to finish the booking. The form is clear and easy to read.",
+    "inner_voice": "I need to accept the policy to continue.",
+    "confusion": 0,
+    "action": "Clicked \"I accept the booking and cancellation…\""
+   },
+   {
+    "index": 8,
+    "path": "/samples/booking/details.html",
+    "screenshot": "amara/08.jpg",
+    "see": "I notice the registration form for Marlowe Studio. I need to find where to select a date and time for my haircut. The form asks for personal details but I do not see a calendar or time slot picker yet. I am unsure if clicking proceed will take me to the booking calendar.",
+    "inner_voice": "Let me check if there's anything else below the fold before continuing.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 9,
+    "path": "/samples/booking/details.html",
+    "screenshot": "amara/09.jpg",
+    "see": "I notice a form with fields for mobile number and date of birth already filled in. I am looking for a way to choose my haircut date and time. It is confusing because there is no calendar or time picker visible on this screen.",
+    "inner_voice": "Now I'll submit the form to confirm my booking.",
+    "confusion": 0,
+    "action": "Clicked \"Proceed\""
+   },
+   {
+    "index": 10,
+    "path": "/samples/booking/booked.html",
+    "screenshot": "amara/10.jpg",
+    "see": "I notice a booking confirmation page from Marlowe Studio. I am looking for the date and time to confirm my appointment. The details show Saturday 24 October at 14:30 which matches what I wanted. Everything is clear and easy to read.",
+    "inner_voice": "Great, my haircut is booked!",
+    "confusion": 0,
+    "action": "Finished: Booking confirmed for Saturday 24 October at 14:30."
+   }
+  ],
+  "ben": [
+   {
+    "index": 1,
+    "path": "/samples/booking/index.html",
+    "screenshot": "ben/01.jpg",
+    "see": "I notice the Marlowe Studio homepage with a clean layout. I am looking for the booking button to find open times for next Saturday afternoon. The banner says Saturdays are open through December. The page is easy to read and nothing feels confusing.",
+    "inner_voice": "Let's see the booking options quickly.",
+    "confusion": 0,
+    "action": "Clicked \"Book now\""
+   },
+   {
+    "index": 2,
+    "path": "/samples/booking/services.html",
+    "screenshot": "ben/02.jpg",
+    "see": "I notice the studio name and a service selection page. I am looking for a way to pick a haircut service and then see open times for next Saturday. It is confusing that I must select a service before seeing availability.",
+    "inner_voice": "Just pick the first option and get to the calendar.",
+    "confusion": 0,
+    "action": "Clicked \"Select\""
+   },
+   {
+    "index": 3,
+    "path": "/samples/booking/time.html",
+    "screenshot": "ben/03.jpg",
+    "see": "I see a booking page for a haircut. I need to find a time slot for next Saturday, which is October 31st. The calendar only shows dates up to Monday the 26th, so I cannot see the date I need yet. It is confusing that the target date is not visible.",
+    "inner_voice": "Looking for more dates beyond the week shown",
+    "confusion": 1,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 4,
+    "path": "/samples/booking/time.html",
+    "screenshot": "ben/04.jpg",
+    "see": "I see a grid of time slots for Tuesday 20 October. I need to find Saturday afternoon slots but I do not see a way to change the date. The page only shows today's times and that is confusing.",
+    "inner_voice": "Now I can pick Saturday dates.",
+    "confusion": 0,
+    "action": "Clicked \"Sat 24\""
+   },
+   {
+    "index": 5,
+    "path": "/samples/booking/time.html",
+    "screenshot": "ben/05.jpg",
+    "see": "I see the date picker for Saturday 24 October. I want to tap an afternoon slot like 14:00 or 14:30. The layout is clear and nothing is confusing. I just need to pick a time and continue.",
+    "inner_voice": "Tap Saturday 24th to see times",
+    "confusion": 0,
+    "action": "Clicked \"Sat 24\""
+   },
+   {
+    "index": 6,
+    "path": "/samples/booking/time.html",
+    "screenshot": "ben/06.jpg",
+    "see": "I see a booking page for a haircut on Saturday 24 October. I need to tap an afternoon time slot like 14:00 or 15:00. The layout is clear and nothing is confusing. I just want the open times to pick one.",
+    "inner_voice": "Got it, 14:30 works for Saturday afternoon.",
+    "confusion": 0,
+    "action": "Clicked \"14:30\""
+   },
+   {
+    "index": 7,
+    "path": "/samples/booking/time.html",
+    "screenshot": "ben/07.jpg",
+    "see": "I see the booking page for a Signature Cut and Finish. I am looking for open times next Saturday afternoon. The page shows Saturday 24 October with a grid of times. It is confusing that 14:30 is already selected and the continue button looks inactive.",
+    "inner_voice": "Hopefully it works now that I picked a time.",
+    "confusion": 1,
+    "action": "Clicked \"Continue\""
+   },
+   {
+    "index": 8,
+    "path": "/samples/booking/details.html",
+    "screenshot": "ben/08.jpg",
+    "see": "I see a booking page for a haircut on Saturday the 24th at 2:30 PM. I need to find a way to pick a different Saturday afternoon slot. It is confusing that I have to create an account before I can even see or choose available times.",
+    "inner_voice": "Let me pick a different Saturday slot.",
+    "confusion": 0,
+    "action": "Clicked \"Change time\""
+   },
+   {
+    "index": 9,
+    "path": "/samples/booking/time.html",
+    "screenshot": "ben/09.jpg",
+    "see": "I see the Marlowe Studio booking page. I am looking for open times on Saturday 24 October. The times are listed in a grid below the calendar. It is not confusing. I can tap a time and continue.",
+    "inner_voice": "Tap Continue to move to details",
+    "confusion": 0,
+    "action": "Clicked \"Continue\""
+   },
+   {
+    "index": 10,
+    "path": "/samples/booking/details.html",
+    "screenshot": "ben/10.jpg",
+    "see": "I notice the booking is set for Saturday 24 October at 2:30 PM for a Signature Cut. I am looking for a list of open times to tap one. It is confusing that I am forced to create an account before I can see or pick a time slot.",
+    "inner_voice": "Just filling quickly to get past this annoying account step.",
+    "confusion": 2,
+    "action": "Filled in \"First name *\", \"Last name *\", \"Email *\", \"Mobile number *\" and 3 more"
+   },
+   {
+    "index": 11,
+    "path": "/samples/booking/details.html",
+    "screenshot": "ben/11.jpg",
+    "see": "I see a booking page for a haircut on Saturday the 24th at 2:30 PM. I am looking for a list of open times to pick one. It is confusing that I have to create an account before I can see or select a time slot.",
+    "inner_voice": "Finally ready to book, hope no extra steps.",
+    "confusion": 0,
+    "action": "Clicked \"Proceed\""
+   },
+   {
+    "index": 12,
+    "path": "/samples/booking/details.html",
+    "screenshot": "ben/12.jpg",
+    "see": "I see a sign up form for Marlowe Studio. I need to find the booking calendar to pick a Saturday afternoon slot. This page is confusing because it asks for account details instead of showing available times. I just want to see open times and tap one.",
+    "inner_voice": "Checking the policy box to proceed.",
+    "confusion": 0,
+    "action": "Clicked \"I accept the booking and cancellation…\""
+   },
+   {
+    "index": 13,
+    "path": "/samples/booking/details.html",
+    "screenshot": "ben/13.jpg",
+    "see": "I see a registration form asking for my email, phone, birth date, and password. I need to find a way to view open haircut slots for next Saturday. This page does not show any availability or calendar options. It is confusing because I just want to book a time, not create an account.",
+    "inner_voice": "Finally, let's see if this confirms the booking.",
+    "confusion": 0,
+    "action": "Clicked \"Proceed\""
+   },
+   {
+    "index": 14,
+    "path": "/samples/booking/booked.html",
+    "screenshot": "ben/14.jpg",
+    "see": "I see a booking confirmation page. I am looking for open time slots for next Saturday afternoon. Nothing is confusing because I am already booked for Saturday 24 October at 14:30. I do not need to book anything else.",
+    "inner_voice": "Got my haircut booked, finally.",
+    "confusion": 0,
+    "action": "Finished: Booking confirmed for Saturday 24 Oct at 14:30."
+   }
+  ],
+  "kofi": [
+   {
+    "index": 1,
+    "path": "/samples/booking/index.html",
+    "screenshot": "kofi/01.jpg",
+    "see": "I see the Marlowe Studio website on my phone. The top banner says Saturday bookings are open through December. I need to find the book now button to pick next Saturday afternoon. The buttons are clear but I am not sure if the calendar will work well on my small screen.",
+    "inner_voice": "Let's see what happens when I tap Book now.",
+    "confusion": 0,
+    "action": "Clicked \"Book now\""
+   },
+   {
+    "index": 2,
+    "path": "/samples/booking/services.html",
+    "screenshot": "kofi/02.jpg",
+    "see": "I see the Marlowe Studio booking page on my phone. I am looking for a way to pick Saturday afternoon and choose a haircut service. The text is small and I have to pinch to read it. The Select buttons are clear but the whole page feels cramped.",
+    "inner_voice": "Tapping Select for Signature Cut & Finish",
+    "confusion": 0,
+    "action": "Clicked \"Select\""
+   },
+   {
+    "index": 3,
+    "path": "/samples/booking/time.html",
+    "screenshot": "kofi/03.jpg",
+    "see": "I see the Marlowe Studio booking page. I am looking for next Saturday so I can pick an afternoon time. The calendar only shows this week and I do not see a way to move to next week. The buttons are small and hard to tap on my phone.",
+    "inner_voice": "Maybe more dates appear if I scroll down.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 4,
+    "path": "/samples/booking/time.html",
+    "screenshot": "kofi/04.jpg",
+    "see": "I see a time bar at the top and a continue button that is grayed out. I need to find a time slot for next Saturday afternoon. The text under Before your visit is small and hard to read on my phone. I cannot see the calendar to pick a date.",
+    "inner_voice": "Need to see more time slots for Saturday.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 5,
+    "path": "/samples/booking/time.html",
+    "screenshot": "kofi/05.jpg",
+    "see": "I see a time row at the top but no date picker. I need to find Saturday next week and an afternoon slot. The continue button is greyed out because no time is selected. The text is small and the layout feels cramped on my phone. I might just walk in instead.",
+    "inner_voice": "Need to see more time options for Saturday.",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 6,
+    "path": "/samples/booking/time.html",
+    "screenshot": "kofi/06.jpg",
+    "see": "I see a time picker at the top but no time is selected yet. I need to find a slot for next Saturday afternoon. The Continue button is greyed out so I cannot move forward. The text is small and the ad at the bottom blocks part of the screen on my phone.",
+    "inner_voice": "Need to see more time options for Saturday",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 7,
+    "path": "/samples/booking/time.html",
+    "screenshot": "kofi/07.jpg",
+    "see": null,
+    "inner_voice": "Nothing I do here seems to work. I'm done.",
+    "confusion": 3,
+    "action": "Gave up: Nothing I try changes anything on this screen"
+   }
+  ],
+  "elena": [
+   {
+    "index": 1,
+    "path": "/samples/booking/index.html",
+    "screenshot": "elena/01.jpg",
+    "see": "I notice the Marlowe Studio website and a black Book Now button at the top right. I am looking for a way to book a haircut for next Saturday afternoon. Nothing is confusing or hard to read.",
+    "inner_voice": "Let me try the first Book now button to see where it leads.",
+    "confusion": 0,
+    "action": "Clicked \"Book now\""
+   },
+   {
+    "index": 2,
+    "path": "/samples/booking/services.html",
+    "screenshot": "elena/02.jpg",
+    "see": "I notice the Marlowe Studio booking page is on the service selection step. I am looking for a haircut option for next Saturday afternoon. The layout is clear and the text is easy to read. Nothing seems confusing at this stage.",
+    "inner_voice": "That looks like the regular haircut I usually get.",
+    "confusion": 0,
+    "action": "Clicked \"Select\""
+   },
+   {
+    "index": 3,
+    "path": "/samples/booking/time.html",
+    "screenshot": "elena/03.jpg",
+    "see": "I notice the page is for picking a date and time for a Signature Cut and Finish. I need to find next Saturday, which is the 24th of October, and choose an afternoon slot. The calendar shows Saturday the 24th but the times below are for Tuesday the 20th. That is confusing.",
+    "inner_voice": "Now I need to pick Saturday the 24th for my appointment.",
+    "confusion": 0,
+    "action": "Clicked \"Sat 24\""
+   },
+   {
+    "index": 4,
+    "path": "/samples/booking/time.html",
+    "screenshot": "elena/04.jpg",
+    "see": "I notice the page is for picking a date and time for a Signature Cut and Finish. I am looking for a time slot next Saturday afternoon. The date October 24 is already selected. I see times from 09:00 to 17:00. Nothing is confusing.",
+    "inner_voice": "I'll choose 14:30 for Saturday afternoon.",
+    "confusion": 0,
+    "action": "Clicked \"14:30\""
+   },
+   {
+    "index": 5,
+    "path": "/samples/booking/time.html",
+    "screenshot": "elena/05.jpg",
+    "see": "I see the Marlowe Studio booking page. I am looking for a Saturday afternoon slot. The date Saturday 24 October is selected and 14:30 is highlighted. It is clear and easy to read. I am ready to press continue.",
+    "inner_voice": "Now I'll press Continue to move to the next step.",
+    "confusion": 0,
+    "action": "Clicked \"Continue\""
+   },
+   {
+    "index": 6,
+    "path": "/samples/booking/details.html",
+    "screenshot": "elena/06.jpg",
+    "see": "I notice the appointment is set for Saturday 24 October at 14:30 for a Signature Cut and Finish. I am looking for a way to proceed without making an account. The page forces me to create an account to confirm, which is confusing because I only want to book.",
+    "inner_voice": "Filling in my details to create an account as requested.",
+    "confusion": 1,
+    "action": "Filled in \"First name *\", \"Last name *\", \"Email *\", \"Mobile number *\" and 3 more"
+   },
+   {
+    "index": 7,
+    "path": "/samples/booking/details.html",
+    "screenshot": "elena/07.jpg",
+    "see": "I notice the Marlowe Studio booking page. I am looking for a way to confirm my appointment for next Saturday afternoon. The form asks me to create an account. The date shown is Saturday 24 October at 14:30, which matches my request. Nothing is confusing.",
+    "inner_voice": "Now I'll click Proceed to finalize booking.",
+    "confusion": 0,
+    "action": "Clicked \"Proceed\""
+   },
+   {
+    "index": 8,
+    "path": "/samples/booking/details.html",
+    "screenshot": "elena/08.jpg",
+    "see": "I see a form with my email, mobile number, and date of birth already filled in. I need to find the calendar to book next Saturday afternoon. The booking policy checkbox is unchecked and there is an error message. That is confusing.",
+    "inner_voice": "Now I should accept the booking policy to proceed safely.",
+    "confusion": 0,
+    "action": "Clicked \"I accept the booking and cancellation…\""
+   },
+   {
+    "index": 9,
+    "path": "/samples/booking/details.html",
+    "screenshot": "elena/09.jpg",
+    "see": "I notice a form with my email, mobile number, and date of birth already filled in. I am looking for a way to choose Saturday afternoon for my haircut. The screen is confusing because it asks for a password and has a Proceed button but no calendar or time selector is visible.",
+    "inner_voice": "Looking for final booking confirmation.",
+    "confusion": 1,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 10,
+    "path": "/samples/booking/details.html",
+    "screenshot": "elena/10.jpg",
+    "see": "I see a sign-up form for Marlowe Studio. I am looking for a calendar or date picker to book a haircut for next Saturday afternoon. I do not see any way to select a date or time on this screen. It is confusing that I am creating an account instead of booking an appointment.",
+    "inner_voice": "Going back to choose my appointment time again.",
+    "confusion": 1,
+    "action": "Clicked \"‹ Back\""
+   },
+   {
+    "index": 11,
+    "path": "/samples/booking/time.html",
+    "screenshot": "elena/11.jpg",
+    "see": "I notice the Marlowe Studio booking page is on step two. I am looking for a Saturday afternoon slot. The date Saturday 24 October is selected and 14:30 is highlighted. Nothing is confusing. The text is clear and easy to read.",
+    "inner_voice": "Now I'll continue to finalize my booking.",
+    "confusion": 0,
+    "action": "Clicked \"Continue\""
+   },
+   {
+    "index": 12,
+    "path": "/samples/booking/details.html",
+    "screenshot": "elena/12.jpg",
+    "see": "I notice the Marlowe Studio booking page. I am looking for a way to book a haircut for next Saturday afternoon. It is confusing that the page asks me to create an account before I can confirm the appointment.",
+    "inner_voice": "I hope this works without charging me yet.",
+    "confusion": 1,
+    "action": "Clicked \"Proceed\""
+   },
+   {
+    "index": 13,
+    "path": "/samples/booking/details.html",
+    "screenshot": "elena/13.jpg",
+    "see": "I see a booking for a Signature Cut and Finish on Saturday, October 24th at 2:30 PM. I am looking for a way to confirm this appointment. The page is asking me to create an account first, which feels like an extra step I did not expect.",
+    "inner_voice": "Filling in my details to create an account so I can confirm my booking.",
+    "confusion": 0,
+    "action": "Filled in \"First name *\", \"Last name *\", \"Email *\", \"Mobile number *\" and 3 more"
+   },
+   {
+    "index": 14,
+    "path": "/samples/booking/details.html",
+    "screenshot": "elena/14.jpg",
+    "see": "I see a form to create an account to confirm a haircut. The appointment is set for Saturday 24 October at 14:30. I need to find a button to submit the form. The text is clear and easy to read.",
+    "inner_voice": "Now I accept the terms.",
+    "confusion": 0,
+    "action": "Clicked \"I accept the booking and cancellation…\""
+   },
+   {
+    "index": 15,
+    "path": "/samples/booking/details.html",
+    "screenshot": "elena/15.jpg",
+    "see": "I notice a form with fields for email, mobile number, date of birth, and passwords. I am looking for a way to select a date and time for my haircut. It is confusing that there is no calendar or time slot picker visible on this page.",
+    "inner_voice": "Now I'll click Proceed to create my account.",
+    "confusion": 0,
+    "action": "Clicked \"Proceed\""
+   },
+   {
+    "index": 16,
+    "path": "/samples/booking/booked.html",
+    "screenshot": "elena/16.jpg",
+    "see": "I notice a booking confirmation page from Marlowe Studio. I see that I am booked for Saturday 24 October at 14:30. The details table shows the service, date, time, stylist, price, location, and reference number. Nothing is confusing. The text is clear and easy to read.",
+    "inner_voice": "Great, my booking is confirmed for Saturday at 2:30 PM.",
+    "confusion": 0,
+    "action": "Finished: Booking confirmation shows correct date/time and email received."
+   }
+  ],
+  "sofia": [
+   {
+    "index": 1,
+    "path": "/samples/booking/index.html",
+    "screenshot": "sofia/01.jpg",
+    "see": "I notice the Marlowe Studio website. I am looking for a way to book a haircut for next Saturday. I see a black button that says Book an Appointment. Nothing is confusing or hard to read.",
+    "inner_voice": "Looking for a simple way to book my haircut appointment.",
+    "confusion": 0,
+    "action": "Clicked \"Book now\""
+   },
+   {
+    "index": 2,
+    "path": "/samples/booking/services.html",
+    "screenshot": "sofia/02.jpg",
+    "see": "I notice the Marlowe Studio booking page. I am looking for a haircut service to book for next Saturday afternoon. The page is clear and easy to read. I need to pick a service first before I can choose the date and time.",
+    "inner_voice": "I'll choose the Signature Cut & Finish for my haircut.",
+    "confusion": 0,
+    "action": "Clicked \"Select\""
+   },
+   {
+    "index": 3,
+    "path": "/samples/booking/time.html",
+    "screenshot": "sofia/03.jpg",
+    "see": "I see the Marlowe Studio booking page. It is step two, date and time. I need to pick Saturday 24 October for my haircut. The calendar shows Sunday and Monday are closed. I do not see times for Saturday yet.",
+    "inner_voice": "Now I need to pick Saturday for my appointment.",
+    "confusion": 0,
+    "action": "Clicked \"Sat 24\""
+   },
+   {
+    "index": 4,
+    "path": "/samples/booking/time.html",
+    "screenshot": "sofia/04.jpg",
+    "see": "I notice the Marlow Studio booking page. I am looking for a time slot next Saturday afternoon. The date Saturday 24 October is highlighted. I see times like 14:00 and 14:30. Nothing is confusing.",
+    "inner_voice": "Now I pick my preferred Saturday date.",
+    "confusion": 0,
+    "action": "Clicked \"Sat 24\""
+   },
+   {
+    "index": 5,
+    "path": "/samples/booking/time.html",
+    "screenshot": "sofia/05.jpg",
+    "see": "I see the Marlowe Studio booking page. I need to pick a time on Saturday 24 October for a haircut. The date is already selected. I can see many time slots. Nothing is confusing. I will choose a time in the afternoon and click continue.",
+    "inner_voice": "I'll choose 16:00 for my afternoon haircut.",
+    "confusion": 0,
+    "action": "Clicked \"16:00\""
+   },
+   {
+    "index": 6,
+    "path": "/samples/booking/time.html",
+    "screenshot": "sofia/06.jpg",
+    "see": "I see the Marlowe Studio booking page. I need to book a haircut for next Saturday afternoon. The page shows Saturday 24 October and a time of 16:00 is selected. That works for me. The layout is clear and easy to read.",
+    "inner_voice": "Now I want to continue to enter my details.",
+    "confusion": 0,
+    "action": "Clicked \"Continue\""
+   },
+   {
+    "index": 7,
+    "path": "/samples/booking/details.html",
+    "screenshot": "sofia/07.jpg",
+    "see": "I see the Marlowe Studio booking page. I need to fill in the form to confirm my haircut. I notice the service is set for Saturday 24 October at 16:00. I do not see a way to change the date on this screen.",
+    "inner_voice": "Filling in my details to create an account for the booking confirmation.",
+    "confusion": 0,
+    "action": "Filled in \"First name *\", \"Last name *\", \"Email *\", \"Mobile number *\" and 3 more"
+   },
+   {
+    "index": 8,
+    "path": "/samples/booking/details.html",
+    "screenshot": "sofia/08.jpg",
+    "see": "I see the Marlowe Studio booking page. I am on step three of three. The service is set for Saturday 24 October at 16:00. I am looking for a submit button to finish booking. I do not see a clear button to confirm the appointment.",
+    "inner_voice": "Now I'll click Proceed to finalize my booking.",
+    "confusion": 0,
+    "action": "Clicked \"Proceed\""
+   },
+   {
+    "index": 9,
+    "path": "/samples/booking/details.html",
+    "screenshot": "sofia/09.jpg",
+    "see": "I see a form for Marlowe Studio. I need to find the date and time picker for next Saturday afternoon. The booking policy checkbox is unchecked and there is an error message about it. That is blocking me from moving forward.",
+    "inner_voice": "I should accept the booking policy to proceed.",
+    "confusion": 0,
+    "action": "Clicked \"I accept the booking and cancellation…\""
+   },
+   {
+    "index": 10,
+    "path": "/samples/booking/details.html",
+    "screenshot": "sofia/10.jpg",
+    "see": "I see a sign up form for Marlowe Studio. I need to find where to pick a date and time for my haircut. I do not see a calendar or time slots on this screen. It is confusing because I am on a registration page instead of a booking page.",
+    "inner_voice": "Now I'll click Proceed to finish creating my account.",
+    "confusion": 0,
+    "action": "Clicked \"Proceed\""
+   },
+   {
+    "index": 11,
+    "path": "/samples/booking/booked.html",
+    "screenshot": "sofia/11.jpg",
+    "see": "I notice I am already booked. I see the date is Saturday 24 October at 16:00. The service is Signature Cut and Finish. The price is from 68 dollars. The place is 14 Harbour Row. I do not see anything confusing.",
+    "inner_voice": "Great, my haircut is booked!",
+    "confusion": 0,
+    "action": "Finished: Booking confirmed for Saturday 24 October at 16:00."
+   }
+  ]
+ },
+ "usage": {
+  "rows": [
+   {
+    "tier": "fast",
+    "model": "nvidia/Nemotron-3_5-Lightning",
+    "label": "Nemotron 3.5 Lightning",
+    "calls": 1,
+    "prompt_tokens": 220,
+    "completion_tokens": 9,
+    "cost_usd": 2e-05
+   },
+   {
+    "tier": "vision",
+    "model": "nvidia/Nemotron-3.5-Super-VL",
+    "label": "Nemotron 3.5 Super VL",
+    "calls": 67,
+    "prompt_tokens": 75270,
+    "completion_tokens": 4910,
+    "cost_usd": 0.027
+   },
+   {
+    "tier": "agent",
+    "model": "nvidia/nemotron-3-super-120b-a12b",
+    "label": "Nemotron 3 Super",
+    "calls": 58,
+    "prompt_tokens": 176608,
+    "completion_tokens": 6698,
+    "cost_usd": 0.05901
+   },
+   {
+    "tier": "reason",
+    "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+    "label": "Nemotron 3 Ultra",
+    "calls": 1,
+    "prompt_tokens": 4463,
+    "completion_tokens": 1593,
+    "cost_usd": 0.00924
+   }
+  ],
+  "total_cost_usd": 0.0953,
+  "tavily_calls": 5
+ },
+ "refs_status": "ok",
+ "research": [
+  {
+   "title": "Common Salon Booking Mistakes to Avoid | Zenoti",
+   "url": "https://www.zenoti.com/thecheckin/salon-booking-mistakes",
+   "note": "> “Zenoti helps the guest by making booking so easy and helps us help the guests by reminding them of what's coming up and the next service they’ve booked. Everything is just so nicely automated. ” - Katie Trent, CEO…"
+  },
+  {
+   "title": "How To Choose the Best Hair Salon Software in 2026 | Square",
+   "url": "https://squareup.com/gb/en/the-bottom-line/operating-your-business/best-booking-systems-for-hair-salons",
+   "note": "You shouldn’t need a manual to use your hair salon booking system. Look for software with a clean, intuitive interface that your staff can pick up quickly. Test how easy it is to complete common tasks – if you’re…"
+  },
+  {
+   "title": "Best Salon Booking Software: 8 Options Compared for Salon Owners",
+   "url": "https://www.meevo.com/blog/salon-booking-software",
+   "note": "Onboarding and ongoing support: Look closely at what the vendor offers after you sign. Does the company provide a structured onboarding process, or simply give you a login and expect you to learn the software yourself?…"
+  },
+  {
+   "title": "Hairy Up!. A UX Case Study on a Salon Booking… | by Katha A. | Medium",
+   "url": "https://medium.com/@kathahiraya/hairy-up-d9f2d74f0f68",
+   "note": "The users could not identify what the next process would be in the flow (refer to Fig. A and Fig. B for the iterations) The users thought that upon selecting the hairdresser, they would go to the hairdresser’s Profile…"
+  },
+  {
+   "title": "Salon Statistics (2026): Wait Times, Bookings & No-Show Data | WaitQ",
+   "url": "https://waitq.app/blog/salon-statistics",
+   "note": "The data lines up across every source: salon clients will wait, but the tolerance is thin, and nail clients in particular have almost none of it left. The 40 to 52% frustration range around waiting, the 71% of regulars…"
+  },
+  {
+   "title": "Common Salon Booking Mistakes to Avoid | Zenoti",
+   "url": "https://www.zenoti.com/thecheckin/salon-booking-mistakes",
+   "note": "Could a first-time client complete a booking quickly, without friction or extra steps? Is the entire experience comfortable on a mobile device? Are service names and durations obvious without explanation? Would a…"
+  }
+ ]
+}

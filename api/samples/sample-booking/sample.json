@@ -1,0 +1,10 @@
+{
+ "id": "sample-booking",
+ "title": "Booking",
+ "url": "http://localhost:3000/samples/booking/index.html",
+ "task": "Book a haircut for next Saturday afternoon",
+ "headline": "1 of 5 users could not book a haircut for next Saturday afternoon.",
+ "completed": 4,
+ "total": 5,
+ "order": 3
+}

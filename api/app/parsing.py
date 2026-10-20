@@ -14,6 +14,20 @@ def today_note(today: date | None = None) -> str:
     return f"Today is {d.strftime('%A')}, {d.day} {d.strftime('%B %Y')}."
 
 
+_EM_DASH_RE = re.compile(r"\s*" + chr(0x2014) + r"\s*")
+
+
+def plain_dashes(value: Any) -> Any:
+    """Swap em dashes for a spaced hyphen in every string of a JSON-like value (house style: no em dashes)."""
+    if isinstance(value, str):
+        return _EM_DASH_RE.sub(" - ", value)
+    if isinstance(value, list):
+        return [plain_dashes(v) for v in value]
+    if isinstance(value, dict):
+        return {k: plain_dashes(v) for k, v in value.items()}
+    return value
+
+
 _THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL | re.IGNORECASE)
 _FENCE_RE = re.compile(r"```(?:json|JSON)?\s*(.*?)```", re.DOTALL)
 
