@@ -87,7 +87,7 @@ export function SamplesScreen() {
           <Reveal className="mt-14 flex flex-col items-start gap-4 rounded-card bg-white/70 p-6 shadow-soft backdrop-blur sm:flex-row sm:items-center sm:justify-between sm:p-8">
             <div>
               <p className="display text-22 font-semibold tracking-[-0.01em] text-ink">Want one for your own site?</p>
-              <p className="mt-1 text-15 text-ink-2">Paste a link, say what to try, and get a report like these in about three minutes.</p>
+              <p className="mt-1 text-15 text-ink-2">Paste a link, say what to try, and get a report like these in a couple of minutes.</p>
             </div>
             <Link href="/#start" className="btn-lime shrink-0">
               Run a test

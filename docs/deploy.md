@@ -8,7 +8,8 @@ Placeholders: `<hf>` = your Hugging Face username, `<app>` = your Vercel project
 ## 0. Before you start
 
 - Keys work locally: `api\.venv\Scripts\python scripts\day0_test.py` prints a Nemotron reply and a Tavily result.
-- Code is pushed to GitHub (`git push -u origin main`), repo is public, License shows **MIT** in About.
+- Code is pushed to GitHub. The repo can stay private while you deploy: Vercel and the GitHub Action both work with
+  private repos. Make it public (License shows **MIT** in About) before submitting.
 - Make a long random judge token (e.g. `python -c "import secrets; print(secrets.token_urlsafe(24))"`). Keep it
   for the Devpost "notes for judges" field.
 
@@ -23,9 +24,12 @@ Placeholders: `<hf>` = your Hugging Face username, `<app>` = your Vercel project
    | Secret | `NEBIUS_API_KEY` | your Token Factory key |
    | Secret | `TAVILY_API_KEY` | your Tavily key |
    | Secret | `JUDGE_TOKEN` | the long random token |
-   | Variable | `NEMOTRON_FAST` / `NEMOTRON_VISION` / `NEMOTRON_AGENT` / `NEMOTRON_REASON` | IDs printed by `day0_test.py` |
+   | Variable | `NEMOTRON_FAST` | `nvidia/Nemotron-3_5-Lightning` |
+   | Variable | `NEMOTRON_VISION` | `nvidia/Nemotron-3.5-Super-VL` |
+   | Variable | `NEMOTRON_AGENT` | `nvidia/nemotron-3-super-120b-a12b` |
+   | Variable | `NEMOTRON_REASON` | `nvidia/Nemotron-3-Ultra-550b-a55b` |
    | Variable | `ALLOWED_ORIGINS` | `https://<app>.vercel.app` (add after step 2; for now `http://localhost:3000`) |
-   | Variable | `BUDGET_USD_SOFT` / `BUDGET_USD_HARD` | `30` / `40` (lower them if credits are below $45) |
+   | Variable | `BUDGET_USD_SOFT` / `BUDGET_USD_HARD` | `18` / `25` (keep the hard cap below the credits you have) |
    | Variable | `SPENT_OFFSET_USD` | `0` now; see "Budget after restarts" below |
 
 3. huggingface.co → avatar → **Settings** → **Access Tokens** → **Create new token** → type **Write** → copy.

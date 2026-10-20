@@ -35,7 +35,7 @@ Every model call goes through one client, [`api/app/llm.py`](api/app/llm.py), po
 | Reviewing | **Nemotron 3.5 Super VL** (vision) | Heuristic evaluation (Nielsen's 10) of every screen visited | [`expert.py`](api/app/expert.py) |
 | Writing | **Nemotron 3 Ultra 550B** | One call turns all logs into ranked issues with fixes | [`synthesis.py`](api/app/synthesis.py) |
 
-A typical run is ~80 Nemotron calls and costs about **$0.10–0.20**; the report's footer shows the exact calls,
+A typical run is 120 to 150 Nemotron calls, takes about two minutes and costs about **$0.10**; the report's footer shows the exact calls,
 tokens and cost per model for that run.
 
 ## Where Tavily is used

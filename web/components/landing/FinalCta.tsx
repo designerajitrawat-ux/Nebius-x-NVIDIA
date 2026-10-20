@@ -33,7 +33,7 @@ export function FinalCta() {
             Your users are about to try it. <span className="text-lime">Let five go first.</span>
           </h2>
           <p className="relative mx-auto mt-5 max-w-[52ch] text-17 text-white/70">
-            One link, one task, about three minutes. No signup, no SDK, nothing to install on your site.
+            One link, one task, a couple of minutes. No signup, no SDK, nothing to install on your site.
           </p>
           <div className="relative mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a href="#start" className="btn-lime">

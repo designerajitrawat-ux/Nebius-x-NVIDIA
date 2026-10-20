@@ -192,7 +192,7 @@ GET  /samples              list of committed sample reports
 - Expert: ~8 pages × 2K → ~$0.01
 - Ultra synthesis: ~40K in / 4K out → $0.04 + $0.012 ≈ $0.05
 - Personas + Tavily: negligible
-- **≈ $0.15–0.20 per run** → $40 budget ≈ 200+ runs. Fine.
+- **Measured: $0.09–0.11 per run** (117–154 calls) → a $25 budget is 200+ runs.
 
 ## Failure handling (every stage)
 

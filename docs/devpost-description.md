@@ -1,8 +1,7 @@
 # Devpost submission (draft)
 
-> Draft written before the first live run. Replace every `[TBD]` with real numbers from the seeded sample
-> reports (the report footer shows calls, tokens and cost per Nemotron model). Keep the voice first person:
-> this is Ajit's project.
+> Numbers below come from the live sample runs of 20 Oct 2026. Still to fill after deploy and recording: the demo
+> URLs, the video link and the judge token. Keep the voice first person: this is Ajit's project.
 
 ## Project name
 FiveUsers
@@ -32,7 +31,8 @@ You give FiveUsers a URL and a task, like "sign up and create your first project
    on the actual screenshot, the persona's own words, and a concrete fix for each (a copy rewrite, a CSS change or a
    flow change), with links to how comparable products handle the same step.
 
-A run takes about [TBD] minutes and costs about $[TBD] in model calls.
+A run takes about two minutes and costs about ten cents in model calls: 117 to 154 Nemotron calls in our sample
+runs, $0.09 to $0.11 each.
 
 ## How I built it
 Every model call runs on **NVIDIA Nemotron through Nebius Token Factory**, and each Nemotron tier does the job it's
@@ -44,8 +44,9 @@ best at:
 | Five personas | Nemotron 3 Super | grounded in Tavily research, structured JSON |
 | Every step: "what do I see?" | Nemotron 3.5 Super VL | reads the screenshot in the persona's voice |
 | Every step: "what do I do?" | Nemotron 3 Super | tool calling: click / type / fill / scroll / wait / back / give up / done |
+| Every "done": is it really done? | Nemotron 3.5 Super VL | judges the goal from the screenshot, not the persona's claim |
 | Expert review per screen | Nemotron 3.5 Super VL | Nielsen heuristics from the screenshot |
-| The report | Nemotron 3 Ultra | one reasoning call over every step, finding and quote |
+| The report | Nemotron 3 Ultra | one call over every step, finding and quote |
 
 **Tavily** runs twice per test: to research the product category before writing personas, and to find "how others
 do it" references for the top issues.
@@ -75,18 +76,38 @@ A few decisions that make the report trustworthy:
 - **Proving the personas *could* succeed.** I built a script that drives all three sample flows through the personas'
   own eyes, choosing elements only from what the model sees. It failed 6 of 6 at first; each failure was a real gap
   (a dropdown whose options the persona couldn't see, a late navigation). Now 6 of 6 pass on desktop and phone.
-- [TBD: anything surprising from the first live runs: tool-calling reliability, vision quality, latency]
+- **My first live run said 0 of 5 users finished. It was my bug, not the site.** I had used each persona's patience
+  as a hard step limit, and the sample flow needs about nine actions, so the hurried personas could never finish.
+  Now everyone gets the same screen budget, patience lives in the prompt, and quitting is the persona's own decision.
+- **Personas said "done" when they weren't.** One declared victory on an empty projects page. Every "done" is now
+  checked by Nemotron 3.5 Super VL looking at the screenshot. Text-only checks failed here: a kanban board's own
+  "Done 0" column fooled them. The vision check got 12 of 12 real screens right, and it also catches people who
+  reached the goal without noticing.
+- **Ultra thought itself out of tokens.** With reasoning on, Nemotron 3 Ultra used all 12,000 output tokens thinking
+  about a 5,000-token prompt and returned half a JSON report with one issue. With reasoning off it writes a full
+  report in about five seconds for about one cent. Truncated output is now treated as an error, never as a report.
+- **The models didn't know what day it is.** A correct October 2026 calendar was reported as a critical "wrong
+  month" bug. Every prompt now carries today's date.
 
 ## Accomplishments I'm proud of
 - The report reads like a researcher wrote it, and every claim in it points at evidence.
 - Watching five lanes come alive and one persona quietly give up is exactly what a real test feels like.
 - Three deliberately flawed sample products with a written answer key, so anyone can check whether the report
-  found the real problems: FiveUsers found [TBD] of the [TBD] flaws in the signup flow.
+  found the real problems. In the committed signup report, the issues and the expert review caught 6 of the 13
+  planted flaws (card asked for a free trial, an unlabeled email field, low-contrast errors, the cookie bar covering
+  Submit on a phone, an icon-only create button, the "project key" jargon), plus problems I hadn't planted. Other runs
+  of the same site also flagged the pricing wall; each run's cast finds a slightly different set, like real people.
+- The personas are drawn as small characters whose faces show the same confusion score the agents report on every
+  step, so you can see someone getting lost before you read a word.
 
 ## What I learned
-- Routing by tier matters: the cheap, fast models carry the hundreds of per-step calls; Ultra is worth it once, at the
-  end, where the reasoning is hardest. [TBD: cost split from the report footer]
-- [TBD: what Nemotron's tool calling and vision were like in practice]
+- Routing by tier matters. In a typical run Nemotron 3 Super carries about 62% of the cost (personas and every
+  decision), Super VL about 28% (every screenshot and every "done" check), Ultra about 9% for one call that writes
+  the report, and Lightning almost nothing.
+- Nemotron 3 Super returned clean, structured tool calls from the first test, fast enough (about a second) to drive
+  five agents at once. For anything about what's on a screen, the vision model is the right judge, not text.
+- Reasoning is a budget, not a free upgrade: turn it on where it pays and cap it, because a runaway think costs
+  tokens and can cut the answer off.
 
 ## What's next
 - Figma prototypes as input, so designs get tested before they're built
@@ -110,4 +131,4 @@ Sample reports open instantly. To run your own tests without the public rate lim
 the limit. The three sample sites are fictional and deliberately flawed; their answer key is `docs/samples.md`.
 
 ## Feedback on Nebius Token Factory and NVIDIA Nemotron
-Copy from `docs/feedback.md` after the live runs (separate prize, so be specific).
+Paste `docs/feedback.md` (separate prize, kept specific and measured).

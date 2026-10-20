@@ -181,7 +181,7 @@ export const SAMPLE_CARDS = [
 /** Measured on the committed sample runs. */
 export const RUN_FACTS = [
   { value: "5", label: "AI users per test, in parallel" },
-  { value: "~80", label: "Nemotron calls per run" },
+  { value: "~130", label: "Nemotron calls per run" },
   { value: "~$0.10", label: "model cost per run" },
-  { value: "~3 min", label: "from link to report" },
+  { value: "~2 min", label: "from link to report" },
 ];
