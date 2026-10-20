@@ -18,6 +18,7 @@ from playwright.async_api import Browser, BrowserContext, Dialog, Page, Playwrig
 from playwright.async_api import Error as PWError
 from playwright.async_api import TimeoutError as PWTimeout
 
+from .colors import name_swatch_colors
 from .config import settings
 from .egress import shared_proxy
 from .models import VIEWPORTS, A11yIssue, Action, Element, Observation
@@ -194,6 +195,10 @@ OBSERVE_JS = r"""
           ? Array.from(input.options).slice(0, 15).map(o => cut(o.text, 30)).concat(input.options.length > 15 ? ['…'] : [])
           : null,
         disabled: !!(input.disabled || el.getAttribute('aria-disabled') === 'true'),
+        // What a sighted person reads from the highlight: chosen size, active tab, current page.
+        selected: !['checkbox', 'radio'].includes(input.type) && (
+          ['true', 'page', 'step'].includes(el.getAttribute('aria-pressed') || el.getAttribute('aria-selected') || el.getAttribute('aria-current') || '')
+          || /(^|[\s_-])(is-on|is-active|is-selected|active|selected|current|checked)($|[\s_-])/i.test(typeof el.className === 'string' ? el.className : '')),
         in_view: inView(r),
         covered: inView(r) ? coveredAt(el, r) : false,
         bbox: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)],
@@ -361,6 +366,10 @@ def describe_element(e: Element) -> str:
         bits.append(f'placeholder "{e.placeholder}"')
     if e.value:
         bits.append(f'value "{e.value}"')
+    if e.color:
+        bits.append(f"looks {e.color}")
+    if e.selected:
+        bits.append("looks selected")
     if e.checked is not None:
         bits.append("checked" if e.checked else "unchecked")
     if e.options:
@@ -541,10 +550,14 @@ class Session:
         await self.page.screenshot(path=str(out), type="jpeg", quality=70, animations="disabled")
 
         elements = [Element(**e) for e in data["elements"]]
-        a11y = [A11yIssue(**a) for a in data["a11y"]] + contrast_issues(data.get("colors", []))
+        try:
+            name_swatch_colors(out, elements, tuple(data["viewport"]))
+        except Exception:  # noqa: BLE001 (a colour hint is optional; never fail a step over it)
+            log.warning("could not read swatch colours from %s", rel, exc_info=True)
+        a11y =[A11yIssue(**a) for a in data["a11y"]] + contrast_issues(data.get("colors", []))
         fields = [e.name or e.placeholder or e.role for e in elements if e.role in FORM_ROLES]
         screen = fingerprint(data["path"], data["heading"], fields)
-        values = "|".join(f"{e.id}={e.value or ''}{e.checked}" for e in elements if e.value or e.checked)
+        values = "|".join(f"{e.id}={e.value or ''}{e.checked}{e.selected}" for e in elements if e.value or e.checked or e.selected)
         dialog, blocked = self._dialog, self._blocked
         self._dialog = self._blocked = None
         state = hashlib.sha1(

@@ -58,3 +58,6 @@ Three lines per day: done / blocked / tomorrow. The log is appended each day.
   - Published reports never contain em dashes: models and web snippets are cleaned before the report is saved.
   - Live demo samples saved in api/samples: signup 4 of 5 finished, booking 4 of 5, checkout 0 of 5 (unlabeled colour swatches).
   - GitHub repo: designerajitrawat-ux/Nebius-x-NVIDIA.
+  - Personas now see what a sighted person sees on unnamed controls: the colour of a swatch read from the screenshot
+    ("looks blue") and a highlighted choice ("looks selected"). On the checkout sample they now pick blue and M, add
+    to bag, get no feedback, add it again and give up: the real flaws C4 and C5, instead of an agent blind spot.

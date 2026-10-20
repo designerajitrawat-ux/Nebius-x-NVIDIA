@@ -51,8 +51,10 @@ class Element(BaseModel):
     checked: bool | None = None
     options: list[str] | None = None  # <select> option texts (first 15, "…" if more)
     disabled: bool = False
+    selected: bool = False  # shown as chosen/active (aria-pressed/selected/current or an "is-on"-style class)
     in_view: bool = True
     covered: bool = False  # another element sits on top of its center (e.g. a sticky banner)
+    color: str | None = None  # what an unnamed small control looks like on screen, e.g. "dark blue" (colour swatches)
     bbox: tuple[float, float, float, float]  # x, y, w, h in viewport px
 
 
