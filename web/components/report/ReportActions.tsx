@@ -76,8 +76,17 @@ function ExportMarkdownLink({ report }: { report: Report }) {
     saveText(reportToMarkdown(report), filename);
   }
 
+  if (!href) {
+    // No API copy of this report (fixtures, offline): build the file in the browser.
+    return (
+      <button type="button" onClick={() => saveText(reportToMarkdown(report), filename)} className="btn-ink">
+        <DownloadIcon />
+        Export as Markdown
+      </button>
+    );
+  }
   return (
-    <a href={href ?? "#export"} download={filename} onClick={onClick} className="btn-ink">
+    <a href={href} download={filename} onClick={onClick} className="btn-ink">
       <DownloadIcon />
       Export as Markdown
     </a>
