@@ -4,12 +4,13 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { reportMarkdownUrl } from "@/lib/api";
 import { reportToMarkdown } from "@/lib/markdown";
 import type { Report } from "@/lib/types";
+import { copyText } from "./ui";
 
 export function ReportActions({ report }: { report: Report }) {
   return (
     <div className="flex shrink-0 flex-wrap gap-2">
-      <CopyLinkButton />
       <ExportMarkdownLink report={report} />
+      <CopyLinkButton />
     </div>
   );
 }
@@ -20,21 +21,7 @@ function CopyLinkButton() {
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   async function copy() {
-    const url = window.location.href.split("#")[0];
-    try {
-      await navigator.clipboard.writeText(url);
-    } catch {
-      // Older browsers / insecure contexts.
-      const field = document.createElement("textarea");
-      field.value = url;
-      field.setAttribute("readonly", "");
-      field.style.position = "fixed";
-      field.style.opacity = "0";
-      document.body.appendChild(field);
-      field.select();
-      document.execCommand("copy");
-      field.remove();
-    }
+    await copyText(window.location.href.split("#")[0]);
     setCopied(true);
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => setCopied(false), 2000);
@@ -42,7 +29,12 @@ function CopyLinkButton() {
 
   return (
     <>
-      <button type="button" onClick={copy} className="btn-secondary min-w-[92px]">
+      <button
+        type="button"
+        onClick={copy}
+        className="inline-flex h-11 min-w-[124px] items-center justify-center gap-2 rounded-full bg-white/70 px-5 text-15 font-medium whitespace-nowrap text-ink ring-1 ring-ink/10 backdrop-blur transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-white"
+      >
+        {copied ? <CheckIcon /> : <LinkIcon />}
         {copied ? "Link copied" : "Copy link"}
       </button>
       <span role="status" className="sr-only">
@@ -85,8 +77,39 @@ function ExportMarkdownLink({ report }: { report: Report }) {
   }
 
   return (
-    <a href={href ?? "#export"} download={filename} onClick={onClick} className="btn-secondary">
+    <a href={href ?? "#export"} download={filename} onClick={onClick} className="btn-ink">
+      <DownloadIcon />
       Export as Markdown
     </a>
+  );
+}
+
+function DownloadIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M8 2v8m0 0 3.2-3.2M8 10 4.8 6.8M3 13.5h10" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function LinkIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+      <path
+        d="M6.6 9.4a2.6 2.6 0 0 0 3.7 0l2.4-2.4a2.6 2.6 0 0 0-3.7-3.7l-.8.8M9.4 6.6a2.6 2.6 0 0 0-3.7 0L3.3 9a2.6 2.6 0 0 0 3.7 3.7l.8-.8"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="m3.5 8.5 3 3 6-7" fill="none" stroke="#22c997" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }

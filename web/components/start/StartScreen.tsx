@@ -1,12 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { FinalCta } from "@/components/landing/FinalCta";
+import { Hero } from "@/components/landing/Hero";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import { MeetTheFive } from "@/components/landing/MeetTheFive";
+import { ReportPreview } from "@/components/landing/ReportPreview";
+import { Samples } from "@/components/landing/Samples";
+import { StackMarquee } from "@/components/landing/StackMarquee";
+import { UnderTheHood } from "@/components/landing/UnderTheHood";
+import { WatchRun } from "@/components/landing/WatchRun";
 import { SiteFooter } from "@/components/SiteFooter";
 import { FALLBACK_SAMPLES } from "@/lib/constants";
 import { formatUsd } from "@/lib/format";
 import { useHealth } from "@/lib/useResource";
 import { StartForm } from "./StartForm";
-import { WhatHappens } from "./WhatHappens";
 
 export function StartScreen() {
   const health = useHealth();
@@ -40,27 +48,30 @@ export function StartScreen() {
   );
 
   return (
-    <>
-      <section className="page pt-10 sm:pt-20">
-        <h1 className="display text-40 font-medium tracking-[-0.025em] text-balance sm:text-56 lg:text-pretty">
-          <span className="lg:block">Five AI users walk through </span>
-          <span className="lg:block">your product before real ones do.</span>
-        </h1>
-        <div className="max-w-[720px]">
-          <div className="mt-10 sm:mt-12">
+    <div className="relative -mt-16 overflow-x-clip bg-lilac sm:-mt-[72px]">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[900px] bg-[radial-gradient(ellipse_at_70%_10%,#ffffff_0%,transparent_55%),radial-gradient(ellipse_at_10%_40%,#f6f3ff_0%,transparent_50%)]" />
+      <div className="relative">
+        <Hero
+          form={(onActivity) => (
             <StartForm
               samples={samples}
               demoMode={demoMode}
               onBudgetExhausted={() => setBudgetExhausted(true)}
               status={status}
+              onActivity={onActivity}
             />
-          </div>
-        </div>
-      </section>
-
-      <WhatHappens models={h?.models} />
-
-      <SiteFooter aside={h ? <>Credits remaining: {formatUsd(h.budget.remaining_usd)}</> : null} />
-    </>
+          )}
+        />
+        <StackMarquee />
+        <WatchRun />
+        <HowItWorks />
+        <MeetTheFive />
+        <ReportPreview />
+        <UnderTheHood models={h?.models} />
+        <Samples />
+        <FinalCta />
+        <SiteFooter aside={h ? <>Credits remaining: {formatUsd(h.budget.remaining_usd)}</> : null} />
+      </div>
+    </div>
   );
 }

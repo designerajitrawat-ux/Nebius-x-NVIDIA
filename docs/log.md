@@ -61,3 +61,8 @@ Three lines per day: done / blocked / tomorrow. The log is appended each day.
   - Personas now see what a sighted person sees on unnamed controls: the colour of a swatch read from the screenshot
     ("looks blue") and a highlighted choice ("looks selected"). On the checkout sample they now pick blue and M, add
     to bag, get no feedback, add it again and give up: the real flaws C4 and C5, instead of an agent blind spot.
+  - New visual design across the web app, from Ajit's design research: lilac canvas, one lime accent, glass
+    surfaces, a dark "lab" for the live run, and the five personas as small characters whose faces show their
+    confusion score (calm, curious, confused, worried, frustrated, happy). The landing's command bar is the hero:
+    the characters sit on it, follow the pointer and react while you fill it in. Report, samples and 404 pages
+    follow the same system. Motion respects reduced-motion without hydration mismatches.

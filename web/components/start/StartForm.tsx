@@ -2,18 +2,29 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useId, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useId, useState, type FormEvent, type ReactNode } from "react";
 import { ApiRequestError, createRun } from "@/lib/api";
 import { normaliseUrl } from "@/lib/format";
 import type { SampleInfo } from "@/lib/types";
 
 type Sample = Pick<SampleInfo, "id" | "title">;
 
+/** What the person is doing with the form, so the hero's characters can react to it. */
+export type FormActivity = "idle" | "url" | "task" | "ready" | "submitting" | "error";
+
+const PRESETS = [
+  "Sign up and create your first project",
+  "Start a free trial",
+  "Buy a product and pay by card",
+  "Book an appointment",
+];
+
 export function StartForm({
   samples,
   demoMode,
   onBudgetExhausted,
   status,
+  onActivity,
 }: {
   samples: Sample[];
   /** Hard budget reached: no new runs, samples only. */
@@ -21,6 +32,7 @@ export function StartForm({
   onBudgetExhausted: () => void;
   /** Quiet status lines (waking, dry run, soft budget) rendered under the actions. */
   status?: ReactNode;
+  onActivity?: (activity: FormActivity) => void;
 }) {
   const router = useRouter();
   const formId = useId();
@@ -31,6 +43,18 @@ export function StartForm({
   const [taskError, setTaskError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [showAudience, setShowAudience] = useState(false);
+  const [focus, setFocus] = useState<"url" | "task" | null>(null);
+
+  const ready = /\.[a-z]{2,}/i.test(url) && task.trim().length >= 3;
+  const activity: FormActivity = submitting
+    ? "submitting"
+    : urlError || taskError || formError
+      ? "error"
+      : ready
+        ? "ready"
+        : focus ?? "idle";
+  useEffect(() => onActivity?.(activity), [activity, onActivity]);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -72,168 +96,230 @@ export function StartForm({
     }
   }
 
+  const fieldError = urlError || taskError;
+
   return (
     <form onSubmit={onSubmit} noValidate aria-describedby={formError ? `${formId}-error` : undefined}>
       <fieldset disabled={demoMode} className="min-w-0">
         <legend className="sr-only">Test setup</legend>
-        <div className="rounded-control border border-line bg-card">
-          <FieldRow
-            id={`${formId}-url`}
-            label="Site"
-            error={urlError}
-            input={{
-              name: "url",
-              value: url,
-              onChange: (v) => {
+
+        {/* The command bar: one glowing pill holding the site, the task and the button. */}
+        <div className="glow-ring relative z-10 rounded-[30px] p-[2px] shadow-float">
+          <div className="flex flex-col gap-1 rounded-[28px] bg-white p-2 md:flex-row md:items-stretch md:gap-0">
+            <Field
+              id={`${formId}-url`}
+              label="Your website"
+              icon="lock"
+              invalid={!!urlError}
+              className="md:w-[38%]"
+              value={url}
+              onChange={(v) => {
                 setUrl(v);
                 if (urlError) setUrlError(null);
-              },
-              placeholder: "e.g. your-site.com",
-              inputMode: "url",
-              autoComplete: "url",
-              maxLength: 500,
-              required: true,
-            }}
-          />
-          <FieldRow
-            id={`${formId}-task`}
-            label="Task"
-            error={taskError}
-            input={{
-              name: "task",
-              value: task,
-              onChange: (v) => {
+              }}
+              onFocus={() => setFocus("url")}
+              onBlur={() => setFocus(null)}
+              placeholder="your-site.com"
+              inputMode="url"
+              autoComplete="url"
+              maxLength={500}
+            />
+            <span aria-hidden="true" className="mx-1 hidden w-px self-stretch bg-lilac-2 md:block" />
+            <Field
+              id={`${formId}-task`}
+              label="What should they try to do?"
+              icon="flag"
+              invalid={!!taskError}
+              className="md:flex-1"
+              value={task}
+              onChange={(v) => {
                 setTask(v);
                 if (taskError) setTaskError(null);
-              },
-              placeholder: "e.g. Sign up and create your first project",
-              maxLength: 300,
-              required: true,
-            }}
-          />
-          <FieldRow
-            id={`${formId}-audience`}
-            label="Audience"
-            hint="Optional"
-            input={{
-              name: "audience",
-              value: audience,
-              onChange: setAudience,
-              placeholder: "e.g. First-time users of a project planning tool",
-              maxLength: 200,
-            }}
-          />
+              }}
+              onFocus={() => setFocus("task")}
+              onBlur={() => setFocus(null)}
+              placeholder="Sign up and create your first project"
+              maxLength={300}
+            />
+            {demoMode ? null : (
+              <button
+                type="submit"
+                disabled={submitting}
+                aria-busy={submitting}
+                className="btn-lime h-14 w-full shrink-0 rounded-[22px] px-7 text-17 md:h-auto md:w-auto"
+              >
+                {submitting ? "Starting…" : "Run the test"}
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h9.5M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
+
+        {fieldError ? (
+          <p id={`${formId}-field-error`} role="alert" className="mt-3 text-center text-13 font-medium text-signal-ink">
+            {fieldError}
+          </p>
+        ) : null}
+
+        {!demoMode ? (
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+            <span className="text-13 text-ink-2">Try a task:</span>
+            {PRESETS.map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => {
+                  setTask(p);
+                  setTaskError(null);
+                  document.getElementById(url ? `${formId}-task` : `${formId}-url`)?.focus();
+                }}
+                className={`h-8 rounded-full border px-3 text-13 font-medium transition-all duration-200 hover:-translate-y-0.5 ${
+                  task === p ? "border-violet bg-violet text-white" : "border-white bg-white/70 text-ink hover:bg-white hover:shadow-soft"
+                }`}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+        ) : null}
+
+        {showAudience ? (
+          <div className="mx-auto mt-4 max-w-[560px]">
+            <label htmlFor={`${formId}-audience`} className="block text-center text-13 text-ink-2">
+              Who are your users? <span className="text-ink-2/70">(optional)</span>
+            </label>
+            <input
+              id={`${formId}-audience`}
+              name="audience"
+              type="text"
+              value={audience}
+              onChange={(e) => setAudience(e.target.value)}
+              placeholder="First-time users of a project planning tool"
+              maxLength={200}
+              autoComplete="off"
+              className="mt-2 h-11 w-full rounded-full border border-white bg-white/80 px-5 text-15 text-ink outline-none placeholder:text-ink-2/60 focus:bg-white focus:shadow-[0_0_0_2px_var(--color-violet)]"
+            />
+          </div>
+        ) : null}
       </fieldset>
 
-      <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
-        {demoMode ? (
-          <p className="max-w-[46ch] text-15 text-ink">
-            Demo mode: explore the sample reports. New runs are paused because this demo has used its model
-            credits.
-          </p>
-        ) : (
-          <button
-            type="submit"
-            disabled={submitting}
-            aria-busy={submitting}
-            className="btn-primary self-start"
-          >
-            {submitting ? "Starting the test…" : "Run the test"}
+      {demoMode ? (
+        <p className="mt-5 text-center text-15 text-ink">
+          Demo mode: explore the sample reports. New runs are paused because this demo has used its model credits.
+        </p>
+      ) : null}
+
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-13 text-ink-2">
+        {!showAudience && !demoMode ? (
+          <button type="button" onClick={() => setShowAudience(true)} className="font-medium text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+            + Describe your audience
           </button>
-        )}
-        <SampleLinks samples={samples} lead={demoMode ? "Samples:" : "or try a sample:"} />
+        ) : null}
+        <SampleLinks samples={samples} lead={demoMode ? "Samples:" : "Or open a finished report:"} />
       </div>
 
       {formError ? (
-        <p id={`${formId}-error`} role="alert" className="mt-4 max-w-[64ch] rounded-control bg-signal-soft px-4 py-3 text-15">
+        <p id={`${formId}-error`} role="alert" className="mx-auto mt-4 max-w-[64ch] rounded-card bg-signal-soft px-4 py-3 text-center text-15">
           {formError}
         </p>
       ) : null}
-      {status ? <div className="mt-4 flex flex-col gap-1">{status}</div> : null}
+      {status ? <div className="mt-4 flex flex-col items-center gap-1 text-center">{status}</div> : null}
     </form>
   );
 }
 
 function SampleLinks({ samples, lead }: { samples: Sample[]; lead: string }) {
   return (
-    <p className="text-15 text-ink-2">
-      {lead}{" "}
+    <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+      <span>{lead}</span>
       {samples.map((sample, i) => (
-        <span key={`${sample.title}-${i}`}>
-          {i > 0 ? <span aria-hidden="true"> · </span> : null}
-          <Link href={`/r/${encodeURIComponent(sample.id)}`} className="link rounded-[2px] font-medium">
-            {sample.title}
-          </Link>
-        </span>
+        <Link
+          key={`${sample.title}-${i}`}
+          href={`/r/${encodeURIComponent(sample.id)}`}
+          className="group inline-flex items-center gap-1 font-medium text-violet"
+        >
+          {sample.title}
+          <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5">
+            →
+          </span>
+        </Link>
       ))}
-    </p>
+    </span>
   );
 }
 
-interface InputProps {
-  name: string;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder: string;
-  maxLength: number;
-  required?: boolean;
-  inputMode?: "url" | "text";
-  autoComplete?: string;
-}
+const ICONS = {
+  lock: (
+    <>
+      <rect x="3" y="7" width="10" height="7.5" rx="1.8" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M5.2 7V5a2.8 2.8 0 0 1 5.6 0v2" stroke="currentColor" strokeWidth="1.3" />
+    </>
+  ),
+  flag: <path d="M3.5 14.5v-12m0 .5h8l-1.6 3 1.6 3h-8" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />,
+} as const;
 
-function FieldRow({
+function Field({
   id,
   label,
-  hint,
-  error,
-  input,
+  icon,
+  invalid,
+  className = "",
+  value,
+  onChange,
+  onFocus,
+  onBlur,
+  placeholder,
+  maxLength,
+  inputMode,
+  autoComplete,
 }: {
   id: string;
   label: string;
-  hint?: string;
-  error?: string | null;
-  input: InputProps;
+  icon: keyof typeof ICONS;
+  invalid: boolean;
+  className?: string;
+  value: string;
+  onChange: (value: string) => void;
+  onFocus: () => void;
+  onBlur: () => void;
+  placeholder: string;
+  maxLength: number;
+  inputMode?: "url" | "text";
+  autoComplete?: string;
 }) {
-  const errorId = `${id}-error`;
   return (
-    <div className="relative border-t border-line first:border-t-0 first:rounded-t-control last:rounded-b-control focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-ink">
-      <div className="flex flex-col sm:flex-row sm:items-center">
-        <label
-          htmlFor={id}
-          className="flex shrink-0 justify-between px-4 pt-3 text-13 text-ink-2 sm:block sm:w-32 sm:py-0"
-        >
+    <div
+      className={`group flex min-w-0 items-center gap-3 rounded-[22px] px-4 py-2.5 transition-colors duration-200 hover:bg-mist focus-within:bg-mist ${
+        invalid ? "bg-signal-soft" : ""
+      } ${className}`}
+    >
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="shrink-0 text-ink-2 transition-colors group-focus-within:text-violet">
+        {ICONS[icon]}
+      </svg>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <label htmlFor={id} className="text-[11px] font-semibold tracking-[0.08em] text-ink-2 uppercase">
           {label}
-          {hint ? <span className="sm:sr-only">{hint}</span> : null}
         </label>
         <input
           id={id}
-          name={input.name}
           type="text"
-          value={input.value}
-          onChange={(e) => input.onChange(e.target.value)}
-          placeholder={input.placeholder}
-          maxLength={input.maxLength}
-          required={input.required}
-          inputMode={input.inputMode}
-          autoComplete={input.autoComplete ?? "off"}
-          spellCheck={input.inputMode === "url" ? false : undefined}
-          autoCapitalize={input.inputMode === "url" ? "none" : undefined}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error ? errorId : undefined}
-          className="h-11 w-full min-w-0 bg-transparent px-4 text-15 text-ink outline-none placeholder:text-ink-2 disabled:cursor-not-allowed disabled:text-ink-2 sm:h-14 sm:flex-1 sm:pl-0"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          placeholder={placeholder}
+          maxLength={maxLength}
+          required
+          inputMode={inputMode}
+          autoComplete={autoComplete ?? "off"}
+          spellCheck={inputMode === "url" ? false : undefined}
+          autoCapitalize={inputMode === "url" ? "none" : undefined}
+          aria-invalid={invalid || undefined}
+          className="h-8 w-full min-w-0 bg-transparent text-17 font-medium text-ink outline-none placeholder:font-normal placeholder:text-ink-2/55 disabled:cursor-not-allowed"
         />
-        {hint ? (
-          <span aria-hidden="true" className="hidden shrink-0 pr-4 text-13 text-ink-2 sm:block">
-            {hint}
-          </span>
-        ) : null}
       </div>
-      {error ? (
-        <p id={errorId} className="px-4 pb-3 text-13 text-signal-ink sm:pl-32">
-          {error}
-        </p>
-      ) : null}
     </div>
   );
 }

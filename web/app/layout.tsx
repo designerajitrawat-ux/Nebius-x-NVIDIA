@@ -1,18 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Sans, Instrument_Serif, Inter } from "next/font/google";
+import { Caveat, Instrument_Sans, Instrument_Serif, Inter } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
   variable: "--font-instrument-sans",
   subsets: ["latin"],
-  weight: ["500", "600"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["600"],
   display: "swap",
 });
 
@@ -43,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${instrumentSans.variable} ${inter.variable} ${instrumentSerif.variable}`}>
+    <html lang="en" className={`${instrumentSans.variable} ${inter.variable} ${instrumentSerif.variable} ${caveat.variable}`}>
       <body className="flex min-h-dvh flex-col">
         <a
           href="#main"

@@ -1,11 +1,15 @@
 import type { ReactNode } from "react";
 
-/** Hairline footer. `aside` holds page-specific facts such as credits remaining. */
+/** Quiet footer. `aside` holds page-specific facts such as credits remaining. */
 export function SiteFooter({ aside }: { aside?: ReactNode }) {
   return (
-    <footer className="page mt-auto pt-16 pb-8">
-      <div className="flex flex-col gap-1 border-t border-line pt-4 text-13 text-ink-2 sm:flex-row sm:items-baseline sm:justify-between">
-        <p>Runs on Nebius Token Factory · NVIDIA Nemotron · Tavily</p>
+    <footer className="page mt-auto pt-16 pb-10">
+      <div className="flex flex-col gap-2 border-t border-ink/10 pt-6 text-13 text-ink-2 sm:flex-row sm:items-center sm:justify-between">
+        <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+          <span className="display text-15 font-semibold tracking-[-0.01em] text-ink">FiveUsers</span>
+          <span aria-hidden="true" className="hidden h-1 w-1 rounded-full bg-ink/25 sm:block" />
+          <span>Runs on Nebius Token Factory · NVIDIA Nemotron · Tavily</span>
+        </p>
         {aside ? <div className="tabular-nums">{aside}</div> : null}
       </div>
     </footer>
