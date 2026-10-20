@@ -1,37 +1,68 @@
-# Video script: target 2:40 (hard limit 3:00)
+# Demo video: script and how it is made
 
-Rules from the hackathon: public YouTube, no copyrighted music (none, or royalty-free), no third-party logos;
-record only FiveUsers and its own sample sites. Say **"Nebius Token Factory"** and **"NVIDIA Nemotron"** out loud.
+Target about 2:10 (the current cut is 2:08) (hard limit 3:00). The film is recorded and cut by scripts, so it can be rebuilt in a few minutes
+against the deployed site.
 
-Setup: browser at 1280×800, 100% zoom, bookmarks bar hidden. Record on the deployed site. Run the **signup** sample
-live (it gives a mix: most finish, one gets stuck), and have its finished report open in a second tab in case the live
-run is slow. Mic close, room quiet. Speak slower than feels natural. Move the mouse slowly: the characters' eyes
-follow it.
+Rules from the hackathon (checked on the Devpost page): the video is required, under three minutes, public on
+YouTube, and it must show the project working. No copyrighted music and no third-party trademarks unless we have
+permission. So the film shows only FiveUsers and its own sample sites, and the music is our own: it is synthesised
+note by note in `scripts/video/music.py`, with no samples or loops from anywhere else.
 
-| Time | Screen | Voiceover |
+## How the film is made
+
+| Step | Script | What it does |
 |---|---|---|
-| 0:00–0:12 | Landing. Move the cursor slowly across the hero so the five characters follow it with their eyes. | "Before you ship, you should watch five people try your product. Five users find most usability problems. Almost nobody does it, because getting five people is slow and expensive." |
-| 0:12–0:25 | Click the website field (the characters look at it), type the signup sample URL, click the task chip "Sign up and create your first project" (they smile), click **Run the test** (they jump). | "This is FiveUsers. Paste a link, say what to try, and five AI users try your website before real ones do." |
-| 0:25–0:40 | The dark lab: the stage pipeline lights up Preparing, Recruiting; five characters arrive. | "First it researches your kind of product with Tavily and recruits five people for it: a first-timer, someone in a hurry, a phone-only user, someone less confident online, and a non-native English reader." |
-| 0:40–1:10 | Lanes walking. Point at one lane: its face changes, its thought bubble updates. Then the phone lane. | "Each one really uses the site, in a real browser, all at the same time. Every step runs on **NVIDIA Nemotron through Nebius Token Factory**: Nemotron Super VL looks at the screen in the persona's voice, Nemotron Super decides what to click, type or give up on. Their faces show how confused they are, step by step." |
-| 1:10–1:20 | The lane that gets stuck gets its stamp. | "On his phone, Kwame can't find how to create a project: the plus button has no label. He gives up, exactly what a real user would do." (Change the name and reason to match the run you record.) |
-| 1:20–1:30 | Pipeline: Reviewing, Writing, then the "report is ready" panel with happy characters. | "An expert pass reviews every screen they saw, and Nemotron Ultra writes the report." |
-| 1:30–2:10 | Report: the headline, the testers strip, issue 1 with the pin on the screenshot and the quote; click **Before / After**; scroll to "See how others do it". | "The report says it plainly: one of five users couldn't sign up and create a project. Every issue is pinned on the real screen, in the persona's own words, with a concrete fix you can ship. And Tavily shows how other products handle the same step." |
-| 2:10–2:25 | Scroll to Model usage (dark card). | "Every claim is grounded in what actually happened, and you can see which Nemotron model did what. This whole test cost about ten cents." |
-| 2:25–2:40 | Back to the landing, "Under the hood" section, then the end card with the URL. | "It's for designers, founders and small teams who can't recruit five users before every release. FiveUsers. Try it at (your URL)." |
+| 1 | `scripts/video/record.py` | Opens Chromium at 1920x1080, plays every scene and captures frames straight from the browser (Chrome DevTools screencast). Starts a **real live run** on the signup sample, with on-screen captions and a visible cursor. |
+| 2 | `scripts/video/build.py` | Turns each scene into a 30 fps clip, speeds the live run up 3.5x (a tag in the corner says so), crossfades the scenes, then lays the music under it and exports `recordings/fiveusers-demo.mp4` (H.264, 1080p, AAC). |
+| 3 | `scripts/video/music.py` | Writes the original track to the film's exact length: soft lo-fi at 96 BPM, Am7, Fmaj7, Cmaj7, G6, with fades. |
 
-## Shot checklist
-- [ ] Characters' eyes following the cursor, smiling when the form is ready, jumping on Run
-- [ ] The dark lab: pipeline lighting up, five lanes arriving
-- [ ] A face changing as confusion rises, and one persona giving up
-- [ ] An annotated screenshot with a numbered pin and a quote
-- [ ] A concrete fix with the Before / After toggle
-- [ ] "See how others do it · via Tavily"
-- [ ] Model usage with the Nemotron tiers and the cost
-- [ ] Words said out loud: "Nebius Token Factory", "NVIDIA Nemotron", "Tavily"
+The title cards live in `scripts/video/cards.html`, in the same fonts, colours and characters as the site.
 
-## Recording tips
-- OBS: 1920×1080 canvas, browser window 1280×800 scaled up, 30 fps. Record voice separately if the room is noisy.
-- If a live run is slow, cut the waiting (the video is a pitch, not a tutorial), but keep it honest: don't splice
-  one run's lanes with another run's report without saying so.
-- The repo goes public about two days before the deadline; if you show it, record that shot after it's public.
+```
+api\.venv\Scripts\python scripts\video\record.py --web https://<vercel-url> --api https://<space-url> --outro-url <short-url>
+api\.venv\Scripts\python scripts\video\build.py
+```
+
+Run the final version **after deploy**, so the typed link and the end card show the public URL and not localhost.
+One take costs one real run (about $0.11 of Nebius credit).
+
+## Scenes and captions
+
+| Time | Scene | On screen | Caption |
+|---|---|---|---|
+| 0:00 | Intro card | Five characters pop in. "Before you ship, watch five people try it." | none |
+| 0:06 | Problem card | "5 users find most of a product's usability problems. Recruiting them takes days." | none |
+| 0:13 | Bridge card (dark) | "So we built five AI users." | none |
+| 0:19 | Landing | The cursor moves across the hero and the characters' eyes follow it. The URL is typed in, a task chip is picked, the characters smile, then **Run the test** makes them jump. | "Paste a link. Say what to try." then "Five testers are watching you fill it in." |
+| 0:34 | Live run (dark lab, 3.5x) | The stage pipeline lights up, five lanes arrive, each showing its live screen, thought and confusion meter, faces change as confusion rises, testers finish or give up, then the "report is ready" panel. | "Tavily researches who uses this kind of product", "Every step runs on NVIDIA Nemotron via Nebius Token Factory", "Nemotron 3.5 Super VL sees the screen. Nemotron 3 Super decides.", "Their faces show how confused they are", "An expert pass reviews every screen they saw", "Nemotron 3 Ultra writes the report" |
+| 1:25 | Report | Headline, the testers strip, issue 1 with its pin on the real screenshot and the quote, the Before / After toggle, "See how others do it", then Model usage with the cost. | "Who finished, and who didn't", "Every issue is pinned on the real screen", "In the tester's own words, with the fix to ship", "How other products solve it, found by Tavily", "Every Nemotron call and its cost: about ten cents a test" |
+| 1:51 | Under the hood (landing) | The four Nemotron models and what each one does. | "Four Nemotron models, each on the job it does best" |
+| 1:59 | End card | "Five AI users try your website before real ones do." The URL and "Design by Ajit Singh Rawat". | none |
+
+Times are from the draft cut and move by a second or two with each live run.
+
+## Optional voiceover
+
+The film works with music and captions alone. If you want a voice, record these lines over the matching scenes
+(speak slowly, mic close, quiet room). Keep the music at about 20% under the voice.
+
+| Starts at | Line |
+|---|---|
+| 0:00 | "Before you ship, you should watch five people try your product." |
+| 0:06 | "Five users find most usability problems. But recruiting them takes days, so most teams skip it." |
+| 0:13 | "So we built five AI users." |
+| 0:19 | "This is FiveUsers. Paste a link, say what to try, and run the test." |
+| 0:34 | "Tavily researches who uses this kind of product, and five people are recruited for it. Each one uses the site in a real browser, at the same time. Every step runs on NVIDIA Nemotron through Nebius Token Factory: Nemotron Super VL looks at the screen, Nemotron Super decides what to do, and a tester can give up, just like a real person." |
+| 1:10 | "An expert pass reviews every screen, and Nemotron Ultra writes the report." |
+| 1:25 | "Who finished and who didn't. Every issue pinned on the real screen, in the tester's own words, with a fix you can ship. Tavily shows how other products solve it. And the whole test cost about ten cents." |
+| 1:51 | "Four Nemotron models, each on the job it does best." |
+| 1:59 | "FiveUsers. Five AI users try your website before real ones do." |
+
+Make sure these words are heard or seen: "Nebius Token Factory", "NVIDIA Nemotron", "Tavily".
+
+## Before uploading
+- [ ] Rendered after deploy: no localhost in the typed link, the real URL on the end card
+- [ ] Length under 3:00
+- [ ] Uploaded to YouTube as **Public** (not Unlisted), title "FiveUsers: five AI users try your website before real ones do"
+- [ ] YouTube description: the live demo link, the repo link, and a line saying the music is original
+- [ ] Link pasted into the Devpost "Video demo link" field
