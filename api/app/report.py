@@ -18,7 +18,7 @@ OUTCOME_TEXT = {
     "completed": "Completed",
     "gave_up": "Gave up",
     "stuck": "Got stuck",
-    "out_of_steps": "Ran out of patience",
+    "out_of_steps": "Hit the screen limit",
     "wrong_path": "Finished on the wrong path",
     "error": "Run error",
 }

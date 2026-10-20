@@ -23,7 +23,7 @@ TIERS: tuple[Tier, ...] = ("fast", "vision", "agent", "reason")
 # Override per tier with e.g. PRICE_AGENT="0.30,0.90".
 DEFAULT_PRICES: dict[Tier, tuple[float, float]] = {
     "fast": (0.06, 0.24),
-    "vision": (0.06, 0.24),
+    "vision": (0.30, 0.90),
     "agent": (0.30, 0.90),
     "reason": (1.00, 3.00),
 }
@@ -31,7 +31,7 @@ DEFAULT_PRICES: dict[Tier, tuple[float, float]] = {
 # Fallback badge names when a tier has no model ID yet (dry run, unconfigured).
 TIER_LABELS: dict[Tier, str] = {
     "fast": "Nemotron Lightning",
-    "vision": "Nemotron Nano Omni",
+    "vision": "Nemotron Super VL",
     "agent": "Nemotron Super",
     "reason": "Nemotron Ultra",
 }
@@ -43,6 +43,7 @@ def model_label(model_id: str | None, tier: Tier) -> str:
     for key, label in (
         ("lightning", "Nemotron 3.5 Lightning"),
         ("omni", "Nemotron 3 Nano Omni"),
+        ("super-vl", "Nemotron 3.5 Super VL"),
         ("super", "Nemotron 3 Super"),
         ("ultra", "Nemotron 3 Ultra"),
         ("nano", "Nemotron 3 Nano"),
@@ -156,7 +157,7 @@ def load_settings() -> Settings:
         data_dir=_path("DATA_DIR", "./data"),
         samples_dir=_path("SAMPLES_DIR", "./samples"),
         max_personas=min(5, max(1, _int("MAX_PERSONAS", 5))),
-        max_steps=min(20, max(2, _int("MAX_STEPS_PER_PERSONA", 12))),
+        max_steps=min(20, max(2, _int("MAX_STEPS_PER_PERSONA", 16))),
         allowed_origins=[o.strip() for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",") if o.strip()],
         allow_private_urls=_bool("ALLOW_PRIVATE_URLS"),
         chromium_args=[a for a in os.getenv("CHROMIUM_ARGS", "").split() if a],

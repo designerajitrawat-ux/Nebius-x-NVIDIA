@@ -146,6 +146,7 @@ class LLM:
         temperature: float = 0.4,
         run_id: str | None = None,
         step: str | None = None,
+        thinking: bool | None = None,
     ) -> LLMResult:
         model = self.model_for(tier)
         kwargs: dict[str, Any] = {
@@ -162,8 +163,10 @@ class LLM:
                 "type": "json_schema",
                 "json_schema": {"name": json_schema["name"], "schema": json_schema["schema"], "strict": False},
             }
-        if self._thinking_kwargs_ok and tier != "reason":
-            # Nemotron 3 reasoning toggle. Per-step calls don't need long thinking; Ultra keeps it.
+        if thinking is None:
+            thinking = tier == "reason"
+        if self._thinking_kwargs_ok and not thinking:
+            # Nemotron 3 reasoning toggle. Per-step calls don't need long thinking; Ultra keeps it by default.
             kwargs["extra_body"] = {"chat_template_kwargs": {"enable_thinking": False}}
 
         attempt = 0
@@ -271,6 +274,7 @@ class LLM:
         temperature: float = 0.3,
         run_id: str | None = None,
         step: str | None = None,
+        thinking: bool | None = None,
     ) -> tuple[Any, LLMResult]:
         """Chat expecting JSON. Tries response_format, then extraction, then one repair on the fast tier."""
         res = await self.chat(
@@ -281,7 +285,11 @@ class LLM:
             temperature=temperature,
             run_id=run_id,
             step=step,
+            thinking=thinking,
         )
+        if res.finish_reason == "length":
+            # Cut off mid-answer (usually runaway thinking): a "repaired" half-JSON would silently drop content.
+            raise LLMError(f"{tier}: output hit max_tokens ({res.completion_tokens}) for {name}")
         required = tuple(schema.get("required", ()))
         try:
             return extract_json(res.text, want=want, required=required), res

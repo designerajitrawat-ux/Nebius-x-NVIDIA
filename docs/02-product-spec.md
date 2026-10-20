@@ -43,7 +43,7 @@ draws from:
 - **Non-native English reader**, trips on jargon and idioms
 - (alternates: accessibility-focused keyboard user; skeptical buyer; distracted parent)
 
-Each persona has: name, one-line bio, goal, patience (max steps), reading style, what frustrates them, a
+Each persona has: name, one-line bio, goal, patience (screens before they would quit, a prompt cue; the persona decides when to give up), reading style, what frustrates them, a
 "voice" (how they talk in notes).
 
 ## Pipeline (user-visible stages)

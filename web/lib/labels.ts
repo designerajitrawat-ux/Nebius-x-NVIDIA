@@ -116,7 +116,7 @@ export const TIER_ROLE: Record<string, string> = {
 /** Fallback badge names when /health hasn't answered yet. */
 export const TIER_FALLBACK_LABEL: Record<"fast" | "vision" | "agent" | "reason", string> = {
   fast: "Nemotron Lightning",
-  vision: "Nemotron Nano Omni",
+  vision: "Nemotron Super VL",
   agent: "Nemotron Super",
   reason: "Nemotron Ultra",
 };

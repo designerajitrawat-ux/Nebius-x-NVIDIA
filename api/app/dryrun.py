@@ -79,14 +79,20 @@ class DryBrain:
             bits += " There's " + ", ".join(f"“{v}”" for v in visible) + "."
         return bits + " I'm looking for how to " + task[:1].lower() + task[1:].rstrip(".") + ".", LABEL
 
+    async def confirm_done(self, persona: Persona, obs: Observation, jpeg: bytes, *, task: str, run_id: str, step: int) -> bool | None:
+        return bool(SUCCESS.search(f"{obs.heading}\n{obs.title}\n{obs.text}"))
+
     async def decide(
-        self, persona: Persona, obs: Observation, see: str | None, history: list[str], *, task: str, step: int, cap: int, run_id: str
+        self, persona: Persona, obs: Observation, see: str | None, history: list[str], *, task: str, step: int, cap: int, run_id: str,
+        final: bool = False,
     ) -> Decision:
         rng = _rng(persona, step)
         page_text = f"{obs.heading}\n{obs.title}\n{obs.text}"
         if SUCCESS.search(page_text):
             return Decision(Action(kind="done", reason="The page confirms it's done"), "Great, that looks finished.", 0, LABEL)
-        if step >= cap and rng.random() < 0.5:
+        if final:
+            return Decision(Action(kind="give_up", reason="Ran out of time"), "I've spent long enough on this.", 3, LABEL)
+        if step >= min(cap, persona.patience) and rng.random() < 0.5:
             return Decision(Action(kind="give_up", reason="This is taking too long"), "I've spent long enough on this.", 3, LABEL)
 
         clicked = self._clicked.setdefault(persona.id, set())

@@ -136,7 +136,7 @@ def main() -> int:
                     {"type": "text", "text": "What does the button in this image say? Answer with the exact text only."},
                     {"type": "image_url", "image_url": {"url": image}},
                 ]}],
-                max_tokens=40, temperature=0,
+                max_tokens=40, temperature=0, extra_body={"chat_template_kwargs": {"enable_thinking": False}},
             )
             answer = (r.choices[0].message.content or "").strip()
             ok = "free trial" in answer.lower()

@@ -376,6 +376,24 @@ def deterministic(
     return headline, subline, final
 
 
+def checked_headline(headline: str, *, n: int, completed: int, task: str) -> str:
+    """Keep the model's headline unless it states the wrong outcome; the counts are facts we already know."""
+    text = short(headline, 160)
+    low = text.lower()
+    says_all_finished = re.search(r"\ball\b[^.,;]{0,25}\b(finished|completed|succeeded|managed)", low)
+    says_failure = re.search(r"could ?n[o']t|failed|unable", low)
+    counts = [int(a) for a, _ in re.findall(r"\b(\d+) of (\d+)\b", low)]
+    wrong = (
+        not text
+        or (completed < n and says_all_finished)
+        or (completed == n and says_failure)
+        or any(c not in {completed, n - completed} for c in counts)
+    )
+    if not wrong:
+        return text
+    return f"All {n} users finished the task." if completed == n else f"{n - completed} of {n} users could not {task_phrase(task)}."
+
+
 # ---------- main entry ----------
 
 
@@ -415,6 +433,8 @@ async def synthesize(
                     temperature=0.3,
                     run_id=run_id,
                     step=f"synthesis:{tier}",
+                    # Ultra's thinking ran past 12k tokens on every real report (~5k-token context): answer directly.
+                    thinking=False,
                 )
             except LLMError as e:
                 log.warning("synthesis on %s failed (attempt %d): %s", tier, attempt + 1, e)
@@ -432,14 +452,17 @@ async def synthesize(
                 if g:
                     grounded.append(g)
             issues = finalize_issues(grounded)
+            log.info("synthesis on %s: %d issues returned, %d grounded, %d kept", tier, len(raw_issues), len(grounded), len(issues))
             if not issues and any(w.result.outcome != "completed" for w in walks):
                 log.warning("synthesis on %s produced no usable issues", tier)
                 continue
             wp = data.get("wrong_path")
+            # Only someone who *said* done can have finished on the wrong path; a goal we found on screen ourselves stands.
             wrong = {p for p in (wp if isinstance(wp, list) else [])
-                     if isinstance(p, str) and p in by_id and by_id[p].result.outcome == "completed"}
+                     if isinstance(p, str) and p in by_id and by_id[p].result.outcome == "completed"
+                     and by_id[p].steps and by_id[p].steps[-1].action.kind == "done"}
             return Synthesis(
-                headline=short(str(data.get("headline") or ""), 160) or f"{n - completed} of {n} users could not {task_phrase(task)}.",
+                headline=checked_headline(str(data.get("headline") or ""), n=n, completed=completed - len(wrong), task=task),
                 subline=short(str(data.get("subline") or ""), 200),
                 issues=issues,
                 wrong_path=wrong,
