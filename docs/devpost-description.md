@@ -1,13 +1,13 @@
 # Devpost submission (draft)
 
-> Numbers below come from the live sample runs of 20 Oct 2026. Still to fill after deploy and recording: the demo
-> URLs, the video link and the judge token. Keep the voice first person: this is Ajit's project.
+> Numbers below come from the three sample runs on the deployed app (21 Oct 2026). The judge token goes only into
+> the Devpost form, never into this file. Keep the voice first person: this is Ajit's project.
 
 ## Project name
 FiveUsers
 
 ## Tagline
-Five AI users walk through your product before real ones do.
+Five AI users try your website before real ones do.
 
 ## Inspiration
 I'm a product designer. The most useful thing I can do before a release is watch five people try to use what
@@ -31,8 +31,8 @@ You give FiveUsers a URL and a task, like "sign up and create your first project
    on the actual screenshot, the persona's own words, and a concrete fix for each (a copy rewrite, a CSS change or a
    flow change), with links to how comparable products handle the same step.
 
-A run takes about two minutes and costs about ten cents in model calls: 117 to 154 Nemotron calls in our sample
-runs, $0.09 to $0.11 each.
+A run takes two to three minutes and costs about ten cents in model calls: 126 to 142 Nemotron calls in the three
+sample runs, $0.10 to $0.14 each.
 
 ## How I built it
 Every model call runs on **NVIDIA Nemotron through Nebius Token Factory**, and each Nemotron tier does the job it's
@@ -81,8 +81,8 @@ A few decisions that make the report trustworthy:
   Now everyone gets the same screen budget, patience lives in the prompt, and quitting is the persona's own decision.
 - **Personas said "done" when they weren't.** One declared victory on an empty projects page. Every "done" is now
   checked by Nemotron 3.5 Super VL looking at the screenshot. Text-only checks failed here: a kanban board's own
-  "Done 0" column fooled them. The vision check got 12 of 12 real screens right, and it also catches people who
-  reached the goal without noticing.
+  "Done 0" column fooled them. On 24 labelled screenshots the vision check judged all 24 correctly, and it also
+  catches people who reached the goal without noticing.
 - **Ultra thought itself out of tokens.** With reasoning on, Nemotron 3 Ultra used all 12,000 output tokens thinking
   about a 5,000-token prompt and returned half a JSON report with one issue. With reasoning off it writes a full
   report in about five seconds for about one cent. Truncated output is now treated as an error, never as a report.
@@ -94,16 +94,17 @@ A few decisions that make the report trustworthy:
 - Watching five lanes come alive and one persona quietly give up is exactly what a real test feels like.
 - Three deliberately flawed sample products with a written answer key, so anyone can check whether the report
   found the real problems. In the committed signup report, the issues and the expert review caught 6 of the 13
-  planted flaws (card asked for a free trial, an unlabeled email field, low-contrast errors, the cookie bar covering
-  Submit on a phone, an icon-only create button, the "project key" jargon), plus problems I hadn't planted. Other runs
-  of the same site also flagged the pricing wall; each run's cast finds a slightly different set, like real people.
+  planted flaws (the pricing wall before signup, a card asked for a free trial, an unlabeled email field, the cookie
+  bar covering the main button, an unnamed "+" create control, the "project key" jargon), plus problems I hadn't
+  planted, like a Submit button that stays enabled while the required Terms box is unticked. Each run's cast finds a
+  slightly different set, like real people.
 - The personas are drawn as small characters whose faces show the same confusion score the agents report on every
   step, so you can see someone getting lost before you read a word.
 
 ## What I learned
-- Routing by tier matters. In a typical run Nemotron 3 Super carries about 62% of the cost (personas and every
-  decision), Super VL about 28% (every screenshot and every "done" check), Ultra about 9% for one call that writes
-  the report, and Lightning almost nothing.
+- Routing by tier matters. Across the three sample runs Nemotron 3 Super carries about 55% of the cost (personas
+  and every decision), Super VL about 24% (every screenshot and every "done" check), Ultra about 21% for the one call
+  that writes the report, and Lightning almost nothing.
 - Nemotron 3 Super returned clean, structured tool calls from the first test, fast enough (about a second) to drive
   five agents at once. For anything about what's on a screen, the vision model is the right judge, not text.
 - Reasoning is a budget, not a free upgrade: turn it on where it pays and cap it, because a runaway think costs
