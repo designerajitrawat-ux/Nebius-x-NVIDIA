@@ -126,7 +126,7 @@ modal, vercel
 - Demo: https://fiveusers.vercel.app
 - Sample reports: https://fiveusers.vercel.app/samples
 - Code: https://github.com/designerajitrawat-ux/Nebius-x-NVIDIA (MIT)
-- Video: https://youtu.be/[TBD]
+- Video: https://youtu.be/VljfakEzpJk
 
 ## Notes for judges
 Sample reports open instantly. To run your own tests without the public rate limit (2 per hour), send the header

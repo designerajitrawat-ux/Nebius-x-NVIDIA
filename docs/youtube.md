@@ -1,5 +1,7 @@
 # YouTube upload
 
+Published 21 Oct 2026 (Public): https://youtu.be/VljfakEzpJk
+
 Video: `recordings/fiveusers-demo.mp4` (2:08, 1080p, original music). Thumbnail: `recordings/thumbnail.jpg`
 (1280x720, rendered by `scripts/video/thumbnail.py`).
 
