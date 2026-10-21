@@ -1,7 +1,7 @@
 {
  "id": "sample-checkout",
  "title": "Checkout",
- "url": "http://localhost:3000/samples/checkout/index.html",
+ "url": "https://fiveusers.vercel.app/samples/checkout/index.html",
  "task": "Buy a medium t-shirt in blue and pay by card",
  "headline": "5 of 5 users could not buy a medium t-shirt in blue and pay by card.",
  "completed": 0,

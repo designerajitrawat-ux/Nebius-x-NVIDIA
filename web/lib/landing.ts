@@ -173,7 +173,7 @@ export const SHOWCASE: { lead: ShowcaseIssue & { image: string; pin: { x: number
 };
 
 export const SAMPLE_CARDS = [
-  { id: "sample-signup", title: "Signup", site: "Fernhill · project planner", task: "Sign up and create your first project", completed: 4, total: 5, image: "/landing/pricing.jpg", tint: "#e7f8c4" },
+  { id: "sample-signup", title: "Signup", site: "Fernhill · project planner", task: "Sign up and create your first project", completed: 2, total: 5, image: "/landing/pricing.jpg", tint: "#e7f8c4" },
   { id: "sample-checkout", title: "Checkout", site: "Larkspur Supply · clothing store", task: "Buy a medium t-shirt in blue and pay by card", completed: 0, total: 5, image: "/landing/product.jpg", tint: "#ffe2d6" },
   { id: "sample-booking", title: "Booking", site: "Marlowe Studio · hair salon", task: "Book a haircut for next Saturday afternoon", completed: 4, total: 5, image: "/landing/booking.jpg", tint: "#e3e0ff" },
 ] as const;

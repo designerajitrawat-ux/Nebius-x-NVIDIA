@@ -2,55 +2,55 @@
  "id": "sample-signup",
  "mode": "live",
  "degraded": false,
- "created_at": 1792473490.8840735,
- "url": "http://localhost:3000/samples/signup/index.html",
- "site": "localhost:3000",
+ "created_at": 1792601737.4230645,
+ "url": "https://fiveusers.vercel.app/samples/signup/index.html",
+ "site": "fiveusers.vercel.app",
  "task": "Sign up and create your first project",
  "audience": null,
- "category": "B2B project management SaaS",
- "headline": "1 of 5 users could not sign up and create their first project.",
- "subline": "Kwame became stuck on mobile after the signup form submitted because the create-project button had no accessible name and the project key field had no label or format guidance.",
- "completed": 4,
+ "category": "website",
+ "headline": "3 of 5 users could not sign up and create their first project.",
+ "subline": "The project creation flow fails silently after the Create button is pressed, leaving users stuck with no feedback or error message.",
+ "completed": 2,
  "total": 5,
  "personas": [
   {
-   "id": "amina",
-   "name": "Amina",
-   "age": 26,
+   "id": "aisha",
+   "name": "Aisha",
+   "age": 28,
    "initial": "A",
    "archetype": "First-timer",
-   "bio": "Marketing coordinator at a boutique architecture firm in Nairobi, recently promoted to lead internal projects but has only ever used email and spreadsheets to…",
+   "bio": "Junior marketing coordinator at a local nonprofit startup who just got promoted to lead her first campaign and needs to organize volunteer schedules, content…",
    "viewport": "desktop",
-   "outcome": "completed",
-   "reason": "The project creation succeeded and the dashboard shows the new project ready.",
-   "steps": 14,
-   "seconds": 65.6
+   "outcome": "stuck",
+   "reason": "Three actions in a row changed nothing",
+   "steps": 11,
+   "seconds": 65.3
   },
   {
    "id": "diego",
    "name": "Diego",
-   "age": 34,
+   "age": 35,
    "initial": "D",
    "archetype": "Power user in a hurry",
-   "bio": "Freelance product manager based in Barcelona who consults for three SaaS startups. He’s used Asana, ClickUp, and Notion extensively and evaluates new tools…",
+   "bio": "Freelance UX consultant juggling three client retainers; uses Asana and Trello daily but hates setup overhead - he heard Fernhill promises faster onboarding and…",
    "viewport": "desktop",
-   "outcome": "completed",
-   "reason": "Project created and shown on screen.",
-   "steps": 12,
-   "seconds": 56.4
-  },
-  {
-   "id": "kwame",
-   "name": "Kwame",
-   "age": 29,
-   "initial": "K",
-   "archetype": "Mobile-only",
-   "bio": "Community health worker managing outreach programs across three clinics in Accra. He coordinates vaccine drives and staff schedules entirely from his Android…",
-   "viewport": "mobile",
    "outcome": "stuck",
    "reason": "Three actions in a row changed nothing",
-   "steps": 15,
-   "seconds": 65.1
+   "steps": 16,
+   "seconds": 54.0
+  },
+  {
+   "id": "kofi",
+   "name": "Kofi",
+   "age": 22,
+   "initial": "K",
+   "archetype": "Mobile-only",
+   "bio": "Community college student running a weekend pop-up food stall with two friends; manages ingredient orders, shift swaps, and Instagram posts entirely through…",
+   "viewport": "mobile",
+   "outcome": "completed",
+   "reason": "Project appears created; task likely complete.",
+   "steps": 11,
+   "seconds": 42.2
   },
   {
    "id": "margaret",
@@ -58,173 +58,210 @@
    "age": 68,
    "initial": "M",
    "archetype": "Older, lower digital confidence",
-   "bio": "Office manager at a small veterinary clinic in Dublin. She handles scheduling, invoicing, and supply orders but feels overwhelmed by digital tools. Her boss…",
+   "bio": "Retired school librarian volunteering to organize the annual book fair at her hometown library; coordinates 12 volunteers for setup, cash boxes, and…",
    "viewport": "desktop",
    "outcome": "completed",
-   "reason": "Project created successfully shown.",
-   "steps": 14,
-   "seconds": 63.3
+   "reason": "The project appears created and visible, matching the task goal.",
+   "steps": 13,
+   "seconds": 50.0
   },
   {
-   "id": "sunita",
-   "name": "Sunita",
-   "age": 42,
-   "initial": "S",
+   "id": "nadia",
+   "name": "Nadia",
+   "age": 31,
+   "initial": "N",
    "archetype": "Non-native English reader",
-   "bio": "Graphic designer working remotely for a UK-based agency while living in Pune, India. She collaborates with teams across time zones and uses English daily at…",
+   "bio": "Syrian refugee now working as a dental assistant in Ottawa; helps coordinate patient follow-ups, supply orders, and staff training for her clinic - she…",
    "viewport": "desktop",
-   "outcome": "completed",
-   "reason": "The project \"Website refresh\" is shown as created, confirming signup and first project completion.",
+   "outcome": "stuck",
+   "reason": "Three actions in a row changed nothing",
    "steps": 13,
-   "seconds": 61.4
+   "seconds": 45.0
   }
  ],
  "issues": [
   {
    "id": 1,
    "severity": "critical",
-   "title": "Mobile user blocked after signup by unlabeled create-project button and missing project…",
-   "screen": "3ef8656300",
-   "screen_label": "Create your account",
-   "screenshot": "margaret/04.jpg",
+   "title": "Create button enabled while required Project name field is empty",
+   "screen": "06e0a2dea3",
+   "screen_label": "Welcome to Fernhill, Aisha",
+   "screenshot": "aisha/11.jpg",
    "viewport": [
     1280,
     800
    ],
    "pin": {
-    "x": 0.6992,
-    "y": 0.4288
+    "x": 0.643,
+    "y": 0.6562
    },
    "personas_hit": [
+    "aisha",
+    "diego",
+    "kofi",
     "margaret",
-    "kwame"
+    "nadia"
    ],
    "quote": {
-    "persona_id": "kwame",
-    "text": "That empty button might be a menu toggle"
+    "persona_id": "aisha",
+    "text": "Is this the plus button to start my project?"
    },
-   "why": "After submitting the signup form on mobile, Kwame encountered an unlabeled plus button (element 5) that screen readers announce only as 'button' and a project key field with no label or helper text. He clicked the button three times, filled the fields twice, and waited twice, but nothing changed on screen, so he quit.",
+   "why": "The Create button is active before the user enters a project name, allowing a submission that likely fails validation silently. This contributes to the silent failure observed in the critical issue above.",
    "fix": {
     "type": "flow",
-    "summary": "Give the create-project button an accessible name and add a label with format guidance to the project key field so mobile users can complete the flow.",
-    "before": "Unlabeled plus button (element 5) opens project creation; project key textbox (element 9) has no visible label or helper text.",
-    "after": "Plus button has aria-label='Create new project'; project key field shows label 'Project key' and placeholder 'e.g. PROJ' with auto-generated suggestion."
+    "summary": "Disable Create button until Project name has a non-whitespace value; enable only when required fields are valid.",
+    "before": "Create button is enabled on dialog open with empty Project name and Project key fields.",
+    "after": "Create button is disabled until Project name contains at least one non-whitespace character; Project key validated per format rules."
    },
    "refs": [
     {
-     "title": "SaaS Onboarding UX: Best Practices, Mistakes, Examples",
-     "url": "https://cieden.com/saas-onboarding-best-practices-and-common-mistakes-ux-upgrade-article-digest",
-     "note": "A popular project management app went even further and initiated the sign-up process within the user response to CTA. The sign-up process within the user response to CTA, implemented by Trello. Source: Trello By…"
+     "title": "Empty state UX examples and design rules that actually work",
+     "url": "https://www.eleken.co/blog-posts/empty-state-ux",
+     "note": "Keep a copy of one strong sentence and, if needed, a line of supporting text. Then offer a single, prominent CTA (like “Create Project” or “Upload File”). Visually, a clean layout with generous spacing and a simple…"
     },
     {
-     "title": "SaaS UX Design: Examples and Best Practices | Ramotion Agency",
-     "url": "https://www.ramotion.com/blog/saas-ux-design",
-     "note": "Here are some best practices that can help you improve SaaS UX design: 1. Keep it simple 2. Design for all platforms and devices 3. Ensure easy registration 4. Improve the onboarding experience 5. Create a better…"
+     "title": "button disabled while required fields are empty",
+     "url": "https://stackoverflow.com/questions/38692115/button-disabled-while-required-fields-are-empty",
+     "note": "Disable the button, have each input have a `onchange` event or similar and check if all the inputs are not empty, then remove the disable if so and otherwise add/keep it (_add it as a separate function_). You would…"
     }
    ],
-   "alt": "I see a sign up page for Fernhill. I need to create an account to start my first project. I am looking for the full name and email fields. The workspace slug is confusing. I do not know what to type there. The payment section also worries me because I do not want to use a card."
+   "alt": "Screenshot of Welcome to Fernhill, Aisha"
   },
   {
    "id": 2,
-   "severity": "major",
-   "title": "Submit button not visible in viewport after filling the signup form",
+   "severity": "critical",
+   "title": "Payment details required before account creation despite free trial",
    "screen": "3ef8656300",
    "screen_label": "Create your account",
-   "screenshot": "amina/07.jpg",
+   "screenshot": "aisha/04.jpg",
    "viewport": [
     1280,
     800
    ],
    "pin": {
     "x": 0.6992,
-    "y": 0.9838
+    "y": 0.3513
    },
    "personas_hit": [
-    "amina",
+    "aisha",
     "diego",
-    "kwame",
+    "kofi",
     "margaret",
-    "sunita"
+    "nadia"
    ],
    "quote": {
-    "persona_id": "amina",
-    "text": "I'll scroll down to see the rest of the form and find the submit button."
+    "persona_id": "aisha",
+    "text": "Filling in my details to create the account."
    },
-   "why": "All five users had to scroll down to locate the Submit button because it was outside the visible area after the form fields. This added an extra step and made the completion action hard to discover.",
+   "why": "The signup form asks for credit card information (card number, expiry, CVC) before the user can submit, even though the plan is advertised as a 14-day free trial. This adds friction and may cause abandonment before account creation.",
    "fix": {
-    "type": "css",
-    "summary": "Make the Submit button sticky or keep it in view so users can submit without scrolling.",
-    "before": "Submit button (element 14) sits at the bottom of a long form and is not visible until the user scrolls.",
-    "after": ".submit-button { position: sticky; bottom: 1rem; z-index: 10; }"
+    "type": "flow",
+    "summary": "Remove payment fields from the initial signup form; collect payment details only after the free trial ends or when the user explicitly chooses to upgrade.",
+    "before": "Signup form includes Card number, Expiry, and CVC fields that must be filled before Submit is clicked.",
+    "after": "Signup form collects only name, email, password, workspace slug, and terms consent; payment details are requested later in the billing settings or at trial conversion."
    },
    "refs": [
     {
-     "title": "SaaS Form Design UX Patterns & Examples (2026)",
-     "url": "https://www.saasui.design/blog/saas-form-design-ux-patterns",
-     "note": "than restarting. Warn before discarding unsaved changes when a user tries to close or navigate away mid-edit. Keep the submit action from firing twice on a slow network, and disable or show progress on the button so an…"
+     "title": "Effective Sign Up Flows (2026): 15 UX Examples That Convert",
+     "url": "https://www.eleken.co/blog-posts/sign-up-flow",
+     "note": "3. Mandatory email verification before access Requiring email confirmation before allowing users to explore your product can interrupt momentum. Consider granting immediate app access with a reminder to verify later…"
     },
     {
-     "title": "12 Form UI/UX Design Best Practices to Follow in 2026",
-     "url": "https://www.designstudiouiux.com/blog/form-ux-design-best-practices",
-     "note": "For B2B lead gen forms, use progressive profiling: start with just an email, ask for more information over time. For checkout form UX, prioritize speed with address lookup APIs, prominent security badges. For account…"
+     "title": "How To Build a Free Trial Landing Page [with Examples] | ProductLed",
+     "url": "https://productled.com/blog/build-a-free-trial-landing-page",
+     "note": "Then, press “Try it free” to advance to “Step 2 of 3: Create your account.” Elements on the landing page of Step 2 include: New account creation (full name, work email, and password) Single login option with Google…"
     }
    ],
-   "alt": "I see the Fernhill sign up page. I am looking for a button to finish creating my account so I can start my first project. The form fields are clear but I do not see the submit button on the screen."
+   "alt": "I see the Fernhill sign up page. I need to create an account to start my first project. I am looking for the sign up button. I am confused about the workspace slug. Is this normal? The payment details section is a bit scary since I just want to try it."
   },
   {
    "id": 3,
-   "severity": "major",
-   "title": "Three identical 'Start free trial' links with no visual distinction between plan tiers",
-   "screen": "b64e5333e8",
-   "screen_label": "Pick the plan that fits your team",
-   "screenshot": "amina/04.jpg",
+   "severity": "critical",
+   "title": "Project creation fails silently with no feedback",
+   "screen": "06e0a2dea3",
+   "screen_label": "Welcome to Fernhill, Aisha",
+   "screenshot": "aisha/11.jpg",
    "viewport": [
     1280,
     800
    ],
    "pin": {
-    "x": 0.5,
-    "y": 0.2375
+    "x": 0.643,
+    "y": 0.6562
    },
    "personas_hit": [
-    "amina",
+    "aisha",
     "diego",
-    "kwame",
-    "margaret",
-    "sunita"
+    "nadia"
    ],
    "quote": {
-    "persona_id": "amina",
-    "text": "This looks like the sign up button I need to click to get started."
+    "persona_id": "aisha",
+    "text": "Nothing I do here seems to work. I'm done."
    },
-   "why": "The Starter, Team, and Business cards each contain a 'Start free trial' link (element 10) that looks the same. Users cannot tell which plan they are selecting without reading surrounding context, increasing the risk of choosing the wrong tier.",
+   "why": "After filling in project details and clicking Create, the screen does not change, show a loading state, display an error, or navigate to the project. Users repeat the action multiple times before giving up.",
    "fix": {
-    "type": "copy",
-    "summary": "Differentiate the trial buttons by plan name so users know which tier they are starting.",
-    "before": "All three plan cards use the identical link text 'Start free trial'.",
-    "after": "Starter card: 'Start free trial - Starter'; Team card: 'Start free trial - Team'; Business card: 'Start free trial - Business'."
+    "type": "flow",
+    "summary": "Add immediate feedback on Create click: disable button, show spinner, then navigate to project or show inline validation error if submission fails.",
+    "before": "Clicking Create does nothing visible; button stays enabled and page remains static.",
+    "after": "Clicking Create disables the button, shows a loading indicator, and either redirects to the new project or displays a specific error message if the request fails."
    },
    "refs": [
     {
-     "title": "Best SaaS Pricing Page Examples (2026 Guide)",
-     "url": "https://www.vezadigital.com/post/best-saas-pricing-page-examples",
-     "note": "Use direct, action-based language. Examples: “Start free,” “Start free trial,” “Get started,” or “Contact sales” for enterprise. Each plan should have its own CTA. The primary action must stand out visually and be easy…"
+     "title": "5 Proven UX Strategies For \"No Results\" Pages – Baymard",
+     "url": "https://baymard.com/research-articles/no-results-page",
+     "note": "Let’s review each of these strategies along with best practice examples from our benchmarked sites. ### 1) Feature Related Categories At Evo, a user searching for “cheap snowboards” can navigate to the “Snowboard”…"
     },
     {
-     "title": "37 Best B2B SaaS Websites in 2026 (Plus Breakdowns)",
-     "url": "https://www.joinamply.com/post/best-b2b-saas-websites",
-     "note": "37+ Best B2B SaaS Websites in 2026 (Ranked & Reviewed) 1. Chili Piper 2. Vanta 3. Lattice 4. Surfer‍ 5. Qatalog 6. Gainsight 7. Mural 8. Gusto 9. Loom 10. LinkSquares 11. Leapsome 12. Paperform 13. Softr 14. Gong 15…"
+     "title": "UX Design Practices for Error Screens and Messages - Design4Users",
+     "url": "https://design4users.com/ux-design-error-screens-and-messages",
+     "note": "Super simple error state for a file upload modal for the Untitled UI project by Jordan Huges ## Best UX Practices for Errors [...] If that’s a web interface, give the options to move to other pages of the website…"
     }
    ],
-   "alt": "I notice the Fernhill logo and pricing plans at the top. I am looking for a sign up button to create my first project. The green Start free trial button in the middle looks like the right place to click. I do not see any confusing text."
+   "alt": "Screenshot of Welcome to Fernhill, Aisha"
   },
   {
    "id": 4,
    "severity": "major",
-   "title": "Project key field lacks label and format guidance, causing uncertainty",
-   "screen": "4559ba268f",
-   "screen_label": "Welcome to Fernhill, Amina",
-   "screenshot": "amina/12.jpg",
+   "title": "Empty state instruction points to a plus button that does not exist in the sidebar",
+   "screen": "d086922242",
+   "screen_label": "Welcome to Fernhill, Aisha",
+   "screenshot": "aisha/06.jpg",
+   "viewport": [
+    1280,
+    800
+   ],
+   "pin": {
+    "x": 0.1672,
+    "y": 0.3387
+   },
+   "personas_hit": [
+    "aisha",
+    "diego",
+    "kofi",
+    "margaret",
+    "nadia"
+   ],
+   "quote": {
+    "persona_id": "aisha",
+    "text": "Is this the plus button to start my project?"
+   },
+   "why": "The onboarding panel tells users to click a plus button next to Projects in the sidebar, but the sidebar shows only a Projects heading with no adjacent plus control. Users click an unlabeled button in the header instead, which opens the project creation dialog but creates confusion about the correct path.",
+   "fix": {
+    "type": "copy",
+    "summary": "Update the empty state instruction to match the actual UI or add a visible plus button next to the Projects sidebar label.",
+    "before": "Click + next to Projects in the sidebar",
+    "after": "Click the + button in the top navigation to create your first project"
+   },
+   "refs": [],
+   "alt": "I see a welcome page for Fernhill. I am looking for a way to create my first project. The sidebar says no projects yet. I think I need to click the plus button next to Projects. Is this normal? I am not sure.I see a welcome page for Fernhill. I am looking for a way to create my first project. The…"
+  },
+  {
+   "id": 5,
+   "severity": "major",
+   "title": "Project key field has no label, placeholder, or format guidance",
+   "screen": "06e0a2dea3",
+   "screen_label": "Welcome to Fernhill, Aisha",
+   "screenshot": "aisha/11.jpg",
    "viewport": [
     1280,
     800
@@ -234,103 +271,69 @@
     "y": 0.39
    },
    "personas_hit": [
-    "amina",
+    "aisha",
     "diego",
-    "kwame",
+    "kofi",
     "margaret",
-    "sunita"
+    "nadia"
    ],
    "quote": {
-    "persona_id": "amina",
-    "text": "I'll enter a project key so I can create the project."
+    "persona_id": "margaret",
+    "text": "I hope HLBF works for Hometown Library Book Fair."
    },
-   "why": "The project key textbox (element 9) has no visible label or helper text explaining what a project key is or its expected format. Every user who reached project creation had to guess the value, and Kwame's repeated failures suggest invalid entries blocked submission on mobile.",
+   "why": "Users must guess the purpose and format of the Project key field. Margaret invented an abbreviation, while others left it blank or entered duplicate values, increasing the chance of validation errors that are not surfaced.",
    "fix": {
     "type": "copy",
-    "summary": "Add a clear label and placeholder with an auto-generated suggestion to the project key field.",
-    "before": "Project key input (element 9) has no label or placeholder.",
-    "after": "Label: 'Project key'; placeholder: 'e.g. PROJ'; pre-fill with an auto-generated uppercase code the user can edit."
+    "summary": "Add a clear label and placeholder to the Project key field explaining its purpose and format.",
+    "before": "Input with no label or placeholder (element 9).",
+    "after": "Label: Project key; Placeholder: e.g. HLBF (2-6 uppercase letters, used in task IDs)"
    },
    "refs": [],
-   "alt": "I see a pop-up window titled New project. I am looking for a way to finish creating my project. The project name is already filled in. The project key field is empty and has a red error message saying it is required. I need to fill that in before I can click Create."
+   "alt": "Screenshot of Welcome to Fernhill, Aisha"
   },
   {
-   "id": 5,
+   "id": 6,
    "severity": "major",
-   "title": "Payment details required before account creation despite 14-day free trial claim",
-   "screen": "3ef8656300",
+   "title": "Submit button enabled while Terms of Service checkbox is unchecked",
+   "screen": "e8e6e53fc4",
    "screen_label": "Create your account",
-   "screenshot": "margaret/09.jpg",
+   "screenshot": "diego/07.jpg",
    "viewport": [
     1280,
     800
    ],
    "pin": {
     "x": 0.6992,
-    "y": 0.8725
+    "y": 0.7863
    },
    "personas_hit": [
-    "margaret",
-    "sunita"
-   ],
-   "quote": {
-    "persona_id": "margaret",
-    "text": "Now filling payment details with test card."
-   },
-   "why": "The signup form demands credit card information before the account is created, even though the page states a 14-day free trial with no charge until the trial ends. Margaret and Sunita both entered test card numbers to proceed, adding friction and distrust.",
-   "fix": {
-    "type": "flow",
-    "summary": "Remove the payment step from initial signup; collect payment only when the trial ends or the user chooses to upgrade.",
-    "before": "Signup form includes required Card number, Expiry, CVC fields and a Submit button that sends payment data.",
-    "after": "Signup form collects only name, email, password, workspace slug, and terms agreement; payment details are requested later in the trial banner or upgrade flow."
-   },
-   "refs": [],
-   "alt": "I see a sign up page for Fernhill. I am looking for a way to create my first project. I notice a request for a valid card number and I am confused because I only wanted to sign up and not pay yet."
-  },
-  {
-   "id": 6,
-   "severity": "minor",
-   "title": "Cookie consent banner covers content and lacks clear dismiss action",
-   "screen": "57b06fb8b6",
-   "screen_label": "Projects that stay on track, without the busywork",
-   "screenshot": "amina/01.jpg",
-   "viewport": [
-    1280,
-    800
-   ],
-   "pin": {
-    "x": 0.0719,
-    "y": 0.9237
-   },
-   "personas_hit": [
-    "amina",
     "diego",
-    "kwame",
+    "kofi",
     "margaret",
-    "sunita"
+    "nadia"
    ],
    "quote": {
-    "persona_id": "amina",
-    "text": "Accept cookies to clear the banner and proceed."
+    "persona_id": "diego",
+    "text": "Agree to terms quickly."
    },
-   "why": "The banner at the bottom left obscures page content and the only visible action is 'Accept all' (element 22). Users must interact with it before they can reach the signup flow, adding a mandatory step that feels like a barrier.",
+   "why": "Users can click Submit without checking the required Terms of Service checkbox, causing a failed submission that provides no clear error message. Diego, Kofi, Margaret, and Nadia all had to notice and check the box manually.",
    "fix": {
     "type": "flow",
-    "summary": "Move the banner to a non-obscuring position and add a visible 'Close' or 'Reject' option alongside 'Accept all'.",
-    "before": "Banner fixed at bottom left covering content; only 'Accept all' button (element 22) is prominent.",
-    "after": "Banner positioned at top or bottom edge without covering main content; shows 'Accept all', 'Reject all', and 'Manage preferences' with equal visual weight."
+    "summary": "Disable Submit button until the Terms of Service checkbox is checked; enable it only when all required fields and consents are valid.",
+    "before": "Submit button is enabled while the Terms of Service checkbox is unchecked.",
+    "after": "Submit button remains disabled until the user checks the Terms of Service checkbox and all required fields are filled."
    },
    "refs": [],
-   "alt": "I see the Fernhill homepage and a big green Get started button. I need to click that to sign up and make my first project. The cookie banner at the bottom is blocking part of the screen and feels like an extra step before I can begin."
+   "alt": "I see the Fernhill sign up page. I need to create my first project. The form is ready with my name and email. The workspace slug looks odd. I want to click Submit and get started. Come on."
   }
  ],
  "friction_map": [
   {
-   "screen": "3ef8656300",
-   "label": "Create your account",
-   "path": "/samples/signup/signup.html?plan=team",
+   "screen": "06e0a2dea3",
+   "label": "Welcome to Fernhill, Aisha",
+   "path": "/samples/signup/projects.html",
    "hits": 1,
-   "visits": 5,
+   "visits": 1,
    "worst_issue_id": 1
   }
  ],
@@ -341,10 +344,10 @@
    "source": "vision",
    "heuristic": "Visibility of system status",
    "severity": "critical",
-   "finding": "The cookie consent banner at the bottom left covers the page content and lacks a clear dismiss or close action, leaving users uncertain how to proceed with signup.",
-   "suggestion": "Add a visible close button or ensure the banner does not obstruct primary calls to action.",
-   "element_id": 22,
-   "screenshot": "amina/01.jpg"
+   "finding": "The cookie consent banner at the bottom left covers the page content and primary call-to-action, blocking users from seeing or interacting with the signup flow.",
+   "suggestion": "Move the cookie banner to a non-blocking position or make it dismissible before users reach the main content.",
+   "element_id": null,
+   "screenshot": "aisha/01.jpg"
   },
   {
    "screen": "3ef8656300",
@@ -352,10 +355,32 @@
    "source": "vision",
    "heuristic": "Error prevention",
    "severity": "critical",
-   "finding": "The payment details section requires credit card information before account creation, even though the page states there is a 14-day free trial and users won't be charged until the trial ends.",
-   "suggestion": "Make payment details optional during signup and only collect them before the trial period ends.",
+   "finding": "The payment details section requires credit card information before the user can create an account, despite offering a 14-day free trial.",
+   "suggestion": "Make payment details optional during signup and only collect them before the trial ends or when upgrading to a paid plan.",
    "element_id": null,
-   "screenshot": "amina/05.jpg"
+   "screenshot": "aisha/04.jpg"
+  },
+  {
+   "screen": "06e0a2dea3",
+   "screen_label": "Welcome to Fernhill, Aisha",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "critical",
+   "finding": "The 'Create' button is enabled while the 'Project name' field is empty, giving no indication that the field is required and likely causing a failed submission.",
+   "suggestion": "Disable the 'Create' button until a project name is entered, or show inline validation when the field is blank.",
+   "element_id": 14,
+   "screenshot": "aisha/07.jpg"
+  },
+  {
+   "screen": "e8e6e53fc4",
+   "screen_label": "Create your account",
+   "source": "vision",
+   "heuristic": "Error prevention",
+   "severity": "critical",
+   "finding": "The Submit button is enabled even though the Terms of Service checkbox is unchecked, allowing users to attempt submission and fail.",
+   "suggestion": "Disable the Submit button until the Terms of Service checkbox is checked.",
+   "element_id": 11,
+   "screenshot": "diego/06.jpg"
   },
   {
    "screen": "57b06fb8b6",
@@ -363,10 +388,10 @@
    "source": "vision",
    "heuristic": "Recognition rather than recall",
    "severity": "major",
-   "finding": "Multiple navigation links and buttons use identical labels such as 'Get started' and 'Fernhill' without distinguishing context, making it hard to predict where each will lead.",
-   "suggestion": "Differentiate duplicate labels with context-specific text, for example 'Start free trial' versus 'Return to homepage'.",
-   "element_id": 7,
-   "screenshot": "amina/01.jpg"
+   "finding": "The page title says 'Fernhill · Project planning for small teams' but the visible heading and context describe a marketing homepage, creating confusion about whether this is actually the signup page users intended.",
+   "suggestion": "Update the page title and heading to clearly indicate this is the signup or landing page for creating a first project.",
+   "element_id": null,
+   "screenshot": "aisha/01.jpg"
   },
   {
    "screen": "b64e5333e8",
@@ -374,10 +399,10 @@
    "source": "vision",
    "heuristic": "Visibility of system status",
    "severity": "major",
-   "finding": "The Monthly/Yearly toggle shows 'Monthly' as selected, but the plan cards display monthly prices and 'Billed monthly' without indicating what the Yearly prices would be, so users cannot see the 20% savings in concrete terms.",
-   "suggestion": "When Yearly is toggled, update the card prices to show the discounted yearly rate (or monthly equivalent) and the total savings.",
+   "finding": "The 'Monthly' toggle appears selected but the page does not visually indicate that the displayed prices are monthly versus yearly, so users cannot confirm which billing mode is active.",
+   "suggestion": "Add a clear visual indicator (e.g., highlighted state or label) showing the active billing cycle and update prices when toggled.",
    "element_id": 7,
-   "screenshot": "amina/03.jpg"
+   "screenshot": "aisha/03.jpg"
   },
   {
    "screen": "b64e5333e8",
@@ -385,98 +410,131 @@
    "source": "vision",
    "heuristic": "Error prevention",
    "severity": "major",
-   "finding": "There are three identical 'Start free trial' links (Starter, Team, Business) with no visual distinction other than surrounding card context, increasing the risk users click the wrong plan tier.",
-   "suggestion": "Differentiate each CTA by including the plan name or price in the button text, e.g. 'Start Team free trial ($14/user/month)'.",
+   "finding": "The 'Start free trial' links do not state the plan price or user limit before signup, so users may commit to a plan without confirming it matches their needs.",
+   "suggestion": "Include the plan price and key limits directly on each 'Start free trial' link or button.",
    "element_id": 10,
-   "screenshot": "amina/03.jpg"
+   "screenshot": "aisha/03.jpg"
   },
   {
    "screen": "3ef8656300",
    "screen_label": "Create your account",
    "source": "vision",
-   "heuristic": "Visibility of system status",
+   "heuristic": "Recognition rather than recall",
    "severity": "major",
-   "finding": "The Submit button is not visible in the screenshot, so users cannot see how to complete the form after filling it out.",
-   "suggestion": "Ensure the Submit button is visible without scrolling, or indicate that more content exists below.",
+   "finding": "The card number, expiry, and CVC fields display placeholder text (1234 5678 9012 3456, MM/YY, 123) that remains visible and could be mistaken for actual values or example data to copy.",
+   "suggestion": "Remove the placeholder text from payment fields or use clearly labeled example formatting that disappears on focus.",
    "element_id": null,
-   "screenshot": "amina/05.jpg"
+   "screenshot": "aisha/04.jpg"
   },
   {
-   "screen": "7874512b1c",
-   "screen_label": "Welcome to Fernhill, Amina",
+   "screen": "3ef8656300",
+   "screen_label": "Create your account",
+   "source": "vision",
+   "heuristic": "User control and freedom",
+   "severity": "major",
+   "finding": "The Terms of Service and Privacy Policy links in the consent checkbox use '#' as their href, so they do not navigate anywhere when clicked.",
+   "suggestion": "Replace the '#' hrefs with actual URLs or modal triggers so users can read the policies before agreeing.",
+   "element_id": null,
+   "screenshot": "aisha/04.jpg"
+  },
+  {
+   "screen": "e70aa1768a",
+   "screen_label": "Your project is ready",
    "source": "vision",
    "heuristic": "Visibility of system status",
    "severity": "major",
-   "finding": "The 'Getting started' panel marks 'Create your account' as complete with a checkmark, but the user is still on the signup page and has not finished creating an account, which misrepresents progress.",
-   "suggestion": "Remove the checkmark from 'Create your account' until the signup flow is actually completed.",
-   "element_id": null,
-   "screenshot": "amina/09.jpg"
+   "finding": "The sidebar link \"Inbox\" shows a badge with the number 2, but there is no indication of what the new items are or how to clear the notification.",
+   "suggestion": "Add a tooltip or a small legend explaining the badge, or highlight the unread inbox items when the user navigates to Inbox.",
+   "element_id": 3,
+   "screenshot": "margaret/13.jpg"
   },
   {
-   "screen": "7874512b1c",
-   "screen_label": "Welcome to Fernhill, Amina",
+   "screen": "e70aa1768a",
+   "screen_label": "Your project is ready",
+   "source": "vision",
+   "heuristic": "Consistency and standards",
+   "severity": "major",
+   "finding": "There are three separate \"+ Add task\" buttons (one in each Kanban column) plus an \"Invite teammates\" button, creating redundant and inconsistent entry points for adding tasks.",
+   "suggestion": "Use a single, globally placed primary action button for adding tasks, and remove the per-column duplicates to reduce visual clutter.",
+   "element_id": 11,
+   "screenshot": "margaret/13.jpg"
+  },
+  {
+   "screen": "d086922242",
+   "screen_label": "Welcome to Fernhill, Aisha",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "major",
+   "finding": "The 'Getting started' panel shows 'Create your account' as checked but provides no confirmation or feedback that the account setup is actually complete.",
+   "suggestion": "Add a clear success message or visual confirmation that the account has been created.",
+   "element_id": null,
+   "screenshot": "aisha/06.jpg"
+  },
+  {
+   "screen": "d086922242",
+   "screen_label": "Welcome to Fernhill, Aisha",
    "source": "vision",
    "heuristic": "Recognition rather than recall",
    "severity": "major",
-   "finding": "The central card instructs users to 'Click + next to Projects in the sidebar', but the sidebar section is labeled 'PROJECTS' and the plus button is not visibly adjacent to that label, making the instruction hard to follow.",
-   "suggestion": "Change the instruction to 'Click the + button under PROJECTS in the sidebar' or visually highlight the sidebar plus button.",
+   "finding": "The empty state instructs users to 'Click + next to Projects in the sidebar' but the sidebar 'PROJECTS' section shows 'No projects' with no visible plus button adjacent to it, making the instruction impossible to follow.",
+   "suggestion": "Add a visible plus button next to the 'PROJECTS' heading in the sidebar, or change the instruction to point to the central '+' button in the empty state card.",
    "element_id": null,
-   "screenshot": "amina/09.jpg"
+   "screenshot": "aisha/06.jpg"
   },
   {
-   "screen": "4559ba268f",
-   "screen_label": "Welcome to Fernhill, Amina",
-   "source": "vision",
-   "heuristic": "Visibility of system status",
-   "severity": "major",
-   "finding": "The Project key textbox has no visible label or helper text explaining what a project key is or its format, leaving users uncertain what to enter.",
-   "suggestion": "Add a concise helper text or tooltip under the Project key field explaining its purpose and allowed characters.",
-   "element_id": 9,
-   "screenshot": "amina/10.jpg"
-  },
-  {
-   "screen": "7900135e98",
-   "screen_label": "Welcome to Fernhill, Diego",
-   "source": "vision",
-   "heuristic": "Visibility of system status",
-   "severity": "major",
-   "finding": "The 'Getting started' panel marks 'Create your account' as complete with a checkmark, but the user is still on the signup page and the account creation task is not actually finished, creating false confidence.",
-   "suggestion": "Remove the checkmark from 'Create your account' until the signup flow is completed, or change the label to reflect the current step.",
-   "element_id": null,
-   "screenshot": "diego/08.jpg"
-  },
-  {
-   "screen": "7900135e98",
-   "screen_label": "Welcome to Fernhill, Diego",
-   "source": "vision",
-   "heuristic": "Recognition rather than recall",
-   "severity": "major",
-   "finding": "The central empty state instructs users to 'Click + next to Projects in the sidebar', but the sidebar 'PROJECTS' section header has no visible plus icon; the only visible plus is a floating button lower in the sidebar, so users cannot…",
-   "suggestion": "Add a visible plus button directly beside the 'PROJECTS' heading in the sidebar, or change the instruction to point to the actual floating plus button.",
-   "element_id": null,
-   "screenshot": "diego/08.jpg"
-  },
-  {
-   "screen": "cd9fe2b2e6",
-   "screen_label": "Welcome to Fernhill, Diego",
-   "source": "vision",
-   "heuristic": "Visibility of system status",
-   "severity": "major",
-   "finding": "The 'Create' button is enabled while the 'Project name' field is empty, giving no indication that the field is required before submission.",
-   "suggestion": "Disable the 'Create' button until the 'Project name' field contains valid input, or show inline validation when the user attempts to submit.",
-   "element_id": 14,
-   "screenshot": "diego/09.jpg"
-  },
-  {
-   "screen": "cd9fe2b2e6",
-   "screen_label": "Welcome to Fernhill, Diego",
+   "screen": "06e0a2dea3",
+   "screen_label": "Welcome to Fernhill, Aisha",
    "source": "vision",
    "heuristic": "Error prevention",
    "severity": "major",
-   "finding": "The 'Project key' textbox is empty with no format guidance or auto-generation, so users may enter an invalid key and receive an error after clicking 'Create'.",
-   "suggestion": "Add placeholder text or helper text describing the required key format (e.g., uppercase letters only), or auto-generate a key from the project name.",
+   "finding": "The 'Project key' textbox has no label, placeholder, or format guidance, so users do not know what value to enter.",
+   "suggestion": "Add a placeholder such as 'e.g. WEBSITE' or helper text explaining the expected format.",
    "element_id": 9,
+   "screenshot": "aisha/07.jpg"
+  },
+  {
+   "screen": "e8e6e53fc4",
+   "screen_label": "Create your account",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "major",
+   "finding": "The Workspace slug field shows a partial URL prefix 'fernhill.app/' inside the input, making it unclear what portion the user should type.",
+   "suggestion": "Move the 'fernhill.app/' prefix outside the input as static text so the user types only the slug.",
+   "element_id": 7,
+   "screenshot": "diego/06.jpg"
+  },
+  {
+   "screen": "7900135e98",
+   "screen_label": "Welcome to Fernhill, Diego",
+   "source": "vision",
+   "heuristic": "Visibility of system status",
+   "severity": "major",
+   "finding": "The 'Getting started' panel shows 'Create your account' as complete with a checkmark, but the user is already signed in as Diego, making the step misleading and confusing.",
+   "suggestion": "Remove or relabel the completed account step so the onboarding list reflects only remaining actions.",
+   "element_id": null,
    "screenshot": "diego/09.jpg"
+  },
+  {
+   "screen": "7900135e98",
+   "screen_label": "Welcome to Fernhill, Diego",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "major",
+   "finding": "The central empty-state card instructs users to 'Click + next to Projects in the sidebar' but the visible sidebar has no 'Projects' label adjacent to a plus button, so users cannot locate the control.",
+   "suggestion": "Update the instruction to match the actual UI, such as 'Click the + button under PROJECTS in the sidebar'.",
+   "element_id": null,
+   "screenshot": "diego/09.jpg"
+  },
+  {
+   "screen": "b64e5333e8",
+   "screen_label": "Pick the plan that fits your team",
+   "source": "a11y",
+   "heuristic": "Text contrast (WCAG 1.4.3)",
+   "severity": "major",
+   "finding": "Low-contrast text (“Billed monthly”; “Just exploring? Continue with Fernhill…”; “Just exploring? Continue with Fernhill…”). Measured: 3.2:1 (needs 4.5:1).",
+   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
+   "element_id": null,
+   "screenshot": "aisha/03.jpg"
   },
   {
    "screen": "3ef8656300",
@@ -487,7 +545,7 @@
    "finding": "A form field has no label (“Work email”). Placeholder text disappears as soon as you type.",
    "suggestion": "Add a visible <label> tied to the field with for/id; keep the placeholder only as an example.",
    "element_id": 5,
-   "screenshot": "amina/05.jpg"
+   "screenshot": "aisha/04.jpg"
   },
   {
    "screen": "3ef8656300",
@@ -495,10 +553,10 @@
    "source": "a11y",
    "heuristic": "Touch targets too small (WCAG 2.5.8)",
    "severity": "major",
-   "finding": "Tap target (“Fernhill”; “Log in”; “Change” +1 more) is smaller than 40×40 px on a phone. Measured: 107×31px.",
+   "finding": "Tap target (“Fernhill”; “Log in”; “Change” +1 more) is smaller than 40×40 px on a phone. Measured: 122×31px.",
    "suggestion": "Make interactive elements at least 44×44 px (min-height/min-width or padding).",
    "element_id": 1,
-   "screenshot": "kwame/04.jpg"
+   "screenshot": "kofi/04.jpg"
   },
   {
    "screen": "e70aa1768a",
@@ -506,46 +564,46 @@
    "source": "a11y",
    "heuristic": "Text contrast (WCAG 1.4.3)",
    "severity": "major",
-   "finding": "Low-contrast text (“+ Add task”; “AK”; “Blank template” +22 more). Measured: 2.7:1 (needs 4.5:1).",
+   "finding": "Low-contrast text (“KM”; “Blank template”; “2” +13 more). Measured: 3.2:1 (needs 4.5:1).",
    "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
-   "element_id": 11,
-   "screenshot": "amina/14.jpg"
+   "element_id": null,
+   "screenshot": "kofi/11.jpg"
   },
   {
-   "screen": "7874512b1c",
-   "screen_label": "Welcome to Fernhill, Amina",
+   "screen": "d086922242",
+   "screen_label": "Welcome to Fernhill, Aisha",
    "source": "a11y",
    "heuristic": "Controls need accessible names (WCAG 4.1.2)",
    "severity": "major",
    "finding": "A control has no accessible name, so screen readers announce just \"button\".",
    "suggestion": "Give icon-only buttons an aria-label (e.g. aria-label=\"Close\") or visible text.",
    "element_id": 5,
-   "screenshot": "amina/09.jpg"
+   "screenshot": "aisha/06.jpg"
   },
   {
-   "screen": "4559ba268f",
-   "screen_label": "Welcome to Fernhill, Amina",
+   "screen": "06e0a2dea3",
+   "screen_label": "Welcome to Fernhill, Aisha",
    "source": "a11y",
    "heuristic": "Controls need accessible names (WCAG 4.1.2)",
    "severity": "major",
    "finding": "A control has no accessible name, so screen readers announce just \"button\".",
    "suggestion": "Give icon-only buttons an aria-label (e.g. aria-label=\"Close\") or visible text.",
    "element_id": 5,
-   "screenshot": "amina/10.jpg"
+   "screenshot": "aisha/07.jpg"
+  },
+  {
+   "screen": "e8e6e53fc4",
+   "screen_label": "Create your account",
+   "source": "a11y",
+   "heuristic": "Form fields need labels (WCAG 1.3.1)",
+   "severity": "major",
+   "finding": "A form field has no label (“Work email”). Placeholder text disappears as soon as you type.",
+   "suggestion": "Add a visible <label> tied to the field with for/id; keep the placeholder only as an example.",
+   "element_id": 5,
+   "screenshot": "diego/06.jpg"
   },
   {
    "screen": "7900135e98",
-   "screen_label": "Welcome to Fernhill, Diego",
-   "source": "a11y",
-   "heuristic": "Controls need accessible names (WCAG 4.1.2)",
-   "severity": "major",
-   "finding": "A control has no accessible name, so screen readers announce just \"button\".",
-   "suggestion": "Give icon-only buttons an aria-label (e.g. aria-label=\"Close\") or visible text.",
-   "element_id": 5,
-   "screenshot": "diego/08.jpg"
-  },
-  {
-   "screen": "cd9fe2b2e6",
    "screen_label": "Welcome to Fernhill, Diego",
    "source": "a11y",
    "heuristic": "Controls need accessible names (WCAG 4.1.2)",
@@ -559,34 +617,23 @@
    "screen": "57b06fb8b6",
    "screen_label": "Projects that stay on track, without the busywork",
    "source": "vision",
-   "heuristic": "Error prevention",
+   "heuristic": "Consistency and standards",
    "severity": "minor",
-   "finding": "The 'Manage preferences' button in the cookie banner has no visible confirmation or feedback after being clicked, so users cannot tell if their choice was saved.",
-   "suggestion": "Provide a brief confirmation message or visual state change when preferences are saved.",
-   "element_id": 23,
-   "screenshot": "amina/01.jpg"
+   "finding": "Multiple 'Get started' links (IDs 7, 8, 10) all point to pricing.html instead of a signup or registration page, which is inconsistent with the user goal of signing up.",
+   "suggestion": "Change the primary 'Get started' buttons to link to a signup or account creation page rather than pricing.",
+   "element_id": null,
+   "screenshot": "aisha/01.jpg"
   },
   {
    "screen": "57b06fb8b6",
    "screen_label": "Projects that stay on track, without the busywork",
    "source": "vision",
-   "heuristic": "Consistency and standards",
+   "heuristic": "Error prevention",
    "severity": "minor",
-   "finding": "The top navigation and footer navigation contain overlapping but inconsistently ordered links, such as 'Product' versus 'Features' and 'How it works' versus '#how'.",
-   "suggestion": "Align terminology and order across header and footer navigation to match user expectations.",
+   "finding": "The footer contains numerous placeholder links (Guides, About, Careers, Status, Contact) that go to '#', which may frustrate users expecting real destinations.",
+   "suggestion": "Replace placeholder '#' links with actual URLs or remove them until they are functional.",
    "element_id": null,
-   "screenshot": "amina/01.jpg"
-  },
-  {
-   "screen": "b64e5333e8",
-   "screen_label": "Pick the plan that fits your team",
-   "source": "vision",
-   "heuristic": "Recognition rather than recall",
-   "severity": "minor",
-   "finding": "The accordion questions (e.g. 'What happens when my trial ends?') are visible but their answers are hidden, forcing users to click and remember information across interactions.",
-   "suggestion": "Show short answer summaries directly under each question, or expand the most relevant FAQ (trial ending) by default.",
-   "element_id": 13,
-   "screenshot": "amina/03.jpg"
+   "screenshot": "aisha/01.jpg"
   },
   {
    "screen": "b64e5333e8",
@@ -594,120 +641,76 @@
    "source": "vision",
    "heuristic": "Consistency and standards",
    "severity": "minor",
-   "finding": "The footer contains links to Guides, About, Status, Careers, and Contact that point to '#' placeholders instead of real pages, which is inconsistent with the working header navigation.",
-   "suggestion": "Replace the '#' hrefs with actual URLs or remove the placeholder links until the pages exist.",
-   "element_id": 24,
-   "screenshot": "amina/03.jpg"
+   "finding": "The top navigation 'Pricing' link is marked as selected, but the footer also contains a 'Pricing' link with no selected state, creating inconsistent navigation cues.",
+   "suggestion": "Apply the same selected styling to the footer 'Pricing' link or remove the selected state from the top nav to match the footer.",
+   "element_id": 4,
+   "screenshot": "aisha/03.jpg"
   },
   {
    "screen": "3ef8656300",
    "screen_label": "Create your account",
    "source": "vision",
-   "heuristic": "Recognition rather than recall",
-   "severity": "minor",
-   "finding": "The Workspace slug field shows 'fernhill.app/' as a prefix inside the input, which may confuse users about what portion they need to type.",
-   "suggestion": "Display 'fernhill.app/' as static text outside the input field so users only enter the custom slug portion.",
-   "element_id": 7,
-   "screenshot": "amina/05.jpg"
-  },
-  {
-   "screen": "e70aa1768a",
-   "screen_label": "Your project is ready",
-   "source": "vision",
-   "heuristic": "Visibility of system status",
-   "severity": "minor",
-   "finding": "The success banner states three starter tasks were added, but the board columns show only two tasks in To do and one in Doing, creating a mismatch that confuses the user about actual project state.",
-   "suggestion": "Update the banner text to match the actual task count or ensure all three tasks are visible on the board.",
-   "element_id": null,
-   "screenshot": "amina/14.jpg"
-  },
-  {
-   "screen": "e70aa1768a",
-   "screen_label": "Your project is ready",
-   "source": "vision",
-   "heuristic": "Consistency and standards",
-   "severity": "minor",
-   "finding": "The Inbox navigation link displays a badge with the number 2, but no other navigation items use badges, making the pattern inconsistent and its meaning unclear.",
-   "suggestion": "Either apply badges consistently to other navigation items with pending counts or remove the badge from Inbox.",
-   "element_id": 3,
-   "screenshot": "amina/14.jpg"
-  },
-  {
-   "screen": "e70aa1768a",
-   "screen_label": "Your project is ready",
-   "source": "vision",
-   "heuristic": "Recognition rather than recall",
-   "severity": "minor",
-   "finding": "The sidebar shows the workspace name as Fernworkspace while the page title and URL reference Fernhill, creating brand inconsistency that forces users to remember which name is correct.",
-   "suggestion": "Align the workspace branding across the sidebar, page title, and URL to use a single consistent name.",
-   "element_id": null,
-   "screenshot": "amina/14.jpg"
-  },
-  {
-   "screen": "e70aa1768a",
-   "screen_label": "Your project is ready",
-   "source": "vision",
-   "heuristic": "Error prevention",
-   "severity": "minor",
-   "finding": "The Upgrade link in the bottom trial banner is visually emphasized while the primary call-to-action buttons on the board are secondary in style, which may lead users to click upgrade prematurely instead of adding tasks.",
-   "suggestion": "Make the Add task buttons more visually prominent than the Upgrade link to guide users toward the core task creation flow.",
-   "element_id": 6,
-   "screenshot": "amina/14.jpg"
-  },
-  {
-   "screen": "7874512b1c",
-   "screen_label": "Welcome to Fernhill, Amina",
-   "source": "vision",
-   "heuristic": "Error prevention",
-   "severity": "minor",
-   "finding": "The 'Upgrade' link in the bottom trial banner is underlined like a primary action, but the user's goal is to create a project, so this prominent link may cause accidental navigation away from the task.",
-   "suggestion": "Restyle the 'Upgrade' link as a secondary text link or move it away from the main onboarding area.",
-   "element_id": 6,
-   "screenshot": "amina/09.jpg"
-  },
-  {
-   "screen": "4559ba268f",
-   "screen_label": "Welcome to Fernhill, Amina",
-   "source": "vision",
-   "heuristic": "Error prevention",
-   "severity": "minor",
-   "finding": "The Create button is enabled even though the Project name and Project key fields are empty, allowing users to submit an incomplete form and likely receive an error.",
-   "suggestion": "Disable the Create button until both required fields contain valid input, then enable it once the form is complete.",
-   "element_id": 14,
-   "screenshot": "amina/10.jpg"
-  },
-  {
-   "screen": "4559ba268f",
-   "screen_label": "Welcome to Fernhill, Amina",
-   "source": "vision",
-   "heuristic": "Consistency and standards",
-   "severity": "minor",
-   "finding": "The sidebar badge on Inbox shows the number 2, but the link text itself reads Inbox 2, duplicating the count and creating redundant, confusing labeling.",
-   "suggestion": "Remove the duplicate number from the link label so it simply reads Inbox, keeping the badge as the sole count indicator.",
-   "element_id": 3,
-   "screenshot": "amina/10.jpg"
-  },
-  {
-   "screen": "4559ba268f",
-   "screen_label": "Welcome to Fernhill, Amina",
-   "source": "vision",
    "heuristic": "Flexibility and efficiency of use",
    "severity": "minor",
-   "finding": "The Project name field only shows placeholder text with no persistent label, so the context disappears once the user starts typing.",
-   "suggestion": "Add a visible Project name label above the input field in addition to the placeholder hint.",
+   "finding": "The Workspace slug field shows a static prefix 'fernhill.app/' outside the input, making it unclear whether users can edit the full URL or only the slug portion.",
+   "suggestion": "Place the prefix as non-editable helper text outside the field or make the entire slug editable in a single input.",
    "element_id": null,
-   "screenshot": "amina/10.jpg"
+   "screenshot": "aisha/04.jpg"
   },
   {
-   "screen": "7900135e98",
-   "screen_label": "Welcome to Fernhill, Diego",
+   "screen": "e70aa1768a",
+   "screen_label": "Your project is ready",
    "source": "vision",
    "heuristic": "Error prevention",
    "severity": "minor",
-   "finding": "The 'Upgrade' link in the top navigation and the 'Upgrade' link in the bottom trial banner both lead to pricing.html, but there is no confirmation or warning before navigating away from the signup setup, risking accidental abandonment of…",
-   "suggestion": "Add a confirmation dialog or inline warning when clicking 'Upgrade' during onboarding to prevent accidental navigation away from project creation.",
+   "finding": "The \"Done\" column is empty but still displays an \"+ Add task\" input, which invites users to add completed tasks directly to a done state, contradicting the workflow logic.",
+   "suggestion": "Hide the \"+ Add task\" input in the Done column or disable it until a task is moved there from another column.",
+   "element_id": 9,
+   "screenshot": "margaret/13.jpg"
+  },
+  {
+   "screen": "e70aa1768a",
+   "screen_label": "Your project is ready",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "The top navigation uses only icons for Home, My tasks, Inbox, and Reports, forcing users to rely on memory or hover to understand each icon's purpose.",
+   "suggestion": "Add visible text labels next to each icon in the sidebar navigation so the purpose of each link is immediately clear.",
+   "element_id": null,
+   "screenshot": "margaret/13.jpg"
+  },
+  {
+   "screen": "d086922242",
+   "screen_label": "Welcome to Fernhill, Aisha",
+   "source": "vision",
+   "heuristic": "Error prevention",
+   "severity": "minor",
+   "finding": "The 'Upgrade' link in the bottom left corner is visually emphasized as a primary action despite the user's goal being to create a project, which could lead to accidental navigation away from the signup flow.",
+   "suggestion": "De-emphasize the 'Upgrade' link or move it to a less prominent location to prevent accidental clicks during onboarding.",
    "element_id": 6,
-   "screenshot": "diego/08.jpg"
+   "screenshot": "aisha/06.jpg"
+  },
+  {
+   "screen": "06e0a2dea3",
+   "screen_label": "Welcome to Fernhill, Aisha",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "The 'Upgrade' link in the bottom-left corner is partially obscured by the page edge, making it hard to recognize as a clickable element.",
+   "suggestion": "Ensure the 'Upgrade' link is fully visible and not cut off by the container boundary.",
+   "element_id": 6,
+   "screenshot": "aisha/07.jpg"
+  },
+  {
+   "screen": "e8e6e53fc4",
+   "screen_label": "Create your account",
+   "source": "vision",
+   "heuristic": "Recognition rather than recall",
+   "severity": "minor",
+   "finding": "The Work email textbox has no visible label, only a placeholder, so the label disappears once the user starts typing.",
+   "suggestion": "Add a visible 'Work email' label above the input field.",
+   "element_id": 5,
+   "screenshot": "diego/06.jpg"
   },
   {
    "screen": "7900135e98",
@@ -715,31 +718,20 @@
    "source": "vision",
    "heuristic": "Consistency and standards",
    "severity": "minor",
-   "finding": "The 'Inbox' sidebar item shows a badge with the number 2, but the navigation link is labeled 'Inbox 2', duplicating the count in the label and the badge, which is inconsistent with the other nav items that have no such duplication.",
-   "suggestion": "Remove the number from the 'Inbox 2' link label and keep only the badge, or remove the badge and keep the label, to match the pattern of other navigation items.",
-   "element_id": 3,
-   "screenshot": "diego/08.jpg"
-  },
-  {
-   "screen": "cd9fe2b2e6",
-   "screen_label": "Welcome to Fernhill, Diego",
-   "source": "vision",
-   "heuristic": "Recognition rather than recall",
-   "severity": "minor",
-   "finding": "The template cards use icons and short labels without clear visual distinction between the selected 'Blank' state and unselected states beyond a subtle border, making the selection less obvious.",
-   "suggestion": "Apply a stronger selected state (e.g., filled background or checkmark) to the active template card to make the choice immediately recognizable.",
-   "element_id": 10,
+   "finding": "The page title is 'Home · Fernhill' while the main heading says 'Welcome to Fernhill, Diego', creating an inconsistent identity for the current page.",
+   "suggestion": "Align the browser tab title with the main heading, e.g. 'Dashboard · Fernhill'.",
+   "element_id": null,
    "screenshot": "diego/09.jpg"
   },
   {
-   "screen": "cd9fe2b2e6",
+   "screen": "7900135e98",
    "screen_label": "Welcome to Fernhill, Diego",
    "source": "vision",
-   "heuristic": "Consistency and standards",
+   "heuristic": "Error prevention",
    "severity": "minor",
-   "finding": "The sidebar shows 'Inbox' with a notification badge of 2, but the top navigation link is labeled 'Inbox 2', creating inconsistent naming for the same destination.",
-   "suggestion": "Rename the top navigation link to 'Inbox' to match the sidebar label and remove the redundant number.",
-   "element_id": 3,
+   "finding": "The 'Upgrade' link in the sidebar and the 'Upgrade' link in the bottom 'Free plan' banner both point to pricing.html, offering redundant paths to the same action.",
+   "suggestion": "Keep only one upgrade entry point or differentiate them clearly by context.",
+   "element_id": null,
    "screenshot": "diego/09.jpg"
   },
   {
@@ -751,7 +743,7 @@
    "finding": "Low-contrast text (“4,000+ small teams plan with Fernhill…”; “fernhill.app/copperleaf/website-refresh”; “PN” +12 more). Measured: 3.0:1 (needs 4.5:1).",
    "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
    "element_id": null,
-   "screenshot": "amina/01.jpg"
+   "screenshot": "aisha/01.jpg"
   },
   {
    "screen": "57b06fb8b6",
@@ -759,21 +751,10 @@
    "source": "a11y",
    "heuristic": "Touch targets too small (WCAG 2.5.8)",
    "severity": "minor",
-   "finding": "Tap target (“Get started”; “Fernhill”; “Accept all” +1 more) is smaller than 40×40 px on a phone. Measured: 105×38px.",
+   "finding": "Tap target (“Get started”; “Fernhill”; “Accept all” +1 more) is smaller than 40×40 px on a phone. Measured: 124×38px.",
    "suggestion": "Make interactive elements at least 44×44 px (min-height/min-width or padding).",
    "element_id": 2,
-   "screenshot": "kwame/01.jpg"
-  },
-  {
-   "screen": "b64e5333e8",
-   "screen_label": "Pick the plan that fits your team",
-   "source": "a11y",
-   "heuristic": "Text contrast (WCAG 1.4.3)",
-   "severity": "minor",
-   "finding": "Low-contrast text (“Billed monthly”). Measured: 3.2:1 (needs 4.5:1).",
-   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
-   "element_id": null,
-   "screenshot": "amina/03.jpg"
+   "screenshot": "kofi/01.jpg"
   },
   {
    "screen": "b64e5333e8",
@@ -781,10 +762,10 @@
    "source": "a11y",
    "heuristic": "Touch targets too small (WCAG 2.5.8)",
    "severity": "minor",
-   "finding": "Tap target (“Fernhill”; “Monthly”; “Yearly save 20%”) is smaller than 40×40 px on a phone. Measured: 107×31px.",
+   "finding": "Tap target (“Fernhill”; “Monthly”; “Yearly save 20%”) is smaller than 40×40 px on a phone. Measured: 122×31px.",
    "suggestion": "Make interactive elements at least 44×44 px (min-height/min-width or padding).",
    "element_id": 1,
-   "screenshot": "kwame/03.jpg"
+   "screenshot": "kofi/03.jpg"
   },
   {
    "screen": "3ef8656300",
@@ -792,32 +773,54 @@
    "source": "a11y",
    "heuristic": "Text contrast (WCAG 1.4.3)",
    "severity": "minor",
-   "finding": "Low-contrast text (“*”; “fernhill.app/”; “Please correct the following: Enter a…”). Measured: 3.2:1 (needs 4.5:1).",
+   "finding": "Low-contrast text (“*”; “fernhill.app/”). Measured: 3.2:1 (needs 4.5:1).",
    "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
    "element_id": null,
-   "screenshot": "amina/05.jpg"
+   "screenshot": "aisha/04.jpg"
   },
   {
-   "screen": "7874512b1c",
-   "screen_label": "Welcome to Fernhill, Amina",
+   "screen": "e70aa1768a",
+   "screen_label": "Your project is ready",
+   "source": "a11y",
+   "heuristic": "Touch targets too small (WCAG 2.5.8)",
+   "severity": "minor",
+   "finding": "Tap target (“Home”; “My tasks”; “Inbox 2” +3 more) is smaller than 40×40 px on a phone. Measured: 88×36px.",
+   "suggestion": "Make interactive elements at least 44×44 px (min-height/min-width or padding).",
+   "element_id": 1,
+   "screenshot": "kofi/11.jpg"
+  },
+  {
+   "screen": "d086922242",
+   "screen_label": "Welcome to Fernhill, Aisha",
    "source": "a11y",
    "heuristic": "Text contrast (WCAG 1.4.3)",
    "severity": "minor",
-   "finding": "Low-contrast text (“AK”; “Create your account”; “Tip: press N anywhere to create a task.” +1 more). Measured: 3.2:1 (needs 4.5:1).",
+   "finding": "Low-contrast text (“AP”; “Create your account”; “Tip: press N anywhere to create a task.” +1 more). Measured: 3.2:1 (needs 4.5:1).",
    "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
    "element_id": null,
-   "screenshot": "amina/09.jpg"
+   "screenshot": "aisha/06.jpg"
   },
   {
-   "screen": "4559ba268f",
-   "screen_label": "Welcome to Fernhill, Amina",
+   "screen": "06e0a2dea3",
+   "screen_label": "Welcome to Fernhill, Aisha",
    "source": "a11y",
    "heuristic": "Text contrast (WCAG 1.4.3)",
    "severity": "minor",
-   "finding": "Low-contrast text (“AK”; “Create your account”; “Tip: press N anywhere to create a task.” +4 more). Measured: 3.2:1 (needs 4.5:1).",
+   "finding": "Low-contrast text (“AP”; “Create your account”; “Tip: press N anywhere to create a task.” +4 more). Measured: 3.2:1 (needs 4.5:1).",
    "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
    "element_id": null,
-   "screenshot": "amina/10.jpg"
+   "screenshot": "aisha/07.jpg"
+  },
+  {
+   "screen": "e8e6e53fc4",
+   "screen_label": "Create your account",
+   "source": "a11y",
+   "heuristic": "Text contrast (WCAG 1.4.3)",
+   "severity": "minor",
+   "finding": "Low-contrast text (“*”; “fernhill.app/”). Measured: 3.2:1 (needs 4.5:1).",
+   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
+   "element_id": null,
+   "screenshot": "diego/06.jpg"
   },
   {
    "screen": "7900135e98",
@@ -828,147 +831,109 @@
    "finding": "Low-contrast text (“DM”; “Create your account”; “Tip: press N anywhere to create a task.” +1 more). Measured: 3.2:1 (needs 4.5:1).",
    "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
    "element_id": null,
-   "screenshot": "diego/08.jpg"
-  },
-  {
-   "screen": "cd9fe2b2e6",
-   "screen_label": "Welcome to Fernhill, Diego",
-   "source": "a11y",
-   "heuristic": "Text contrast (WCAG 1.4.3)",
-   "severity": "minor",
-   "finding": "Low-contrast text (“DM”; “Create your account”; “Tip: press N anywhere to create a task.” +4 more). Measured: 3.2:1 (needs 4.5:1).",
-   "suggestion": "Darken the text or lighten the background to reach at least 4.5:1 (3:1 for large text).",
-   "element_id": null,
    "screenshot": "diego/09.jpg"
   }
  ],
  "transcripts": {
-  "amina": [
+  "aisha": [
    {
     "index": 1,
     "path": "/samples/signup/index.html",
-    "screenshot": "amina/01.jpg",
-    "see": "I see the Fernhill homepage and a big green Get started button. I need to click that to sign up and make my first project. The cookie banner at the bottom is blocking part of the screen and feels like an extra step before I can begin.",
-    "inner_voice": "Accept cookies to clear the banner and proceed.",
+    "screenshot": "aisha/01.jpg",
+    "see": "I see the Fernhill homepage with a big headline about projects staying on track. I am looking for a sign up button to create my first project. The cookie banner at the bottom is covering some text and that feels confusing. Is this normal?",
+    "inner_voice": "Accepting cookies to clear the banner and see the page better.",
     "confusion": 0,
     "action": "Clicked \"Accept all\""
    },
    {
     "index": 2,
     "path": "/samples/signup/index.html",
-    "screenshot": "amina/02.jpg",
-    "see": "I see the Fernhill homepage. I am looking for a way to sign up and create my first project. The green Get started button in the top right corner looks like the right place to click. Nothing is confusing or hard to read.",
-    "inner_voice": "Let's start the signup process.",
+    "screenshot": "aisha/02.jpg",
+    "see": "I see the Fernhill homepage with a big headline about projects staying on track. I am looking for a way to sign up and create my first project. The green Get started button looks like the right place to click. I am not sure if this is normal for a nonprofit tool.",
+    "inner_voice": "Let's try clicking Get started to see where it leads me.",
     "confusion": 0,
     "action": "Clicked \"Get started\""
    },
    {
     "index": 3,
     "path": "/samples/signup/pricing.html",
-    "screenshot": "amina/03.jpg",
-    "see": "I see a pricing page for Fernhill with three plans. I am looking for a button to start my free trial and create a project. The page is clear but I do not see a direct sign up button on this screen.",
-    "inner_voice": "Need to see more options below",
-    "confusion": 0,
-    "action": "Scrolled down"
+    "screenshot": "aisha/03.jpg",
+    "see": "I see the Fernhill pricing page. I am looking for a sign up button to start my first project. The Team plan looks right for my nonprofit but I am not sure where to click to begin. Is this normal?",
+    "inner_voice": "I think the Team plan is right for my nonprofit team",
+    "confusion": 1,
+    "action": "Clicked \"Start free trial\""
    },
    {
     "index": 4,
-    "path": "/samples/signup/pricing.html",
-    "screenshot": "amina/04.jpg",
-    "see": "I notice the Fernhill logo and pricing plans at the top. I am looking for a sign up button to create my first project. The green Start free trial button in the middle looks like the right place to click. I do not see any confusing text.",
-    "inner_voice": "This looks like the sign up button I need to click to get started.",
-    "confusion": 0,
-    "action": "Clicked \"Start free trial\""
+    "path": "/samples/signup/signup.html?plan=team",
+    "screenshot": "aisha/04.jpg",
+    "see": "I see the Fernhill sign up page. I need to create an account to start my first project. I am looking for the sign up button. I am confused about the workspace slug. Is this normal? The payment details section is a bit scary since I just want to try it.",
+    "inner_voice": "Filling in my details to create the account.",
+    "confusion": 1,
+    "action": "Filled in \"Full name *\", \"Work email\", \"Password *\", \"Workspace slug\" and 4 more"
    },
    {
     "index": 5,
     "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "amina/05.jpg",
-    "see": "I notice the Fernhill sign up page. I am looking for the create your account button to finish my task. The payment details section is confusing because I just want to start a free trial without entering a card right now.",
-    "inner_voice": "Filling in the form to create my account and start the trial.",
-    "confusion": 0,
-    "action": "Filled in \"Full name *\", \"Work email\", \"Password *\", \"Workspace slug\" and 3 more"
-   },
-   {
-    "index": 6,
-    "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "amina/06.jpg",
-    "see": "I see the Fernhill sign up page. I need to create my first project so I am looking for a button to finish this account setup. The payment details section feels confusing because I only want a free trial and do not want to enter a card yet.",
-    "inner_voice": "Now I'll agree to terms so I can proceed.",
-    "confusion": 0,
-    "action": "Clicked \"I agree to the Terms of Service and…\""
-   },
-   {
-    "index": 7,
-    "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "amina/07.jpg",
-    "see": "I see the Fernhill sign up page. I am looking for a button to finish creating my account so I can start my first project. The form fields are clear but I do not see the submit button on the screen.",
-    "inner_voice": "I'll scroll down to see the rest of the form and find the submit button.",
-    "confusion": 0,
-    "action": "Scrolled down"
-   },
-   {
-    "index": 8,
-    "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "amina/08.jpg",
-    "see": "I notice the Fernhill sign up page for a Team plan. I am looking for the Submit button to finish creating my account and start my first project. The form is clear and easy to read so nothing is confusing right now.",
-    "inner_voice": "Time to submit and get started!",
+    "screenshot": "aisha/05.jpg",
+    "see": "I see the Fernhill sign up page. I am looking for the submit button to finish creating my account. I am confused about the workspace slug part. Is this normal? I also do not like adding my credit card details for a free trial.",
+    "inner_voice": "Submitting my signup info now.",
     "confusion": 0,
     "action": "Clicked \"Submit\""
    },
    {
+    "index": 6,
+    "path": "/samples/signup/projects.html",
+    "screenshot": "aisha/06.jpg",
+    "see": "I see a welcome page for Fernhill. I am looking for a way to create my first project. The sidebar says no projects yet. I think I need to click the plus button next to Projects. Is this normal? I am not sure.I see a welcome page for Fernhill. I am looking for a way to create my first project. The sidebar says no projects yet. I think I need to click the plus button next to Projects. Is this normal? I am not sure.",
+    "inner_voice": "Is this the plus button to start my project?",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 7,
+    "path": "/samples/signup/projects.html",
+    "screenshot": "aisha/07.jpg",
+    "see": "I see a pop up for a new project. I am looking for a place to type the project name. I am not sure what a project key is. Is this normal? The create button is green and easy to find.",
+    "inner_voice": "Filling in project details, hope this works.",
+    "confusion": 0,
+    "action": "Filled in \"Project name\", \"Project key\""
+   },
+   {
+    "index": 8,
+    "path": "/samples/signup/projects.html",
+    "screenshot": "aisha/08.jpg",
+    "see": "I see a pop up for creating a new project. I am looking for the create button to finish setting up my volunteer campaign. The template options are a little confusing. Is this normal? I just want to start from scratch.",
+    "inner_voice": "Now I can finally create my volunteer campaign project!",
+    "confusion": 0,
+    "action": "Clicked \"Create\""
+   },
+   {
     "index": 9,
     "path": "/samples/signup/projects.html",
-    "screenshot": "amina/09.jpg",
-    "see": "I see the Fernhill workspace welcome page. I am looking for a way to create my first project. The main area says no projects yet and tells me to click the plus next to Projects in the sidebar. I see a plus button in the sidebar under Projects so that is what I will click.",
-    "inner_voice": "Clicking the plus button to create my first project.",
+    "screenshot": "aisha/09.jpg",
+    "see": "I see a pop up window to make a new project. The name is already filled in as Volunteer Campaign Oct. I need to click the green Create button to finish. I am not sure if the project key is right. Is this normal?",
+    "inner_voice": "Waiting to see if project created.",
     "confusion": 0,
-    "action": "Clicked an unlabeled button"
+    "action": "Waited a moment"
    },
    {
     "index": 10,
     "path": "/samples/signup/projects.html",
-    "screenshot": "amina/10.jpg",
-    "see": "I see a pop up window for creating a new project. I need to type a name in the project name field and then click the green Create button. The template options are clear but I am not sure what a project key is for.",
-    "inner_voice": "I'll name the project Website Redesign.",
+    "screenshot": "aisha/10.jpg",
+    "see": "I see a pop up for a new project. I need to click the green Create button to finish. I am looking for a way to add volunteers but I do not see that here. Is this normal? The template options are a bit confusing. I just picked Blank.",
+    "inner_voice": "Waiting to see if project created.",
     "confusion": 0,
-    "action": "Filled in \"Project name\""
+    "action": "Waited a moment"
    },
    {
     "index": 11,
     "path": "/samples/signup/projects.html",
-    "screenshot": "amina/11.jpg",
-    "see": "I see a pop-up window for creating a new project. I am looking for the button to finish the setup. The form is clear and I do not find anything confusing or hard to read.",
-    "inner_voice": "Now I'll create the project.",
-    "confusion": 0,
-    "action": "Clicked \"Create\""
-   },
-   {
-    "index": 12,
-    "path": "/samples/signup/projects.html",
-    "screenshot": "amina/12.jpg",
-    "see": "I see a pop-up window titled New project. I am looking for a way to finish creating my project. The project name is already filled in. The project key field is empty and has a red error message saying it is required. I need to fill that in before I can click Create.",
-    "inner_voice": "I'll enter a project key so I can create the project.",
-    "confusion": 0,
-    "action": "Filled in \"Project key\""
-   },
-   {
-    "index": 13,
-    "path": "/samples/signup/projects.html",
-    "screenshot": "amina/13.jpg",
-    "see": "I see a pop up for creating a new project. I am looking for a button to finish the setup. The red text about the key being required is a bit distracting but the form is clear. I just need to click the green Create button to move forward.",
-    "inner_voice": "Time to create the project.",
-    "confusion": 0,
-    "action": "Clicked \"Create\""
-   },
-   {
-    "index": 14,
-    "path": "/samples/signup/board.html",
-    "screenshot": "amina/14.jpg",
-    "see": "I notice a green banner saying my project is ready. I am looking for a way to start working on the Website Redesign project. The layout is clear and I do not find anything confusing or hard to read.",
-    "inner_voice": "Great! My project is already set up and I can start assigning tasks.",
-    "confusion": 0,
-    "action": "Finished: The project creation succeeded and the dashboard shows the new project ready."
+    "screenshot": "aisha/11.jpg",
+    "see": null,
+    "inner_voice": "Nothing I do here seems to work. I'm done.",
+    "confusion": 3,
+    "action": "Gave up: Nothing I try changes anything on this screen"
    }
   ],
   "diego": [
@@ -976,8 +941,8 @@
     "index": 1,
     "path": "/samples/signup/index.html",
     "screenshot": "diego/01.jpg",
-    "see": "I see the Fernhill homepage with a big headline about projects staying on track. I am looking for a way to sign up and create my first project. The Get started button is clear but the cookie banner is blocking part of the screen.",
-    "inner_voice": "Accept cookies to clear the banner.",
+    "see": "I see the Fernhill homepage. I need the Get started button to sign up. The cookie banner is in the way. Come on. I want to create my first project fast. The layout is clear enough.",
+    "inner_voice": "Accept cookies to proceed quickly.",
     "confusion": 0,
     "action": "Clicked \"Accept all\""
    },
@@ -985,8 +950,8 @@
     "index": 2,
     "path": "/samples/signup/index.html",
     "screenshot": "diego/02.jpg",
-    "see": "I see the Fernhill homepage. I am looking for the Get started button to sign up and create my first project. The page is clear and easy to read. Nothing confuses me. The value proposition is obvious. I can start right away.",
-    "inner_voice": "Time to try signing up.",
+    "see": "I see the Fernhill homepage. The headline says projects stay on track without busywork. I need to sign up and create my first project. The Get started button is right there. It looks simple enough. Come on, let me click it.",
+    "inner_voice": "Time to get started finally",
     "confusion": 0,
     "action": "Clicked \"Get started\""
    },
@@ -994,8 +959,8 @@
     "index": 3,
     "path": "/samples/signup/pricing.html",
     "screenshot": "diego/03.jpg",
-    "see": "I see a pricing page for Fernhill with three plans. I need to find a sign up button to start my first project. Nothing is confusing but there is no obvious call to action on this screen.",
-    "inner_voice": "Need to see if there's a signup button further down.",
+    "see": "I see a pricing page for Fernhill. I need to find a sign up button or a plan to start my free trial. I am looking for a way to create my first project. The page is clear but I do not see an obvious sign up button right now. Come on.",
+    "inner_voice": "Let me check what's further down the page.",
     "confusion": 0,
     "action": "Scrolled down"
    },
@@ -1003,219 +968,219 @@
     "index": 4,
     "path": "/samples/signup/pricing.html",
     "screenshot": "diego/04.jpg",
-    "see": "I see the Fernhill pricing page with three plan cards. I am looking for a sign up button to create my first project. The middle card is highlighted but I do not see a clear path to start without a trial. The credit card requirement is confusing.",
-    "inner_voice": "Let's start the trial and see if we can skip card details.",
-    "confusion": 0,
-    "action": "Clicked \"Start free trial\""
-   },
-   {
-    "index": 5,
-    "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "diego/05.jpg",
-    "see": "I see the Fernhill signup page. I am looking for the create account form to start my first project. It is confusing that payment details are required upfront for a free trial.",
-    "inner_voice": "Just want to get in and start a project.",
+    "see": "I see the Fernhill pricing page. I am looking for a sign up button to start a project. The middle plan is highlighted. I need to find where to create an account. It is not immediately obvious how to just sign up without picking a paid plan. Come on.",
+    "inner_voice": "Let me see if there's a free option or clearer sign up path.",
     "confusion": 1,
-    "action": "Filled in \"Full name *\", \"Work email\", \"Password *\", \"Workspace slug\" and 3 more"
-   },
-   {
-    "index": 6,
-    "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "diego/06.jpg",
-    "see": "I see the Fernhill signup page. I need to create my account and start my first project. The form is already filled with my name and email. I need to finish the payment details and agree to the terms to proceed.",
-    "inner_voice": "Agree to terms",
-    "confusion": 0,
-    "action": "Clicked \"I agree to the Terms of Service and…\""
-   },
-   {
-    "index": 7,
-    "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "diego/07.jpg",
-    "see": "I see the Fernhill signup page. I am looking for a button to finish creating my account and start my first project. The payment details section is confusing because I only want a free trial.",
-    "inner_voice": "Time to submit and see if I'm in.",
-    "confusion": 0,
-    "action": "Clicked \"Submit\""
-   },
-   {
-    "index": 8,
-    "path": "/samples/signup/projects.html",
-    "screenshot": "diego/08.jpg",
-    "see": "I see a welcome screen for Fernhill. I need to create my first project. The sidebar shows a plus button next to Projects. The main area says no projects yet and points to that plus button. Nothing is confusing. The path is clear.",
-    "inner_voice": "Click plus to create project",
-    "confusion": 0,
-    "action": "Clicked an unlabeled button"
-   },
-   {
-    "index": 9,
-    "path": "/samples/signup/projects.html",
-    "screenshot": "diego/09.jpg",
-    "see": "I see a modal for creating a new project. I need to enter a project name and click create. The project key field is empty but not marked required. The layout is clean and nothing is hard to read.",
-    "inner_voice": "Entering project name.",
-    "confusion": 0,
-    "action": "Filled in \"Project name\""
-   },
-   {
-    "index": 10,
-    "path": "/samples/signup/projects.html",
-    "screenshot": "diego/10.jpg",
-    "see": "I see a new project modal with the name already filled as Freelance PM Hub. I need to fill the project key and click Create. The template options are clear. Nothing is confusing. I am ready to finish.",
-    "inner_voice": "Setting project key to FPH.",
-    "confusion": 0,
-    "action": "Filled in \"Project key\""
-   },
-   {
-    "index": 11,
-    "path": "/samples/signup/projects.html",
-    "screenshot": "diego/11.jpg",
-    "see": "I see a new project modal with the name already filled in as Freelance PM Hub and the key set to FPH. I am looking for the Create button to finish my task. The template options are clear and nothing is hard to read.",
-    "inner_voice": "Now clicking Create to finish setting up the project.",
-    "confusion": 0,
-    "action": "Clicked \"Create\""
-   },
-   {
-    "index": 12,
-    "path": "/samples/signup/board.html",
-    "screenshot": "diego/12.jpg",
-    "see": "I notice a green banner telling me my project is ready. I am looking for a way to create my first project but it seems one is already made. The Freelance PM Hub is visible with three starter tasks. Nothing is confusing.",
-    "inner_voice": "Looks good, my project is ready.",
-    "confusion": 0,
-    "action": "Finished: Project created and shown on screen."
-   }
-  ],
-  "kwame": [
-   {
-    "index": 1,
-    "path": "/samples/signup/index.html",
-    "screenshot": "kwame/01.jpg",
-    "see": "I notice the Fernhill logo and a green Get started button at the top. I am looking for a way to sign up and create my first project. The main text is clear but the cookie banner at the bottom covers part of the screen and feels like an extra step before I can start.",
-    "inner_voice": "Accept cookies to get rid of the banner blocking the view.",
-    "confusion": 0,
-    "action": "Clicked \"Accept all\""
-   },
-   {
-    "index": 2,
-    "path": "/samples/signup/index.html",
-    "screenshot": "kwame/02.jpg",
-    "see": "I see the Fernhill homepage with a big headline about projects that stay on track. I am looking for a way to sign up and create my first project. The green Get started button is easy to spot. The small text at the bottom is hard to read on my phone screen.",
-    "inner_voice": "That green button looks like the way to start signing up.",
-    "confusion": 0,
-    "action": "Clicked \"Get started\""
-   },
-   {
-    "index": 3,
-    "path": "/samples/signup/pricing.html",
-    "screenshot": "kwame/03.jpg",
-    "see": "I see the Fernhill pricing page. I am looking for a sign up button or a way to start my first project. The Start free trial button is clear. The page feels text heavy for my phone and I need to scroll to see more options.",
-    "inner_voice": "This looks like the easiest way to start - just click and begin my free trial",
-    "confusion": 0,
-    "action": "Clicked \"Start free trial\""
-   },
-   {
-    "index": 4,
-    "path": "/samples/signup/signup.html?plan=starter",
-    "screenshot": "kwame/04.jpg",
-    "see": "I see the Fernhill account signup page. I am looking for a way to finish this quickly on my phone. The form is long and asks for payment details before I even start my first project. It feels like too much work for a thumb on a small screen.",
-    "inner_voice": "Filling in the form with my details, hope it works on mobile.",
-    "confusion": 0,
-    "action": "Filled in \"Full name *\", \"Work email\", \"Password *\", \"Workspace slug\" and 3 more"
+    "action": "Scrolled down"
    },
    {
     "index": 5,
-    "path": "/samples/signup/signup.html?plan=starter",
-    "screenshot": "kwame/05.jpg",
-    "see": "I see the Fernhill sign up page. My name and email are already filled in. I need to finish the workspace slug and payment fields to create my first project. The card number looks like a placeholder. The page is simple and easy to read on my phone.",
-    "inner_voice": "Need to see the rest of the form to agree and submit.",
+    "path": "/samples/signup/pricing.html",
+    "screenshot": "diego/05.jpg",
+    "see": "I see a pricing table and an FAQ section. I need a sign up button to create my first project. I do not see one. The Log in link is in the top right but that does not help me sign up. Come on.",
+    "inner_voice": "Finally, a way to start without hassle.",
     "confusion": 0,
-    "action": "Scrolled down"
+    "action": "Clicked \"Just exploring? Continue with Fernhill…\""
    },
    {
     "index": 6,
-    "path": "/samples/signup/signup.html?plan=starter",
-    "screenshot": "kwame/06.jpg",
-    "see": "I see a Fernhill signup form with my name and email already filled in. I need to finish the workspace slug and payment fields then hit Submit. The screen is tall and requires a lot of scrolling on my phone. The terms links are small and hard to tap with my thumb.",
-    "inner_voice": "Need to see the rest of the form to check if anything else needs filling.",
+    "path": "/samples/signup/signup.html?plan=free",
+    "screenshot": "diego/06.jpg",
+    "see": "I see the Fernhill sign up page. I need to fill in my full name, work email, password, and workspace slug to create my first project. The checkbox for terms is easy to miss. Come on.",
+    "inner_voice": "Almost there, just need to agree and submit.",
     "confusion": 0,
-    "action": "Scrolled down"
+    "action": "Filled in \"Full name *\", \"Work email\", \"Password *\", \"Workspace slug\""
    },
    {
     "index": 7,
-    "path": "/samples/signup/signup.html?plan=starter",
-    "screenshot": "kwame/07.jpg",
-    "see": "I see a Fernhill signup page with my name and email already filled in. I need to finish the workspace slug and payment details to create my first project. The card fields are easy to read but the terms links are small and hard to tap with my thumb.",
-    "inner_voice": "Now I agree to terms, ready to submit.",
+    "path": "/samples/signup/signup.html?plan=free",
+    "screenshot": "diego/07.jpg",
+    "see": "I see the Fernhill sign up page. I need to create my first project. The form is ready with my name and email. The workspace slug looks odd. I want to click Submit and get started. Come on.",
+    "inner_voice": "Agree to terms quickly.",
     "confusion": 0,
     "action": "Filled in \"I agree to the Terms…\""
    },
    {
     "index": 8,
-    "path": "/samples/signup/signup.html?plan=starter",
-    "screenshot": "kwame/08.jpg",
-    "see": "I see a Fernhill signup form with my name and email already filled in. I need to find the Submit button to create my first project. The payment details section is confusing because I just want to sign up and start my outreach work.",
-    "inner_voice": "Time to submit and get started with my flu campaign project.",
+    "path": "/samples/signup/signup.html?plan=free",
+    "screenshot": "diego/08.jpg",
+    "see": "I see the Fernhill signup page. I need to hit Submit to create my account. The workspace slug field looks odd. It already has text in it. I want to change it. Come on.",
+    "inner_voice": "Time to submit and get in.",
     "confusion": 0,
     "action": "Clicked \"Submit\""
    },
    {
     "index": 9,
     "path": "/samples/signup/projects.html",
-    "screenshot": "kwame/09.jpg",
-    "see": "I see the Accrahealth workspace and a welcome message for Kwame. I am looking for a way to create my first project. The screen says no projects yet and tells me to click plus next to Projects in the sidebar. I do not see that sidebar button on this phone view. It is hard to know where to tap next.",
-    "inner_voice": "That empty button might be a menu toggle",
-    "confusion": 1,
+    "screenshot": "diego/09.jpg",
+    "see": "I see the Fernhill dashboard. It says my workspace is ready. I need to create a project. The center card says no projects yet and tells me to click the plus next to Projects in the sidebar. The sidebar shows Projects with a plus button. That is clear enough. Come on. Let me click it.",
+    "inner_voice": "Time to create the project.",
+    "confusion": 0,
     "action": "Clicked an unlabeled button"
    },
    {
     "index": 10,
     "path": "/samples/signup/projects.html",
-    "screenshot": "kwame/10.jpg",
-    "see": "I see a New project modal with a form for Project name, Project key, and Template. I am looking for the Create button to finish signing up and starting my first project. The layout is clear and easy to read on my phone screen.",
-    "inner_voice": "Now I'll name my project and set the key.",
+    "screenshot": "diego/10.jpg",
+    "see": "I see a new project popup. I need to enter a project name and click create. The project key field is empty and optional. The blank template is selected. Nothing is hard to read. Come on, let me just finish this.",
+    "inner_voice": "Almost done, just need to create it.",
     "confusion": 0,
-    "action": "Filled in \"Project name\", \"Project key\""
+    "action": "Filled in \"Project name\""
    },
    {
     "index": 11,
     "path": "/samples/signup/projects.html",
-    "screenshot": "kwame/11.jpg",
-    "see": "I see a New project modal on my phone. The project name is set to Flu Campaign Accra and the key is FLU2026. I need to pick a template and hit Create. The Blank option is already selected so it is easy to move forward. Nothing looks confusing. The buttons are big enough for my thumb.",
-    "inner_voice": "Creating the project now.",
+    "screenshot": "diego/11.jpg",
+    "see": "A popup blocks the screen. It is the New project form. I need to name the project and pick a template. The name field already has text. The project key field is empty. The Create button is green and ready. Nothing is hard to read. Come on. Let me click Create.",
+    "inner_voice": "Finally creating the project.",
     "confusion": 0,
     "action": "Clicked \"Create\""
    },
    {
     "index": 12,
     "path": "/samples/signup/projects.html",
-    "screenshot": "kwame/12.jpg",
-    "see": "I see the new project screen. I need to find the Create button to finish. The error message under the project key is confusing because my key looks long enough. The text is easy to read on my phone.",
-    "inner_voice": "Waiting to see if project created.",
+    "screenshot": "diego/12.jpg",
+    "see": "I see a New project modal. I need to fill in the Project key field because it is required. The rest is clear. I want to click Create and get this done. Come on.",
+    "inner_voice": "Need to set the required key.",
     "confusion": 0,
-    "action": "Waited a moment"
+    "action": "Filled in \"Project key\""
    },
    {
     "index": 13,
     "path": "/samples/signup/projects.html",
-    "screenshot": "kwame/13.jpg",
-    "see": "I see a new project form on my phone. I need to finish setting up my flu campaign project. The name and key are already filled in. I am looking for the Create button to save it. The template section is easy to read and the buttons are big enough for my thumb.",
-    "inner_voice": "Tap Create to finish my project.",
+    "screenshot": "diego/13.jpg",
+    "see": "A modal blocks the screen. I need to click Create to finish the project setup. The fields are filled. The red text under the key is a bit small. Come on. Just let me save this and move on.",
+    "inner_voice": "Finally, let's create this project.",
     "confusion": 0,
     "action": "Clicked \"Create\""
    },
    {
     "index": 14,
     "path": "/samples/signup/projects.html",
-    "screenshot": "kwame/14.jpg",
-    "see": "I see a new project screen. I need to create my first project. The name and key are already filled in. The template section is clear. I am looking for the create button. It is easy to read and thumb friendly. I will tap create to finish.",
-    "inner_voice": "Waiting to see if project created.",
+    "screenshot": "diego/14.jpg",
+    "see": "I see a New project modal. I need to click the Create button to finish. The key field says 2 to 5 letters but shows WRQ4 which is four letters so that is fine. Nothing is confusing. Come on.",
+    "inner_voice": "Finally creating the project",
     "confusion": 0,
-    "action": "Waited a moment"
+    "action": "Clicked \"Create\""
    },
    {
     "index": 15,
     "path": "/samples/signup/projects.html",
-    "screenshot": "kwame/15.jpg",
+    "screenshot": "diego/15.jpg",
+    "see": "I see a New project modal. I need to click Create to finish. The project name and key are filled. Blank template is selected. The key rule is small but clear. Nothing else confuses me. Come on.",
+    "inner_voice": "Finally creating the project",
+    "confusion": 0,
+    "action": "Clicked \"Create\""
+   },
+   {
+    "index": 16,
+    "path": "/samples/signup/projects.html",
+    "screenshot": "diego/16.jpg",
     "see": null,
     "inner_voice": "Nothing I do here seems to work. I'm done.",
     "confusion": 3,
     "action": "Gave up: Nothing I try changes anything on this screen"
+   }
+  ],
+  "kofi": [
+   {
+    "index": 1,
+    "path": "/samples/signup/index.html",
+    "screenshot": "kofi/01.jpg",
+    "see": "I see the Fernhill homepage with a big Get started button at the top and another one below. I am looking for a way to sign up and create my first project for the food stall. The cookie banner at the bottom is kind of in the way and low-key stressed me out for a second.",
+    "inner_voice": "Accept cookies to clear the banner",
+    "confusion": 0,
+    "action": "Clicked \"Accept all\""
+   },
+   {
+    "index": 2,
+    "path": "/samples/signup/index.html",
+    "screenshot": "kofi/02.jpg",
+    "see": "I see the Fernhill homepage. I need to click the Get started button to sign up and create my first project. The big headline is clear but the small text below feels a bit wordy. The browser URL at the bottom looks confusing and out of place. I am low-key stressed about whether this even works for my food stall.",
+    "inner_voice": "Time to get started with Fernhill for my food stall planning.",
+    "confusion": 0,
+    "action": "Clicked \"Get started\""
+   },
+   {
+    "index": 3,
+    "path": "/samples/signup/pricing.html",
+    "screenshot": "kofi/03.jpg",
+    "see": "I see the Fernhill pricing page. I am looking for a button to start my first project. The Starter plan looks good for my small team. It is not confusing but I am low-key stressed about picking the right plan. Does this even work for a food stall?",
+    "inner_voice": "Let's try the Starter plan free trial.",
+    "confusion": 0,
+    "action": "Clicked \"Start free trial\""
+   },
+   {
+    "index": 4,
+    "path": "/samples/signup/signup.html?plan=starter",
+    "screenshot": "kofi/04.jpg",
+    "see": "I see the Fernhill account creation page. I am looking for the sign up button to finish my first project. It is low-key stressful that they want my card number right away. The layout is simple but the payment part feels like too much too soon.",
+    "inner_voice": "Filling in my details quickly, hope it works.",
+    "confusion": 0,
+    "action": "Filled in \"Full name *\", \"Work email\", \"Password *\", \"Workspace slug\" and 3 more"
+   },
+   {
+    "index": 5,
+    "path": "/samples/signup/signup.html?plan=starter",
+    "screenshot": "kofi/05.jpg",
+    "see": "I see a Fernhill sign up page. My name and email are already filled in. I need to finish the workspace slug and payment details to create my first project. The card number looks like a test number which is low-key strange. I am looking for a submit button but I do not see it yet.",
+    "inner_voice": "Gotta scroll to see the rest of the form",
+    "confusion": 0,
+    "action": "Scrolled down"
+   },
+   {
+    "index": 6,
+    "path": "/samples/signup/signup.html?plan=starter",
+    "screenshot": "kofi/06.jpg",
+    "see": "I see a Fernhill sign up page. I am looking for the Submit button to finish creating my project. It is kind of confusing that I have to add payment details just for a trial. The workspace slug part is a bit unclear too.",
+    "inner_voice": "Gotta agree to terms before I can submit.",
+    "confusion": 0,
+    "action": "Clicked \"I agree to the Terms of Service and…\""
+   },
+   {
+    "index": 7,
+    "path": "/samples/signup/signup.html?plan=starter",
+    "screenshot": "kofi/07.jpg",
+    "see": "I see a Fernhill sign up form. I am looking for the Submit button to finish creating my project. The workspace slug part is a bit confusing because I am not sure what to put there. Everything else is easy to read.",
+    "inner_voice": "Time to hit submit and hope it works.",
+    "confusion": 0,
+    "action": "Clicked \"Submit\""
+   },
+   {
+    "index": 8,
+    "path": "/samples/signup/projects.html",
+    "screenshot": "kofi/08.jpg",
+    "see": "I see the Fernhill dashboard and it welcomes me by name. I need to create my first project for the food stall. The screen says no projects yet and tells me to click the plus next to Projects in the sidebar. It is low-key stressful that I do not see a clear plus button right now.",
+    "inner_voice": "That dark green button might be the plus to create a project",
+    "confusion": 1,
+    "action": "Clicked an unlabeled button"
+   },
+   {
+    "index": 9,
+    "path": "/samples/signup/projects.html",
+    "screenshot": "kofi/09.jpg",
+    "see": "I see a new project form. I need to type a project name and pick a template to start. The blank option is already selected. I am looking for the create button at the bottom. It is pretty clear and nothing feels hard to read right now.",
+    "inner_voice": "Naming my stall project so we can track who does what.",
+    "confusion": 0,
+    "action": "Filled in \"Project name\", \"Project key\""
+   },
+   {
+    "index": 10,
+    "path": "/samples/signup/projects.html",
+    "screenshot": "kofi/10.jpg",
+    "see": "I see a new project form. The project name is already set to Weekend Stall Tasks and the key is WST. I need to click the green Create button to finish. It is pretty clear but I am low-key stressed about picking the right template. Does this even work?",
+    "inner_voice": "Okay let's just hit Create and see if it works.",
+    "confusion": 0,
+    "action": "Clicked \"Create\""
+   },
+   {
+    "index": 11,
+    "path": "/samples/signup/board.html",
+    "screenshot": "kofi/11.jpg",
+    "see": "I notice my project is already ready. The screen says Weekend Stall Tasks has been created. I am looking for a sign up button but I do not see one. It is confusing because I thought I needed to create the project first.",
+    "inner_voice": "Looks like my project is ready, guess I'm done.",
+    "confusion": 1,
+    "action": "Finished: Project appears created; task likely complete."
    }
   ],
   "margaret": [
@@ -1223,8 +1188,8 @@
     "index": 1,
     "path": "/samples/signup/index.html",
     "screenshot": "margaret/01.jpg",
-    "see": "I see the Fernhill homepage with a green Get started button at the top right and another one on the left. I am looking for a way to sign up and create my first project. The cookie banner at the bottom is blocking part of the page and feels annoying.",
-    "inner_voice": "Accepting cookies to get rid of the banner.",
+    "see": "Excuse me, I just want to make sure I am in the right place. I see a Get started button at the top right and another one below the big headline. I am looking for a way to sign up and create my first project for the library book fair. The cookie notice at the bottom is covering some text and feels a bit in the way. The rest of the page is clear and easy to read.",
+    "inner_voice": "Accepting cookies to clear the notice so I can see the page better.",
     "confusion": 0,
     "action": "Clicked \"Accept all\""
    },
@@ -1232,8 +1197,8 @@
     "index": 2,
     "path": "/samples/signup/index.html",
     "screenshot": "margaret/02.jpg",
-    "see": "I see the Fernhill homepage with a green Get started button at the top right and another one lower down. I am looking for a way to sign up and create my first project. The small text under the buttons is hard to read.",
-    "inner_voice": "I want to start using Fernhill for my clinic's tasks.",
+    "see": "Excuse me, I just want to make sure I am in the right place. I see the Fernhill logo and a green Get started button at the top right. I am looking for a way to sign up and create my first project for the book fair. The page seems clear and easy to read.",
+    "inner_voice": "I hope this takes me to the sign-up page where I can start creating my book fair project.",
     "confusion": 0,
     "action": "Clicked \"Get started\""
    },
@@ -1241,228 +1206,219 @@
     "index": 3,
     "path": "/samples/signup/pricing.html",
     "screenshot": "margaret/03.jpg",
-    "see": "I see a pricing page for Fernhill with three plans. I need to sign up and create a project but I only see plan options. I do not see a sign up button. I am not sure where to start. I might call my nephew.",
-    "inner_voice": "I'll try the Starter plan free trial since I'm just setting up for my small clinic.",
-    "confusion": 1,
+    "see": "Excuse me, I just want to make sure I am in the right place. I see a pricing page for Fernhill. I am looking for a sign up button to create my first project. The page is clear but I do not see where to start.",
+    "inner_voice": "Excuse me, I think I should try the starter plan.",
+    "confusion": 0,
     "action": "Clicked \"Start free trial\""
    },
    {
     "index": 4,
     "path": "/samples/signup/signup.html?plan=starter",
     "screenshot": "margaret/04.jpg",
-    "see": "I see a sign up page for Fernhill. I need to create an account to start my first project. I am looking for the full name and email fields. The workspace slug is confusing. I do not know what to type there. The payment section also worries me because I do not want to use a card.",
-    "inner_voice": "I filled name email password and guessed workspace slug.",
-    "confusion": 2,
-    "action": "Filled in \"Full name *\", \"Work email\", \"Password *\", \"Workspace slug\""
+    "see": "Excuse me, I just want to make sure I understand. I see a form to create an account with fields for name, email, password, and payment details. I am looking for a sign up button. The card number fields are already filled in, which seems odd.",
+    "inner_voice": "Now I'll fill in my details to create the account.",
+    "confusion": 0,
+    "action": "Filled in \"Full name *\", \"Work email\", \"Password *\", \"Workspace slug\" and 3 more"
    },
    {
     "index": 5,
     "path": "/samples/signup/signup.html?plan=starter",
     "screenshot": "margaret/05.jpg",
-    "see": "I see a sign up page for Fernhill. I am looking for the create account button to finish my task. The payment details section is confusing because I do not want to enter a card number for a free trial. The text is small and hard to read.",
-    "inner_voice": "Let me scroll down to see if there's another way to proceed without entering payment details.",
-    "confusion": 1,
-    "action": "Scrolled down"
+    "see": "Excuse me, I just want to make sure I am on the right page. I see a form to create an account with my name and email already filled in. I need to find the button to finish signing up. The payment section asks for a card which feels a bit confusing for a free trial.",
+    "inner_voice": "Now I'll agree to the terms so I can proceed.",
+    "confusion": 0,
+    "action": "Filled in \"I agree to the Terms…\""
    },
    {
     "index": 6,
     "path": "/samples/signup/signup.html?plan=starter",
     "screenshot": "margaret/06.jpg",
-    "see": "I see a sign up page for Fernhill. I need to create my first project. I am looking for the Submit button to finish the form. The workspace slug field is confusing because I do not know what to put there.",
-    "inner_voice": "Now I accept the terms.",
+    "see": "I notice the Fernhill sign up page. I am looking for a button to submit the form and create my account. I do not see the submit button at the bottom of the screen. Excuse me, I just want to make sure I am not missing anything important before I proceed.",
+    "inner_voice": "Let me see if the submit button appears lower on the page.",
     "confusion": 0,
-    "action": "Filled in \"I agree to the Terms…\""
+    "action": "Scrolled down"
    },
    {
     "index": 7,
     "path": "/samples/signup/signup.html?plan=starter",
     "screenshot": "margaret/07.jpg",
-    "see": "I see the Fernhill sign up page. I need to create my first project. I am looking for a button to finish signing up. The workspace slug field is confusing. I do not know what to type there. The payment section also worries me.",
-    "inner_voice": "Now I will submit the form to finish signing up.",
-    "confusion": 1,
+    "see": "I notice the Fernhill sign up page. I am looking for the Submit button to create my first project. I find the payment details section a bit confusing because I only wanted to sign up for the free trial.",
+    "inner_voice": "Now I'll submit to create my account and start the project.",
+    "confusion": 0,
     "action": "Clicked \"Submit\""
    },
    {
     "index": 8,
-    "path": "/samples/signup/signup.html?plan=starter",
+    "path": "/samples/signup/projects.html",
     "screenshot": "margaret/08.jpg",
-    "see": "I see the Fernhill sign up page. I need to create my first project. I am looking for a button to start the project. I am confused because this page is asking for a credit card and a workspace slug. I do not know what a workspace slug is. The small text is hard to read. I might stop and call my nephew.",
-    "inner_voice": "Waiting to see if the form submits.",
-    "confusion": 1,
-    "action": "Waited a moment"
+    "see": "Excuse me, I just want to make sure I understand. I see a welcome page for Fernhill. I am looking for a way to create my first project. I notice the sidebar says no projects yet. It seems clear enough.",
+    "inner_voice": "Excuse me, I think this plus button creates a project.",
+    "confusion": 0,
+    "action": "Clicked an unlabeled button"
    },
    {
     "index": 9,
-    "path": "/samples/signup/signup.html?plan=starter",
+    "path": "/samples/signup/projects.html",
     "screenshot": "margaret/09.jpg",
-    "see": "I see a sign up page for Fernhill. I am looking for a way to create my first project. I notice a request for a valid card number and I am confused because I only wanted to sign up and not pay yet.",
-    "inner_voice": "Now filling payment details with test card.",
+    "see": "Excuse me, I just want to make sure I understand this screen. I notice a pop up for a new project. I am looking for the project name field to type in my book fair title. The layout is clear and easy to read.",
+    "inner_voice": "Now I'm typing the project name as requested.",
     "confusion": 0,
-    "action": "Filled in \"Card number *\", \"Expiry *\", \"CVC *\""
+    "action": "Filled in \"Project name\""
    },
    {
     "index": 10,
-    "path": "/samples/signup/signup.html?plan=starter",
+    "path": "/samples/signup/projects.html",
     "screenshot": "margaret/10.jpg",
-    "see": "I see a sign up page for Fernhill. I need to create my first project. I am looking for a way to finish this form. The card number field is already filled with dummy numbers. I do not know what a workspace slug is. The text is small and hard to read.",
-    "inner_voice": "Now I'll submit the payment details to finish signing up.",
+    "see": "Excuse me, I just want to make sure I am doing this right. I see a box to name my project and I have typed Hometown Library Book Fair. I am looking for the create button to finish. The project key box is empty and I am not sure what to put there.",
+    "inner_voice": "I think this is the create button.",
     "confusion": 0,
-    "action": "Clicked \"Submit\""
+    "action": "Clicked \"Create\""
    },
    {
     "index": 11,
     "path": "/samples/signup/projects.html",
     "screenshot": "margaret/11.jpg",
-    "see": "I see a welcome page for Margaret at a vet clinic. I need to create a project. The screen says no projects yet and tells me to click plus next to Projects in the sidebar. I see a plus button under Projects. That looks like the next step. The rest seems clear.",
-    "inner_voice": "I'll click the plus to start a project.",
+    "see": "I see a new project box. I need to fill in the project key field because it is required. I am looking for the Create button to finish. The red error message is easy to see but I am not sure what key to type.",
+    "inner_voice": "I hope HLBF works for Hometown Library Book Fair.",
     "confusion": 0,
-    "action": "Clicked an unlabeled button"
+    "action": "Typed \"HLBF\" into \"Project key\""
    },
    {
     "index": 12,
     "path": "/samples/signup/projects.html",
     "screenshot": "margaret/12.jpg",
-    "see": "I see a pop-up window titled New project. I need to type a name in the Project name box. I am not sure what a Project key is. The Blank template is selected. I will click Create when I am ready.",
-    "inner_voice": "I'll enter a project name and key as suggested.",
-    "confusion": 0,
-    "action": "Filled in \"Project name\", \"Project key\""
-   },
-   {
-    "index": 13,
-    "path": "/samples/signup/projects.html",
-    "screenshot": "margaret/13.jpg",
-    "see": "I see a box called New project. I need to make my first project. The name is already Weekly Tasks. The key is WT. The template is Blank. I am looking for the Create button. It is green and easy to see. Nothing is confusing.",
-    "inner_voice": "Now I'll click Create to finish my project.",
+    "see": "Excuse me, I just want to make sure I am doing this right. I notice a pop up box for a new project. I am looking for the Create button to finish signing up. Nothing seems hard to read.",
+    "inner_voice": "I'll click Create to finish my project.",
     "confusion": 0,
     "action": "Clicked \"Create\""
    },
    {
-    "index": 14,
+    "index": 13,
     "path": "/samples/signup/board.html",
-    "screenshot": "margaret/14.jpg",
-    "see": "I see a green banner saying my project is ready. I am looking for a way to start my first project. The word starter trial is confusing. I do not know what to click next. I might call my nephew.",
-    "inner_voice": "Great, my project is ready.",
+    "screenshot": "margaret/13.jpg",
+    "see": "Excuse me, I just want to make sure I understand this screen. I notice my project is ready and I see tasks for the book fair. I am looking for a way to sign up and create my first project. It is a bit confusing because the project seems to already exist.",
+    "inner_voice": "I think I've successfully signed up and created my first project.",
     "confusion": 0,
-    "action": "Finished: Project created successfully shown."
+    "action": "Finished: The project appears created and visible, matching the task goal."
    }
   ],
-  "sunita": [
+  "nadia": [
    {
     "index": 1,
     "path": "/samples/signup/index.html",
-    "screenshot": "sunita/01.jpg",
-    "see": "I see the Fernhill homepage. I am looking for a way to sign up and start my first project. The green Get started button is clear. The cookie banner at the bottom is a bit distracting but not hard to read.",
-    "inner_voice": "Accept cookies to proceed.",
+    "screenshot": "nadia/01.jpg",
+    "see": "I see the Fernhill homepage. It says projects stay on track without the busywork. I need to sign up and create my first project. I see a green Get started button. I think it means I should click that. There is a cookie box at the bottom. It is a bit in the way. I think it means I must accept cookies before I continue.",
+    "inner_voice": "I accept cookies to proceed.",
     "confusion": 0,
     "action": "Clicked \"Accept all\""
    },
    {
     "index": 2,
     "path": "/samples/signup/index.html",
-    "screenshot": "sunita/02.jpg",
-    "see": "I see the Fernhill homepage. It says projects stay on track without busywork. I am looking for a way to sign up and create my first project. The green Get started button is clear. Nothing is confusing. The text is easy to read.",
-    "inner_voice": "Clear path to start signing up, no confusion.",
+    "screenshot": "nadia/02.jpg",
+    "see": "I see the Fernhill website. I need to find the Get started button to sign up and create my first project. I think it means I click the green button at the top right. The page says projects stay on track without busywork. It looks clear and easy to read.",
+    "inner_voice": "I think this will take me to the signup page",
     "confusion": 0,
     "action": "Clicked \"Get started\""
    },
    {
     "index": 3,
     "path": "/samples/signup/pricing.html",
-    "screenshot": "sunita/03.jpg",
-    "see": "I see the Fernhill pricing page. I am looking for a sign up button to create my first project. I do not see a clear sign up link. There is only a log in button at the top right. The page is easy to read.",
-    "inner_voice": "Looking for a sign up option to begin creating my project.",
+    "screenshot": "nadia/03.jpg",
+    "see": "I see the Fernhill website. I need to sign up and create my first project. I am looking for a sign up button or a start free trial link. I think it means I should pick a plan first. The page is clear but I do not see a sign up button right away. I think it means I need to choose a plan to begin.",
+    "inner_voice": "Looking for where to sign up",
     "confusion": 0,
     "action": "Scrolled down"
    },
    {
     "index": 4,
     "path": "/samples/signup/pricing.html",
-    "screenshot": "sunita/04.jpg",
-    "see": "I notice the Fernhill website with pricing plans. I am looking for a sign up button to create my first project. The Start free trial buttons are clear. The table comparing plans is easy to read. Nothing is confusing.",
-    "inner_voice": "Team plan seems good for collaborating with my copy team.",
+    "screenshot": "nadia/04.jpg",
+    "see": "I see the Fernhill pricing page. I am looking for a button to sign up and create my first project. I see three Start free trial buttons. I think it means I can try it free first. I am not sure which plan to choose.",
+    "inner_voice": "I'll try the starter free trial first.",
     "confusion": 0,
     "action": "Clicked \"Start free trial\""
    },
    {
     "index": 5,
-    "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "sunita/05.jpg",
-    "see": "I see a sign up page for Fernhill. I need to fill in my name, email, password, and card details to start. The workspace slug field is unclear to me. The text is simple and easy to read.",
-    "inner_voice": "Filling in my details, hoping workspace slug works.",
-    "confusion": 1,
-    "action": "Filled in \"Full name *\", \"Work email\", \"Password *\", \"Workspace slug\""
+    "path": "/samples/signup/signup.html?plan=starter",
+    "screenshot": "nadia/05.jpg",
+    "see": "I see the Fernhill sign up page. I need to fill in full name, work email, password, workspace slug, and payment details to create my first project. I think it means I need to enter card info now even though there is a free trial. The terms link is small and hard to read.",
+    "inner_voice": "Filling in my details step by step.",
+    "confusion": 0,
+    "action": "Filled in \"Full name *\", \"Work email\", \"Password *\", \"Workspace slug\" and 3 more"
    },
    {
     "index": 6,
-    "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "sunita/06.jpg",
-    "see": "I see the Fernhill sign up page. I need to create my first project. I am looking for a button to finish the account setup. The workspace slug term is confusing. I do not know what it means. The rest is clear and simple.",
-    "inner_voice": "Entering payment info",
-    "confusion": 0,
-    "action": "Filled in \"Card number *\", \"Expiry *\", \"CVC *\""
-   },
-   {
-    "index": 7,
-    "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "sunita/07.jpg",
-    "see": "I see the Fernhill sign up page. I am looking for the create account button to finish my task. The payment section asks for card details even for a free trial which feels confusing. The rest is clear.",
-    "inner_voice": "I'll agree to the terms now.",
+    "path": "/samples/signup/signup.html?plan=starter",
+    "screenshot": "nadia/06.jpg",
+    "see": "I see the Fernhill sign up page. I am looking for the create your account button to finish my task. The workspace slug line is a bit confusing. I think it means the web address for my team. I need to check the terms box before I can continue.",
+    "inner_voice": "I'll check the terms box so I can proceed.",
     "confusion": 0,
     "action": "Clicked \"I agree to the Terms of Service and…\""
    },
    {
-    "index": 8,
-    "path": "/samples/signup/signup.html?plan=team",
-    "screenshot": "sunita/08.jpg",
-    "see": "I see the Fernhill sign up page. I am looking for the create account button to finish my task. The payment details section is confusing because I only want a free trial. The text is clear and easy to read.",
-    "inner_voice": "Now clicking submit to create account.",
+    "index": 7,
+    "path": "/samples/signup/signup.html?plan=starter",
+    "screenshot": "nadia/07.jpg",
+    "see": "I notice the Fernhill sign up page. I am looking for the create account button to finish my task. The workspace slug field is confusing. I think it means the web address for my clinic. The payment details section is hard to read.",
+    "inner_voice": "Now I will submit the form to create my account.",
     "confusion": 0,
     "action": "Clicked \"Submit\""
    },
    {
-    "index": 9,
+    "index": 8,
     "path": "/samples/signup/projects.html",
-    "screenshot": "sunita/09.jpg",
-    "see": "I see a welcome page for Fernhill. I notice the sidebar has a Projects section with a plus icon. I am looking for that plus icon to create my first project. The text is clear and easy to read. Nothing is confusing.",
-    "inner_voice": "Looking for the plus button to create a project",
+    "screenshot": "nadia/08.jpg",
+    "see": "I see the Fernhill welcome page. It says no projects yet. I need to find the create project button. I think it means I click the plus sign in the sidebar. The text is clear but small. I will look for Projects in the sidebar. I think it means click plus next to Projects.",
+    "inner_voice": "I'll click the plus to create my first project",
     "confusion": 0,
     "action": "Clicked an unlabeled button"
    },
    {
+    "index": 9,
+    "path": "/samples/signup/projects.html",
+    "screenshot": "nadia/09.jpg",
+    "see": "I see a pop-up for a new project. I need to type a project name and choose a template. I think it means I should click create when I am done. The words are clear and easy to read. I am careful to fill the fields right.",
+    "inner_voice": "I'll enter the project name and key as instructed.",
+    "confusion": 0,
+    "action": "Filled in \"Project name\", \"Project key\""
+   },
+   {
     "index": 10,
     "path": "/samples/signup/projects.html",
-    "screenshot": "sunita/10.jpg",
-    "see": "I see a pop-up box for creating a new project. I need to type a project name and click the Create button. The text is clear and easy to read. I do not know what a project key is but the box is optional so I can leave it empty.",
-    "inner_voice": "Now I just need to hit Create.",
+    "screenshot": "nadia/10.jpg",
+    "see": "I see a pop-up for a new project. I am looking for the Create button to finish signing up. The template choices are a bit hard to read. I think it means I can pick Blank. I will press Create now.",
+    "inner_voice": "Now I press Create to make the project.",
     "confusion": 0,
-    "action": "Filled in \"Project name\""
+    "action": "Clicked \"Create\""
    },
    {
     "index": 11,
     "path": "/samples/signup/projects.html",
-    "screenshot": "sunita/11.jpg",
-    "see": "I see a pop-up window to create a new project. I need to fill in the project name and project key and pick a template. The blank template is already selected. I will click the green Create button to finish. Nothing is hard to read.",
-    "inner_voice": "Filling project key.",
+    "screenshot": "nadia/11.jpg",
+    "see": "I see a pop-up window for a new project. I need to find the Create button to finish signing up. The project name is already filled in. I think it means I should click Create now. The key rule says 2 to 5 letters but GMTRACK is longer. That is confusing.",
+    "inner_voice": "I'll click Create to finish the project.",
     "confusion": 0,
-    "action": "Filled in \"Project key\""
+    "action": "Clicked \"Create\""
    },
    {
     "index": 12,
     "path": "/samples/signup/projects.html",
-    "screenshot": "sunita/12.jpg",
-    "see": "I see a pop up window for creating a new project. The project name is already filled as Website refresh. The project key is WEB. The template is set to Blank. I need to click the green Create button to finish. The rest of the screen is dimmed and not important right now.",
-    "inner_voice": "Now I'll click Create to finish the project setup.",
+    "screenshot": "nadia/12.jpg",
+    "see": "I see a pop-up for creating a new project. The name is Gloves and Masks Tracking. The key is GMTrack. I need to click Create. I think it means the key must be two to five letters. It is a bit hard to read the small text under the key.",
+    "inner_voice": "Clicking Create to finish project setup",
     "confusion": 0,
     "action": "Clicked \"Create\""
    },
    {
     "index": 13,
-    "path": "/samples/signup/board.html",
-    "screenshot": "sunita/13.jpg",
-    "see": "I see a green banner saying my project is ready. The project is called Website refresh. I look for a button to start my first task. The layout is clear but I do not know what the SD circle means. I want to add my own task.",
-    "inner_voice": "My project is ready, I can see it on the board.",
-    "confusion": 0,
-    "action": "Finished: The project \"Website refresh\" is shown as created, confirming signup and first…"
+    "path": "/samples/signup/projects.html",
+    "screenshot": "nadia/13.jpg",
+    "see": null,
+    "inner_voice": "Nothing I do here seems to work. I'm done.",
+    "confusion": 3,
+    "action": "Gave up: Nothing I try changes anything on this screen"
    }
   ]
  },
@@ -1472,73 +1428,73 @@
     "tier": "fast",
     "model": "nvidia/Nemotron-3_5-Lightning",
     "label": "Nemotron 3.5 Lightning",
-    "calls": 1,
-    "prompt_tokens": 336,
-    "completion_tokens": 14,
-    "cost_usd": 2e-05
+    "calls": 3,
+    "prompt_tokens": 981,
+    "completion_tokens": 180,
+    "cost_usd": 0.0001
    },
    {
     "tier": "vision",
     "model": "nvidia/Nemotron-3.5-Super-VL",
     "label": "Nemotron 3.5 Super VL",
-    "calls": 82,
-    "prompt_tokens": 86875,
-    "completion_tokens": 6653,
-    "cost_usd": 0.03205
+    "calls": 75,
+    "prompt_tokens": 81305,
+    "completion_tokens": 6260,
+    "cost_usd": 0.03003
    },
    {
     "tier": "agent",
     "model": "nvidia/nemotron-3-super-120b-a12b",
     "label": "Nemotron 3 Super",
-    "calls": 70,
-    "prompt_tokens": 208118,
-    "completion_tokens": 7525,
-    "cost_usd": 0.06921
+    "calls": 63,
+    "prompt_tokens": 186833,
+    "completion_tokens": 6797,
+    "cost_usd": 0.06217
    },
    {
     "tier": "reason",
     "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
     "label": "Nemotron 3 Ultra",
     "calls": 1,
-    "prompt_tokens": 4792,
-    "completion_tokens": 1885,
-    "cost_usd": 0.01045
+    "prompt_tokens": 4580,
+    "completion_tokens": 1724,
+    "cost_usd": 0.00975
    }
   ],
-  "total_cost_usd": 0.1117,
+  "total_cost_usd": 0.1021,
   "tavily_calls": 5
  },
  "refs_status": "ok",
  "research": [
   {
-   "title": "SaaS Onboarding Best Practices for B2B | Customerscore.io",
-   "url": "https://www.customerscore.io/blog/saas-onboarding-best-practices",
-   "note": "Front-loading friction is the most common failure, and it's also the fastest to fix: move one administrative step to post-activation and measure the change in completion rate within a week. ## Reusable flow diagram…"
+   "title": "Onboarding UX: 10 patterns, best practices, and real examples",
+   "url": "https://www.appcues.com/blog/user-onboarding-ui-ux-patterns",
+   "note": "There is no single right pattern. Welcome messages, product tours, checklists, hotspots, progressive disclosure, and deferred account creation all serve different user moments. The best onboarding flows combine two to…"
   },
   {
-   "title": "B2B SaaS Customer Onboarding Software: 2026 Guide",
-   "url": "https://onramp.ai/blog/saas-customer-onboarding",
-   "note": "> User onboarding and product onboarding are not the same problem - and conflating them is a common failure mode. User onboarding educates individuals on day-to-day usage; product onboarding configures the platform to…"
+   "title": "Common UX Mistakes and Usability Trends - Insights by Digital Silk",
+   "url": "https://finance.yahoo.com/news/common-ux-mistakes-usability-trends-190000132.html",
+   "note": "The piece provides a consolidated overview of several commonly cited UX concerns, including: Navigation complexity and unclear information hierarchy Overly dense page layouts or distracting interface components…"
   },
   {
-   "title": "The Best Project Management Software for B2B SaaS",
-   "url": "https://everhour.com/blog/b2b-project-management",
-   "note": "Implementing your software for a new customer Coordinating onboarding, integrations, and training across teams Delivering services or custom features promised in the sales process Managing renewals, upsells, or…"
+   "title": "I studied the UX/UI of over 200 onboarding flows - here’s everything I learned",
+   "url": "https://designerup.co/blog/i-studied-the-ux-ui-of-over-200-onboarding-flows-heres-everything-i-learned",
+   "note": "And these easily fixable mistakes are costing companies millions in lost users and revenue! ### 🚫 Mistake #1: The “Too Many Steps” Trap If you’re asking for their full name, job title, favorite color, and your…"
   },
   {
-   "title": "Doing UX research in a B2B SaaS company - a subtle mix of qualitative and quantitative…",
-   "url": "https://backstage.payfit.com/doing-ux-research-in-a-b2b-saas-company-a-subtle-mix-of-qualitative-and-quantitative-data",
-   "note": "channel. For example, I worked for more than a year for Sodexo, to completely redesign the employee benefits experience. We had to design and develop 3 web applications and a mobile application for 3 different user…"
+   "title": "Stop losing users. Find and fix website frustration points",
+   "url": "https://cux.io/blog/reasons-of-user-frustration-on-websites",
+   "note": "Nowadays, a company's credibility is mostly judged on its website. Bad UX design, broken links, complicated purchase process, and flawed navigation are the sources of users' frustration. According to clutch.co, users’…"
   },
   {
-   "title": "How to run User Research in B2B SaaS Products",
-   "url": "https://medium.com/@MarkiyanMatsekh/how-to-run-user-research-in-b2b-saas-products-8cdd74ed55a8",
-   "note": "you’ll step into a nightmare of dependencies and commitments, losing flexibility to changing priorities, and getting everyone into the stress of hard deadlines. Similarly, you might be asked to help finetune a feature…"
+   "title": "UX Pain Points: Identifying and Solving User Frustrations",
+   "url": "https://www.door3.com/blog/ux-pain-points-identifying-and-solving-user-frustrations",
+   "note": "Analyzing data from website analytics can help to understand how users are interacting with your website or product. Tools such as heat maps provide insight into the most immediate areas of engagement for users, as…"
   },
   {
-   "title": "SaaS User Research: Cut Churn and Boost Adoption | CleverX Blog",
-   "url": "https://cleverx.com/blog/saas-user-research-complete-guide-for-product-and-design-teams",
-   "note": "Recruit users who signed up within the past 48 hours and observe their first session with the product. Live observation captures confusion, frustration, and abandonment that retrospective interviews miss. Watch users…"
+   "title": "Your Users Are Frustrated - Here's a Way to Fix That and Make More Money",
+   "url": "https://cxl.com/blog/user-frustration",
+   "note": "Because of that, UX researchers often default to testing the newest feature, flow or prototype on hand, without knowing if there are existing pain-points and problem areas that are flying under the radar simply because…"
   }
  ]
 }

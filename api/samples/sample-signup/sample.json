@@ -1,10 +1,10 @@
 {
  "id": "sample-signup",
  "title": "Signup",
- "url": "http://localhost:3000/samples/signup/index.html",
+ "url": "https://fiveusers.vercel.app/samples/signup/index.html",
  "task": "Sign up and create your first project",
- "headline": "1 of 5 users could not sign up and create their first project.",
- "completed": 4,
+ "headline": "3 of 5 users could not sign up and create their first project.",
+ "completed": 2,
  "total": 5,
  "order": 1
 }
