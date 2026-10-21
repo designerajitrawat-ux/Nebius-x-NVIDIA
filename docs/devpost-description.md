@@ -103,8 +103,9 @@ A few decisions that make the report trustworthy:
 
 ## What I learned
 - Routing by tier matters. Across the three sample runs Nemotron 3 Super carries about 55% of the cost (personas
-  and every decision), Super VL about 24% (every screenshot and every "done" check), Ultra about 21% for the one call
-  that writes the report, and Lightning almost nothing.
+  and every decision), Super VL about 24% (every screenshot and every "done" check), Ultra about 21% (about one cent when the
+  report comes back right the first time; in one run the first attempt was unusable and the retry paid twice), and
+  Lightning almost nothing.
 - Nemotron 3 Super returned clean, structured tool calls from the first test, fast enough (about a second) to drive
   five agents at once. For anything about what's on a screen, the vision model is the right judge, not text.
 - Reasoning is a budget, not a free upgrade: turn it on where it pays and cap it, because a runaway think costs
