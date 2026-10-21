@@ -1,7 +1,9 @@
 # Feedback on Nebius Token Factory and NVIDIA Nemotron
 
 **From:** Ajit Singh Rawat, building FiveUsers (Nebius x NVIDIA Global AI Hackathon, Best Apps and Agents)
+
 **Date:** 20 October 2026
+
 **Scope:** four Nemotron models on Token Factory, used in production by a multi-agent app, plus six controlled
 experiments run specifically for this feedback.
 
