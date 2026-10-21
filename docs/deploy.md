@@ -11,8 +11,8 @@ need a paid plan, and the free plans of Render and similar hosts have 512 MB of 
 
 | When | What |
 |---|---|
-| Now | Deploy the API to Modal (step 1). Deploying doesn't publish any code: Modal only serves the API's URL. |
-| 27 Oct | Connect Vercel (step 2), seed the samples on production (step 3), run the production checks (step 5). |
+| 21 Oct (done) | API on Modal (step 1), web on Vercel at https://fiveusers.vercel.app (step 2), samples seeded on production (step 3). Neither host publishes the code. |
+| 27 Oct | Run the production checks (step 4) and record the final video against the live site. |
 | 28 Oct | Make the GitHub repo public and check the License shows MIT in About. |
 | 29 Oct | Submit on Devpost. |
 
@@ -54,7 +54,7 @@ modal.com → Settings → Usage & billing.
    cd api
    .venv\Scripts\python -m modal deploy modal_app.py
    ```
-   To allow the web app, set its URL first: `set FIVEUSERS_ORIGINS=https://<app>.vercel.app,http://localhost:3000`
+   To allow the web app, set its URL first: `set FIVEUSERS_ORIGINS=https://fiveusers.vercel.app,http://localhost:3000`
    (PowerShell: `$env:FIVEUSERS_ORIGINS="..."`), then deploy again.
 5. Check: open `https://designerajitrawat-ux--fiveusers-api.modal.run/health` → `"mode": "live"`, the four model
    labels and the budget. The first request after a quiet spell takes a few seconds while the container starts.
@@ -73,28 +73,28 @@ API tokens → new token, then in GitHub → Settings → Secrets and variables 
 2. **Root Directory**: `web` (Framework preset Next.js is detected). The build copies `api/samples` into the site,
    so keep "Include files outside the root directory" on (the default).
 3. **Environment Variables**: `NEXT_PUBLIC_API_URL` = `https://designerajitrawat-ux--fiveusers-api.modal.run`
-4. **Deploy**. Note the URL `https://<app>.vercel.app`.
-5. Redeploy the API with `FIVEUSERS_ORIGINS=https://<app>.vercel.app,http://localhost:3000` (step 1.4).
+4. **Deploy**. Note the URL `https://fiveusers.vercel.app`.
+5. Redeploy the API with `FIVEUSERS_ORIGINS=https://fiveusers.vercel.app,http://localhost:3000` (step 1.4).
 6. Check: open the Vercel URL, type in the website field, and the footer shows "Credits remaining" after a few
-   seconds; `https://<app>.vercel.app/r/sample-signup` opens with its screenshots;
-   `https://<app>.vercel.app/samples/signup/index.html` shows the Fernhill sample site.
+   seconds; `https://fiveusers.vercel.app/r/sample-signup` opens with its screenshots;
+   `https://fiveusers.vercel.app/samples/signup/index.html` shows the Fernhill sample site.
 
 ## 3. Sample reports (what judges click first)
 
 Run all three samples on production and commit the results (about 3 runs, $0.30 to $0.50 of Token Factory credit):
 
 ```
-api\.venv\Scripts\python scripts\seed_samples.py --api https://designerajitrawat-ux--fiveusers-api.modal.run --web https://<app>.vercel.app --key <JUDGE_TOKEN>
+api\.venv\Scripts\python scripts\seed_samples.py --api https://designerajitrawat-ux--fiveusers-api.modal.run --web https://fiveusers.vercel.app --key <JUDGE_TOKEN>
 git add api/samples && git commit -m "Seed sample reports from production" && git push
 ```
 
-The push redeploys Vercel, which copies the new samples into the site. Check `https://<app>.vercel.app/r/sample-signup`.
+The push redeploys Vercel, which copies the new samples into the site. Check `https://fiveusers.vercel.app/r/sample-signup`.
 
 ## 4. Production checks (5 minutes)
 
 - From your phone: start page → "Signup" sample → report opens; run a new test on the checkout sample.
 - Rate limit: a third run from the same network within an hour shows the friendly limit message.
-- Judge token: `curl -X POST https://designerajitrawat-ux--fiveusers-api.modal.run/runs -H "X-FiveUsers-Key: <JUDGE_TOKEN>" -H "Content-Type: application/json" -d "{\"url\": \"https://<app>.vercel.app/samples/booking/index.html\", \"task\": \"Book a haircut for next Saturday afternoon\"}"` → `{"run_id": ...}`.
+- Judge token: `curl -X POST https://designerajitrawat-ux--fiveusers-api.modal.run/runs -H "X-FiveUsers-Key: <JUDGE_TOKEN>" -H "Content-Type: application/json" -d "{\"url\": \"https://fiveusers.vercel.app/samples/booking/index.html\", \"task\": \"Book a haircut for next Saturday afternoon\"}"` → `{"run_id": ...}`.
 - Modal → Settings → Usage & billing: the month's spend is a few cents.
 
 ## Budget

@@ -123,14 +123,14 @@ nebius-token-factory, nvidia-nemotron, tavily, python, fastapi, playwright, next
 modal, vercel
 
 ## Links
-- Demo: https://[TBD].vercel.app
-- Sample reports: https://[TBD].vercel.app/samples
+- Demo: https://fiveusers.vercel.app
+- Sample reports: https://fiveusers.vercel.app/samples
 - Code: https://github.com/designerajitrawat-ux/Nebius-x-NVIDIA (MIT)
 - Video: https://youtu.be/[TBD]
 
 ## Notes for judges
 Sample reports open instantly. To run your own tests without the public rate limit (2 per hour), send the header
-`X-FiveUsers-Key: [TBD JUDGE_TOKEN]` with `POST https://designerajitrawat-ux--fiveusers-api.modal.run/runs`, or ask in the comments and I'll raise
+`X-FiveUsers-Key: [paste JUDGE_TOKEN from .env into the Devpost form only; never commit it]` with `POST https://designerajitrawat-ux--fiveusers-api.modal.run/runs`, or ask in the comments and I'll raise
 the limit. The three sample sites are fictional and deliberately flawed; their answer key is `docs/samples.md`.
 
 ## Feedback on Nebius Token Factory and NVIDIA Nemotron
