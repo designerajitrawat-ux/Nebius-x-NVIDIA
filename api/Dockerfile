@@ -1,4 +1,4 @@
-# FiveUsers API on Hugging Face Spaces (Docker SDK), port 7860.
+# FiveUsers API as a plain Docker container, port 7860 (production runs on Modal: see modal_app.py).
 # Base image ships Chromium + its system deps for exactly this Playwright version.
 FROM mcr.microsoft.com/playwright/python:v1.64.0-noble
 
@@ -18,7 +18,7 @@ RUN pip install -r requirements.txt
 COPY app ./app
 COPY samples ./samples
 
-# Spaces run the container as uid 1000; /data is the persistent disk when enabled.
+# Runs as uid 1000; mount a volume at /data to keep reports across restarts.
 RUN mkdir -p /data && chown -R 1000:1000 /data /app
 USER 1000
 

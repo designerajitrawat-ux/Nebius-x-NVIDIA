@@ -51,8 +51,8 @@ best at:
 **Tavily** runs twice per test: to research the product category before writing personas, and to find "how others
 do it" references for the top issues.
 
-The backend is Python (FastAPI + Playwright) on Hugging Face Spaces; the web app is Next.js on Vercel; the live
-view streams over Server-Sent Events.
+The backend is Python (FastAPI + Playwright) on Modal, which scales to zero between tests; the web app is Next.js
+on Vercel and serves the sample reports itself; the live view streams over Server-Sent Events.
 
 A few decisions that make the report trustworthy:
 
@@ -120,7 +120,7 @@ Product and visual design by Ajit Singh Rawat: https://ajitrawat.framer.website/
 
 ## Built with
 nebius-token-factory, nvidia-nemotron, tavily, python, fastapi, playwright, next.js, typescript, tailwind,
-hugging-face-spaces, vercel
+modal, vercel
 
 ## Links
 - Demo: https://[TBD].vercel.app
@@ -130,7 +130,7 @@ hugging-face-spaces, vercel
 
 ## Notes for judges
 Sample reports open instantly. To run your own tests without the public rate limit (2 per hour), send the header
-`X-FiveUsers-Key: [TBD JUDGE_TOKEN]` with `POST https://[TBD].hf.space/runs`, or ask in the comments and I'll raise
+`X-FiveUsers-Key: [TBD JUDGE_TOKEN]` with `POST https://designerajitrawat-ux--fiveusers-api.modal.run/runs`, or ask in the comments and I'll raise
 the limit. The three sample sites are fictional and deliberately flawed; their answer key is `docs/samples.md`.
 
 ## Feedback on Nebius Token Factory and NVIDIA Nemotron

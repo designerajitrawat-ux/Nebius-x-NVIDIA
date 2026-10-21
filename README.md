@@ -48,7 +48,7 @@ tokens and cost per model for that run.
 ## How it works
 
 ```
-web (Next.js, Vercel)                       api (FastAPI + Playwright, Hugging Face Spaces)
+web (Next.js, Vercel)                       api (FastAPI + Playwright, Modal)
   /            start a test   ── POST /runs ──▶  1 Preparing   load the site, first screenshot
   /run/[id]    five live lanes ◀── SSE ──────    2 Recruiting  Tavily research → Super writes 5 personas
   /r/[id]      the report     ◀── JSON ──────    3 Testing     5 browser contexts in parallel; per step:

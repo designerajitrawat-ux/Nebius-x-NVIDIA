@@ -1,6 +1,8 @@
 /**
  * Typed client for the FiveUsers API (docs/03-architecture.md → API).
  * The id "fixture" is served from lib/fixtures/ so every screen works without a backend.
+ * Sample reports ("sample-*") are served by the website itself (public/reports, copied from api/samples at
+ * build time), so opening one never wakes the API.
  */
 import { API_URL, FIXTURE_ID, USE_FIXTURES } from "./constants";
 import type { ApiError, Health, Report, RunEvent, RunState, SampleInfo } from "./types";
@@ -88,6 +90,22 @@ async function request<T>(path: string, init: RequestInit & { timeoutMs?: number
 
 const enc = encodeURIComponent;
 
+/** Committed sample reports, served from public/reports by scripts/sync-samples.mjs. */
+export function isSample(id: string): boolean {
+  return id.startsWith("sample-");
+}
+
+async function staticJson<T>(path: string): Promise<T> {
+  let res: Response;
+  try {
+    res = await fetch(path);
+  } catch {
+    throw new ApiRequestError("network", "We couldn't load this page. Check your connection and try again.", 0);
+  }
+  if (!res.ok) throw new ApiRequestError("not_found", STATUS_DEFAULTS[404].message, res.status);
+  return (await res.json()) as T;
+}
+
 // ---------- endpoints ----------
 
 export async function getHealth(): Promise<Health> {
@@ -97,7 +115,7 @@ export async function getHealth(): Promise<Health> {
 
 export async function getSamples(): Promise<SampleInfo[]> {
   if (USE_FIXTURES) return (await import("./fixtures/health")).fixtureHealth.samples;
-  return request<SampleInfo[]>("/samples", { timeoutMs: 10_000 });
+  return staticJson<SampleInfo[]>("/reports/index.json");
 }
 
 export interface RunInput {
@@ -123,12 +141,13 @@ export async function getRun(id: string): Promise<RunState> {
 
 export async function getReport(id: string): Promise<Report> {
   if (id === FIXTURE_ID) return (await import("./fixtures/report")).fixtureReport;
+  if (isSample(id)) return staticJson<Report>(`/reports/${enc(id)}/report.json`);
   return request<Report>(`/reports/${enc(id)}`);
 }
 
-/** The API's Markdown export; null for the fixture, which is exported client-side. */
+/** The API's Markdown export; null for the fixture and the samples, which are exported client-side. */
 export function reportMarkdownUrl(id: string): string | null {
-  if (id === FIXTURE_ID) return null;
+  if (id === FIXTURE_ID || isSample(id)) return null;
   return `${API_URL}/reports/${enc(id)}.md`;
 }
 
@@ -137,6 +156,7 @@ export function fileUrl(ownerId: string, relativePath: string): string {
   const clean = relativePath.replace(/^\/+/, "");
   if (ownerId === FIXTURE_ID) return `/fixtures/${clean}`;
   const encodedPath = clean.split("/").map(enc).join("/");
+  if (isSample(ownerId)) return `/reports/${enc(ownerId)}/${encodedPath}`;
   return `${API_URL}/files/${enc(ownerId)}/${encodedPath}`;
 }
 

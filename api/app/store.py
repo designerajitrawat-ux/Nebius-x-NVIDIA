@@ -1,6 +1,6 @@
 """SQLite (runs, usage, rate limits) + per-run folders on disk.
 
-Layout:  {DATA_DIR}/fiveusers.db
+Layout:  {DB_PATH} (default {DATA_DIR}/fiveusers.db), optionally copied to {DB_BACKUP_PATH}
          {DATA_DIR}/runs/{run_id}/personas.json, events.jsonl, report.json, report.md,
                                   {persona_id}/steps.jsonl, {persona_id}/NN.jpg, annotated/*.jpg
 Committed demo reports live in {SAMPLES_DIR}/{report_id}/ with the same layout.
@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import re
 import secrets
+import shutil
 import sqlite3
 import string
 import threading
@@ -63,13 +64,20 @@ def valid_id(value: str) -> bool:
 
 
 class Store:
-    def __init__(self, data_dir: Path, samples_dir: Path) -> None:
+    def __init__(
+        self, data_dir: Path, samples_dir: Path, db_path: Path | None = None, backup_path: Path | None = None
+    ) -> None:
         self.data_dir = data_dir
         self.samples_dir = samples_dir
         self.runs_dir = data_dir / "runs"
         self.runs_dir.mkdir(parents=True, exist_ok=True)
+        self.backup_path = backup_path
+        db_path = db_path or data_dir / "fiveusers.db"
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+        if backup_path and backup_path.is_file() and not db_path.exists():
+            shutil.copyfile(backup_path, db_path)  # a fresh container picks up where the last one stopped
         self._lock = threading.Lock()
-        self._db = sqlite3.connect(data_dir / "fiveusers.db", check_same_thread=False, isolation_level=None)
+        self._db = sqlite3.connect(db_path, check_same_thread=False, isolation_level=None)
         self._db.row_factory = sqlite3.Row
         self._db.execute("PRAGMA journal_mode=WAL")
         self._db.executescript(SCHEMA)
@@ -78,6 +86,21 @@ class Store:
             "UPDATE runs SET status='failed', stage='failed', error='Interrupted by a server restart' "
             "WHERE status='running'"
         )
+        self.backup()
+
+    def backup(self) -> None:
+        """Copy the database to backup_path (a consistent snapshot, then an atomic rename)."""
+        if self.backup_path is None:
+            return
+        self.backup_path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = self.backup_path.with_suffix(".tmp")
+        with self._lock:
+            dest = sqlite3.connect(tmp)
+            try:
+                self._db.backup(dest)
+            finally:
+                dest.close()
+        tmp.replace(self.backup_path)
 
     # ---------- sql ----------
 
@@ -103,6 +126,7 @@ class Store:
             (run_id, time.time(), ip, url, task, audience, mode, int(judge)),
         )
         self.run_dir(run_id).mkdir(parents=True, exist_ok=True)
+        self.backup()
         return run_id
 
     def get_run(self, run_id: str) -> dict[str, Any] | None:
@@ -115,6 +139,7 @@ class Store:
     def finish_run(self, run_id: str, *, status: str, error: str | None = None) -> None:
         stage = "done" if status == "done" else "failed"
         self._exec("UPDATE runs SET status = ?, stage = ?, error = ? WHERE id = ?", (status, stage, error, run_id))
+        self.backup()  # also saves the run's usage rows, which feed the budget guard
 
     def count_public_runs(self, since: float) -> int:
         """Non-judge runs from anyone since `since` (server-wide rate backstop)."""
@@ -227,4 +252,4 @@ class Store:
         return sorted(out, key=lambda s: s.get("order", 99))
 
 
-store = Store(settings.data_dir, settings.samples_dir)
+store = Store(settings.data_dir, settings.samples_dir, settings.db_path, settings.db_backup_path)

@@ -34,3 +34,6 @@ Thumbs.db
 *.mp4
 *.mov
 recordings/
+
+# generated from api/samples by web/scripts/sync-samples.mjs
+web/public/reports/

@@ -6,6 +6,7 @@ import asyncio
 import logging
 from typing import Any
 
+import httpx
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,6 +32,7 @@ app.add_middleware(
 )
 
 _tasks: set[asyncio.Task[None]] = set()  # keep references so runs aren't garbage-collected
+_running: dict[str, asyncio.Task[None]] = {}
 
 
 def api_error(status: int, code: str, message: str, retry_after: int | None = None) -> JSONResponse:
@@ -99,8 +101,38 @@ async def create_run(body: RunRequest, request: Request) -> JSONResponse:
     t = asyncio.create_task(run_pipeline(run_id, url=url, task=task, audience=audience, mode=settings.mode))
     _tasks.add(t)
     t.add_done_callback(_tasks.discard)
+    _running[run_id] = t
+    t.add_done_callback(lambda _: _running.pop(run_id, None))
+    if settings.keepalive_url:
+        k = asyncio.create_task(_keep_alive(run_id))
+        _tasks.add(k)
+        k.add_done_callback(_tasks.discard)
     log.info("run %s started (%s) judge=%s", run_id, url, judge)
     return JSONResponse({"run_id": run_id}, status_code=201)
+
+
+async def _keep_alive(run_id: str) -> None:
+    """Hold a request to our own /hold endpoint so a scale-to-zero host keeps this container until the run ends."""
+    try:
+        async with httpx.AsyncClient(timeout=httpx.Timeout(30.0, read=90.0)) as client:
+            async with client.stream("GET", f"{settings.keepalive_url}/runs/{run_id}/hold") as res:
+                async for _ in res.aiter_bytes():
+                    pass
+    except Exception as e:  # the run carries on regardless; it is only less protected from scale-down
+        log.warning("keep-alive for run %s ended early: %s", run_id, e)
+
+
+@app.get("/runs/{run_id}/hold", include_in_schema=False)
+async def hold_run(run_id: str) -> Any:
+    task = _running.get(run_id)
+
+    async def beat():
+        while task is not None and not task.done():
+            yield b" "  # streaming keeps the request open past proxy idle limits
+            await asyncio.wait({task}, timeout=20)
+        yield b"done\n"
+
+    return StreamingResponse(beat(), media_type="text/plain", headers={"Cache-Control": "no-cache"})
 
 
 @app.get("/runs/{run_id}")

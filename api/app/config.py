@@ -113,6 +113,9 @@ class Settings:
     judge_token: str | None
     data_dir: Path
     samples_dir: Path
+    db_path: Path
+    db_backup_path: Path | None
+    keepalive_url: str | None
     max_personas: int
     max_steps: int
     allowed_origins: list[str]
@@ -156,6 +159,13 @@ def load_settings() -> Settings:
         judge_token=judge,
         data_dir=_path("DATA_DIR", "./data"),
         samples_dir=_path("SAMPLES_DIR", "./samples"),
+        # On Modal the database lives on local disk and is copied to the Volume (DB_BACKUP_PATH) after
+        # each change: Volumes have no file locking, so SQLite shouldn't write to them directly.
+        db_path=_path("DB_PATH", os.path.join(os.getenv("DATA_DIR") or "./data", "fiveusers.db")),
+        db_backup_path=_path("DB_BACKUP_PATH", "") if os.getenv("DB_BACKUP_PATH") else None,
+        # Hosts that scale to zero (Modal) stop a container with no open requests, even mid-run.
+        # When set, each run holds a request to its own API until it finishes.
+        keepalive_url=(os.getenv("KEEPALIVE_URL") or "").rstrip("/") or None,
         max_personas=min(5, max(1, _int("MAX_PERSONAS", 5))),
         max_steps=min(20, max(2, _int("MAX_STEPS_PER_PERSONA", 16))),
         allowed_origins=[o.strip() for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",") if o.strip()],

@@ -43,3 +43,9 @@ def test_sse_format():
     assert out.startswith("event: stage\nid: 3\ndata: ")
     assert json.loads(out.split("data: ", 1)[1])["stage"] == "testing"
     assert sse_format({"type": "ping"}) == ": ping\n\n"
+
+
+def test_hold_ends_at_once_for_a_run_that_is_not_running():
+    r = client.get("/runs/zzzzzzzzzz/hold")
+    assert r.status_code == 200
+    assert r.text.strip() == "done"

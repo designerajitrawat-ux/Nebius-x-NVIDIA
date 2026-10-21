@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FinalCta } from "@/components/landing/FinalCta";
 import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
@@ -13,12 +13,24 @@ import { WatchRun } from "@/components/landing/WatchRun";
 import { SiteFooter } from "@/components/SiteFooter";
 import { FALLBACK_SAMPLES } from "@/lib/constants";
 import { formatUsd } from "@/lib/format";
-import { useHealth } from "@/lib/useResource";
+import { getHealth } from "@/lib/api";
+import { useResource } from "@/lib/useResource";
 import { StartForm } from "./StartForm";
 
 export function StartScreen() {
-  const health = useHealth();
+  // The API sleeps when idle and every wake-up costs hosting credit, so only call it once someone starts
+  // filling in the form. It warms up while they type.
+  const [engaged, setEngaged] = useState(false);
+  const health = useResource(engaged ? "health" : null, getHealth);
   const [budgetExhausted, setBudgetExhausted] = useState(false);
+  // A cold start takes seconds. If the lab is still silent after a minute it is down (or out of hosting
+  // credit for the month), so say so instead of "waking up" forever.
+  const [unreachable, setUnreachable] = useState(false);
+  useEffect(() => {
+    if (health.status !== "waking") return;
+    const timer = setTimeout(() => setUnreachable(true), 60_000);
+    return () => clearTimeout(timer);
+  }, [health.status]);
 
   const h = health.status === "ready" ? health.data : null;
   const demoMode = budgetExhausted || h?.budget.state === "hard";
@@ -26,9 +38,15 @@ export function StartScreen() {
 
   const status = (
     <>
-      {health.status === "waking" ? (
+      {health.status === "waking" && !unreachable ? (
         <p role="status" className="text-13 text-ink-2">
-          Waking up the test lab… free hosting sleeps when it&rsquo;s quiet, so this can take up to a minute.
+          Waking up the test lab… it sleeps when it&rsquo;s quiet, so this can take a few seconds.
+        </p>
+      ) : null}
+      {health.status === "waking" && unreachable ? (
+        <p role="status" className="text-13 text-ink-2">
+          The test lab isn&rsquo;t answering right now, so new tests can&rsquo;t start. The sample reports below
+          still work.
         </p>
       ) : null}
       {h?.mode === "dry_run" ? (
@@ -58,7 +76,10 @@ export function StartScreen() {
               demoMode={demoMode}
               onBudgetExhausted={() => setBudgetExhausted(true)}
               status={status}
-              onActivity={onActivity}
+              onActivity={(activity) => {
+                if (activity !== "idle") setEngaged(true);
+                onActivity(activity);
+              }}
             />
           )}
         />
